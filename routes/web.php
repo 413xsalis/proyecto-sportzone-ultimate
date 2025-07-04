@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\EditorController;
+use App\Http\Controllers\ColaboradorController;
+use App\Http\Controllers\InstructorController;
 
 
 Route::get('/', function () {
@@ -16,5 +17,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('admin/dashboard', AdminController::class)
 ->middleware(['auth','role:admin']);
 
-Route::resource('editor/dashboard', EditorController::class)
-->middleware(['auth','role:editor']);
+Route::resource('colaborador/dashboard', ColaboradorController::class)
+->middleware(['auth','role:colaborador']);
+
+Route::resource('instructor/dashboard', InstructorController::class)
+->middleware(['auth','role:instructor']);

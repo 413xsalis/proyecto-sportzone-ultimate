@@ -110,7 +110,7 @@
 
     <div class="app-title">
         <div>
-            <h1><i class="bi"></i> Bienvenido al modulo administrador</h1>
+            <h1><i class="bi"></i> Bienvenido al modulo colaborador</h1>
         </div>
     </div>
       <div class="row">

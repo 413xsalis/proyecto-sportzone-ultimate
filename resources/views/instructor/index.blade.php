@@ -110,7 +110,7 @@
 
     <div class="app-title">
         <div>
-            <h1><i class="bi"></i> Bienvenidooooooooooooo</h1>
+            <h1><i class="bi"></i> Bienvenido al modulo instructor</h1>
         </div>
     </div>
       <div class="row">

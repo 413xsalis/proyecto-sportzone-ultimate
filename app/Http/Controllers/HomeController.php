@@ -27,8 +27,10 @@ class HomeController extends Controller
         $user = \Auth::user();
         if($user->hasRole('admin')){
            return redirect('admin/dashboard');
-        }elseif($user->hasRole('editor')){
-            return redirect('editor/dashboard');
+        }elseif($user->hasRole('colaborador')){
+            return redirect('colaborador/dashboard');
+        }elseif($user->hasRole('instructor')){
+            return redirect('instrutor/dashboard');
         }
         return redirect('/');
         //return view('home');
