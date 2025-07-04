@@ -30,7 +30,6 @@
           <input class="app-search__input" type="search" placeholder="Buscar">
           <button class="app-search__button"><i class="bi bi-search"></i></button>
         </li>
-
         <!--Notification Menu-->
         <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown" aria-label="Show notifications"><i class="bi bi-bell fs-5"></i></a>
           <ul class="app-notification dropdown-menu dropdown-menu-right">
@@ -75,7 +74,6 @@
             </div>
             <li class="app-notification__footer"><a href="#">mirar todas la notificaciones.</a></li>
           </ul>
-
         </li>
         <!-- User Menu-->
         <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown" aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i></a>
@@ -107,17 +105,17 @@
           <li class="app-sidebar__user-designation breadcrumb-item"><a href="{{ route('admin.principal') }}">Inicio</a></li>
 
       </div>
-                  <li><a class="dropdown-item" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ route('logout') }}"
-                  onclick="event.preventDefault();
+      <li><a class="dropdown-item" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{{ route('logout') }}"
+            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                  {{ __('Logout') }}
-                </a>
+            {{ __('Logout') }}
+          </a>
 
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                  @csrf
-                </form>><i class="bi bi-box-arrow-right me-2 fs-5"></i> Logout
-              </a></li>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+          </form>><i class="bi bi-box-arrow-right me-2 fs-5"></i> Logout
+        </a></li>
     </div>
     <a class="app-menu__item" href="{{ route('admin.Gestion_usuarios') }}"></i><span class="app-menu__label">Gestion de
         usuarios</span></a>
