@@ -1,10 +1,12 @@
 <?php
 
+
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Product; // Asegúrate de importar el modelo Product
+use App\Models\User; // Asegúrate de importar el modelo Product
 
 
 class AdminController extends Controller
@@ -29,8 +31,8 @@ class AdminController extends Controller
      */
     public function gestion()
     {
-        $products = Product::all(); // Obtener todos los productos
-        return view('administrador.Gestion_usuarios.principal', compact('products'));
+        $Users = User::all(); // Obtener todos los productos
+        return view('administrador.Gestion_usuarios.principal', compact('Users'));
     }
 
     public function formulario()

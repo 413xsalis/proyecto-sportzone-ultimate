@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
+class UsuarioController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
+        $products = User::all();
         return view('administrador.Gestion_usuarios.principal', compact('products'));
     }
 
@@ -21,12 +26,12 @@ class ProductController extends Controller
 public function store(Request $request)
 {
     $validatedData = $request->validate([
-        'name' => 'required|max:255',
-        'description' => 'required',
-        'price' => 'required|numeric|min:0'
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
     ]);
 
-        Product::create($request->all());
+        User::create($request->all());
 
               return redirect()->back()->with('success', 'Libro creado con exito');
 
@@ -34,32 +39,32 @@ public function store(Request $request)
         //     ->with('success', 'Producto creado exitosamente.');
     }
 
-    public function show(Product $product)
+    public function show(User $Users)
     {
         return view('administrador.Gestion_usuarios.show', compact('product'));
     }
 
- public function edit(Product $product)
+ public function edit(User $Users)
     {
         return view('administrador.Gestion_usuarios.edit', compact('product'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, User $Users)
     {
         $request->validate([
             'name' => 'required|max:255',
             'description' => 'required',
             'price' => 'required|numeric'
         ]);
-        $product->update($request->all());
+        $Users->update($request->all());
 
         return redirect()->route('products.index')
             ->with('success', 'Producto actualizado exitosamente');
     }
 
-    public function destroy(Product $product)
+    public function destroy(User $Users)
     {
-        $product->delete();
+        $Users->delete();
 
         return redirect()->route('products.index')
             ->with('success', 'Producto eliminado exitosamente');

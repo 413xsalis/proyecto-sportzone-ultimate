@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EditorController;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\UsuarioController; 
 
 
 Route::get('/', function () {
@@ -32,17 +32,17 @@ Route::resource('editor/dashboard', EditorController::class)
 
 
 
-Route::get('/libros/crear',[ProductController::class, 'create'])->name('libros.crear');
+Route::get('/libros/crear',[UsuarioController::class, 'create'])->name('libros.crear');
 
 
 
-Route::post('/products/store',[ProductController::class, 'store'])->name('products.store');
+Route::post('/usuario/store',[UsuarioController::class, 'store'])->name('usuario.store');
 
-Route::post('/products/index',[ProductController::class, 'index'])->name('products.index');
+Route::post('/usuario/index',[UsuarioController::class, 'index'])->name('usuario.index');
 
-Route::post('/products/update',[ProductController::class, 'update'])->name('products.update');
+Route::post('/usuario/update',[UsuarioController::class, 'update'])->name('usuario.update');
 
-Route::resource('products', ProductController::class); 
+Route::resource('products', UsuarioController::class); 
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/principal', function () {
