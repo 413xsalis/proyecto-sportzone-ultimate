@@ -36,9 +36,9 @@
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->password }}</td>
                 <td>
-                    <form action="{{ route('products.destroy', $user->id) }}" method="POST">
-                        <a class="btn btn-info" href="{{ route('products.show', $user->id) }}">Ver</a>
-                        <a class="btn btn-primary" href="{{ route('products.edit', $user->id) }}">Editar</a>
+                    <form action="{{ route('usuario.destroy', $user->id) }}" method="POST">
+                        <a class="btn btn-info" href="{{ route('usuario.show', $user->id) }}">Ver</a>
+                        <a class="btn btn-primary" href="{{ route('usuario.edit', $user->id) }}">Editar</a>
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Eliminar</button>

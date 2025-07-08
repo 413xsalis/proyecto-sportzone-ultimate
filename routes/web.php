@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EditorController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UsuarioController; 
 
 
@@ -42,7 +41,7 @@ Route::post('/usuario/index',[UsuarioController::class, 'index'])->name('usuario
 
 Route::post('/usuario/update',[UsuarioController::class, 'update'])->name('usuario.update');
 
-Route::resource('products', UsuarioController::class); 
+Route::resource('usuario', UsuarioController::class); 
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/principal', function () {

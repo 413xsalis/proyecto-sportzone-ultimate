@@ -14,8 +14,8 @@ class UsuarioController extends Controller
 {
     public function index()
     {
-        $products = User::all();
-        return view('administrador.Gestion_usuarios.principal', compact('products'));
+        $Users = User::all();
+        return view('administrador.Gestion_usuarios.principal', compact('user'));
     }
 
     public function create()
@@ -41,12 +41,12 @@ public function store(Request $request)
 
     public function show(User $Users)
     {
-        return view('administrador.Gestion_usuarios.show', compact('product'));
+        return view('administrador.Gestion_usuarios.show', compact('user'));
     }
 
  public function edit(User $Users)
     {
-        return view('administrador.Gestion_usuarios.edit', compact('product'));
+        return view('administrador.Gestion_usuarios.edit', compact('user'));
     }
 
     public function update(Request $request, User $Users)
@@ -58,7 +58,7 @@ public function store(Request $request)
         ]);
         $Users->update($request->all());
 
-        return redirect()->route('products.index')
+        return redirect()->route('usuario.index')
             ->with('success', 'Producto actualizado exitosamente');
     }
 
@@ -66,7 +66,7 @@ public function store(Request $request)
     {
         $Users->delete();
 
-        return redirect()->route('products.index')
+        return redirect()->route('usuario.index')
             ->with('success', 'Producto eliminado exitosamente');
     }
 }
