@@ -40,8 +40,6 @@ class AdminController extends Controller
         return view('administrador.Formulario_empleados.principal');
     }
 
-    // Este método index parece redundante, puedes eliminarlo si no se usa
-
         public function create()
     {
         return view('administrador.Gestion_usuarios.create');
