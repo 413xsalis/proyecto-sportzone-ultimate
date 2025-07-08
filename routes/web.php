@@ -31,17 +31,20 @@ Route::resource('editor/dashboard', EditorController::class)
 
 
 
-Route::get('/libros/crear',[UsuarioController::class, 'create'])->name('libros.crear');
+Route::get('/libros/crear',[UsuarioController::class, 'create'])->name('usuario.crear');
 
 
 
+
+
+Route::resource('usuario', UsuarioController::class);
 Route::post('/usuario/store',[UsuarioController::class, 'store'])->name('usuario.store');
 
 Route::post('/usuario/index',[UsuarioController::class, 'index'])->name('usuario.index');
 
 Route::post('/usuario/update',[UsuarioController::class, 'update'])->name('usuario.update');
 
-Route::resource('usuario', UsuarioController::class); 
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/principal', function () {
