@@ -12,59 +12,7 @@
           <li class="breadcrumb-item"><a href="#">Dashboard</a></li> 
         </ul>
       </div>
-     <!-- <div class="row">
-        <div class="col-md-6 col-lg-3">
-          <div class="widget-small primary coloured-icon"><i class="icon bi bi-people fs-1"></i>
-            <div class="info">
-              <h4>Users</h4>
-              <p><b>5</b></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-          <div class="widget-small info coloured-icon"><i class="icon bi bi-heart fs-1"></i>
-            <div class="info">
-              <h4>Likes</h4>
-              <p><b>25</b></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-          <div class="widget-small warning coloured-icon"><i class="icon bi bi-folder2 fs-1"></i>
-            <div class="info">
-              <h4>Uploades</h4>
-              <p><b>10</b></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-          <div class="widget-small danger coloured-icon"><i class="icon bi bi-star fs-1"></i>
-            <div class="info">
-              <h4>Stars</h4>
-              <p><b>500</b></p> 
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="tile">
-            <h3 class="tile-title"> CALENDARIO</h3>
-            <div class="ratio ratio-16x9">
-              <div id="salesChart"></div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="tile">
-            <h3 class="tile-title"> ASISTENCIA</h3>
-            <div class="ratio ratio-16x9">
-              <div id="supportRequestChart"></div>
-            </div>
-          </div>
-        </div>
-      </div>-->
-
+    
         <!-- Main content -->
         <main class="col-md-10 main-content p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -171,8 +119,10 @@
             <th>Documento</th>
             <th>Nombre</th>
             <th>Teléfono</th>
+            <th>Telefono de Contacto</th>
             <th>EPS</th>
             <th>Grupo/Nivel</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -182,11 +132,23 @@
               <td>{{ $est->documento }}</td>
               <td>{{ $est->nombre_1 }} {{ $est->apellido_1 }}</td>
               <td>{{ $est->telefono }}</td>
+              <td>{{ $est->telefono_contacto}}</td>
               <td>{{ $est->eps }}</td>
               <td>{{ $est->id_grupo_nivel }}</td>
+              <td>
+        <a href="{{ route('estudiantes.edit', $est->id) }}" class="btn btn-sm btn-warning">Editar</a> 
+
+        <form action="{{ route('estudiantes.destroy', $est->id) }}" method="POST" style="display:inline-block;">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar este estudiante?')">
+            Eliminar
+          </button>
+        </form>
+      </td>
             </tr>
           @empty
-            <tr>
+            <tr> 
               <td colspan="6" class="text-center">No hay estudiantes registrados.</td>
             </tr>
           @endforelse

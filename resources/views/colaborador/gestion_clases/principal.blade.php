@@ -46,7 +46,78 @@
 
     </table>
   </div>
+<br>
+<br>
+  <h3 class="mb-4 text-center">
+    {{ isset($editar) && $editar ? 'Editar Horario' : 'Editar Nuevo Horario' }}
+</h3>
 
+<form action="{{ isset($editar) && $editar ? route('horarios.update', $horario->id) : route('horarios.store') }}" method="POST" class="mb-5">
+    @csrf
+    @if(isset($editar) && $editar)
+        @method('PUT')
+    @endif
+
+    <div class="row g-3">
+        <div class="col-md-3">
+            <label for="dia" class="form-label">Día</label>
+            <select name="dia" id="dia" class="form-select" required>
+                <option value="">Selecciona un día</option>
+                @foreach(['lunes','martes','miércoles','jueves','viernes','sábado','domingo'] as $dia)
+                    <option value="{{ $dia }}" {{ (old('dia', $horario->dia ?? '') == $dia) ? 'selected' : '' }}>
+                        {{ ucfirst($dia) }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="hora_inicio" class="form-label">Hora Inicio</label>
+            <input type="time" name="hora_inicio" id="hora_inicio" class="form-control"
+                value="{{ old('hora_inicio', $horario->hora_inicio ?? '') }}" required>
+        </div>
+
+        <div class="col-md-2">
+            <label for="hora_fin" class="form-label">Hora Fin</label>
+            <input type="time" name="hora_fin" id="hora_fin" class="form-control"
+                value="{{ old('hora_fin', $horario->hora_fin ?? '') }}" required>
+        </div>
+
+        <div class="col-md-2">
+            <label for="instructor_id" class="form-label">Instructor</label>
+            <select name="instructor_id" id="instructor_id" class="form-select" required>
+                <option value="">Selecciona</option>
+                @foreach($instructores as $instructor)
+                    <option value="{{ $instructor->id }}"
+                        {{ (old('instructor_id', $horario->instructor_id ?? '') == $instructor->id) ? 'selected' : '' }}>
+                        {{ $instructor->nombre }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="grupo_id" class="form-label">Grupo</label>
+            <select name="grupo_id" id="grupo_id" class="form-select" required>
+                <option value="">Selecciona</option>
+                @foreach($grupos as $grupo)
+                    <option value="{{ $grupo->id }}"
+                        {{ (old('grupo_id', $horario->grupo_id ?? '') == $grupo->id) ? 'selected' : '' }}>
+                        {{ $grupo->nombre }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col-md-1 d-flex align-items-end">
+            <button type="submit" class="btn btn-{{ isset($editar) && $editar ? 'primary' : 'success' }} w-100">
+                {{ isset($editar) && $editar ? 'Actualizar' : 'Guardar' }}
+            </button>
+        </div>
+    </div>
+</form>
+
+<br>
   <div class="container mt-5">
     <h3 class="text-center">Calendario</h3>
     <div class="row justify-content-center">
@@ -57,11 +128,10 @@
     </div>
   </div>
 
-  <br>
-  <br>
-  <h3 class="mb-4">Registrar Nuevo Horario</h3>
-<form action="{{ route('horarios.store') }}" method="POST" class="mb-5">
-    @csrf
+
+  <!--<h3 class="mb-4">Registrar Nuevo Horario</h3> 
+ <form action="{{ route('horarios.store') }}" method="POST" class="mb-5">
+    @csrf --
 
     <div class="row g-3">
         <div class="col-md-3">
@@ -109,7 +179,7 @@
         </div>
 
         <div class="col-md-1 d-flex align-items-end">
-            <button type="submit" class="btn btn-success w-100">Guardar</button>
+            <button type="submit" class="btn btn-success w-100">Guardar</button> -->
         </div>
     </div>
 </form>
