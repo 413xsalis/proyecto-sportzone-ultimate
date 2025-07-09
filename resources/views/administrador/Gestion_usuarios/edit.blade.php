@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('administrador.Gestion_usuarios.layout')
 
 @section('title', 'Editar Usuario')
 

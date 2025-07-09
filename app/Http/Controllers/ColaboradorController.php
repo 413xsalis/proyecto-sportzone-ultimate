@@ -8,13 +8,20 @@ use App\Models\Instructor;  // Modelo de instructor
 use App\Models\Grupo;       // Modelo de grupo
 use App\Models\Estudiante;
 
-class ColabController extends Controller
+class ColaboradorController extends Controller
 {
-    public function principal()
-    
-    {
 
-    $instructores = \App\Models\Instructor::all();
+
+    // public function index(){
+    //     return view ('colaborador.inicio_colab.principal');
+    // }
+    public function index(){
+    $instructores = Instructor::all();
+    return view('colaborador.inicio_colab.principal', compact('instructores'));
+    }
+
+    public function principal(){
+    $instructores = Instructor::all();
     return view('colaborador.inicio_colab.principal', compact('instructores'));
     }
 

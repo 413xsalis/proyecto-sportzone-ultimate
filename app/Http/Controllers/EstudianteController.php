@@ -44,7 +44,7 @@ return redirect()->back()->with([
 
     public function index()
 {
-    $estudiantes = \App\Models\Estudiante::all(); // Puedes usar paginación también
+    $estudiantes = Estudiante::all(); // Puedes usar paginación también
     return view('colaborador.inscripcion_estudent.index', compact('estudiantes'));
 }
 

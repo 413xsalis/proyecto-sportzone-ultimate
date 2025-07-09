@@ -22,15 +22,29 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    // public function index()
+    // {
+    //     $user = \Auth::user();
+    //     if($user->hasRole('admin')){
+    //        return redirect('admin/dashboard');
+    //     }elseif($user->hasRole('editor')){
+    //         return redirect('editor/dashboard');
+    //     }
+    //     return redirect('/');
+    //     //return view('home');
+    // }
+        public function index()
     {
-        $user = \Auth::user();
-        if($user->hasRole('admin')){
+        $usuario = \Auth::user();
+        if($usuario->hasRole('admin')){
            return redirect('admin/dashboard');
-        }elseif($user->hasRole('editor')){
-            return redirect('editor/dashboard');
+        }elseif($usuario->hasRole('colaborador')){
+            return redirect('colaborador/dashboard');
+        }elseif($usuario->hasRole('instructor')){
+            return redirect('instrutor/dashboard');
         }
         return redirect('/');
         //return view('home');
     }
+
 }

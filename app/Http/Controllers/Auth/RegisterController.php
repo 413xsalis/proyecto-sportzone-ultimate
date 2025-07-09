@@ -73,7 +73,7 @@ class RegisterController extends Controller
 
         // Asignar el rol de 'admin' al primer usuario registrado
         // Para los siguientes usuarios, cambiar a 'editor'
-        $user->assignRole('editor'); // O 'editor' para usuarios posteriores
+        $user->assignRole('colaborador'); // O 'editor' para usuarios posteriores
 
         return $user;
     }
