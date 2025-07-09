@@ -11,21 +11,34 @@ use App\Models\User; // Asegúrate de importar el modelo Product
 
 class AdminController extends Controller
 {
+
     public function index(){
         return view ('administrador.admin.principal');
     }
-
-    // public function create(){
-
-    // }
-
-
 
       public function principal()
     {
         return view('administrador.admin.principal');
     }
 
+        public function formulario()
+    {
+        return view('administrador.Formulario_empleados.principal');
+    }
+
+        public function create()
+    {
+        return view('administrador.Gestion_usuarios.create');
+    }
+
+
+
+
+
+
+
+
+    
     /**
      * Muestra la gestión de usuarios con productos
      */
@@ -35,13 +48,8 @@ class AdminController extends Controller
         return view('administrador.Gestion_usuarios.principal', compact('Users'));
     }
 
-    public function formulario()
-    {
-        return view('administrador.Formulario_empleados.principal');
-    }
 
-        public function create()
-    {
-        return view('administrador.Gestion_usuarios.create');
-    }
+
+
+
 }

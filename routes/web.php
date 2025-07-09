@@ -37,14 +37,23 @@ Route::get('/libros/crear',[UsuarioController::class, 'create'])->name('usuario.
 
 
 
+// Route::resource('usuario', UsuarioController::class);
+// Route::post('/usuario/store',[UsuarioController::class, 'store'])->name('usuario.store');
+
+// Route::post('/usuario/index',[UsuarioController::class, 'index'])->name('usuario.index');
+
+// Route::post('/usuario/update',[UsuarioController::class, 'update'])->name('usuario.update');
+
 Route::resource('usuario', UsuarioController::class);
-Route::post('/usuario/store',[UsuarioController::class, 'store'])->name('usuario.store');
 
-Route::post('/usuario/index',[UsuarioController::class, 'index'])->name('usuario.index');
-
-Route::post('/usuario/update',[UsuarioController::class, 'update'])->name('usuario.update');
-
-
+// O si prefieres manualmente:
+Route::get('usuario', [UsuarioController::class, 'index'])->name('usuario.index');
+Route::get('usuario/create', [UsuarioController::class, 'create'])->name('usuario.create');
+Route::post('usuario', [UsuarioController::class, 'store'])->name('usuario.store');
+Route::get('usuario/{usuario}', [UsuarioController::class, 'show'])->name('usuario.show');
+Route::get('usuario/{usuario}/edit', [UsuarioController::class, 'edit'])->name('usuario.edit');
+Route::put('usuario/{usuario}', [UsuarioController::class, 'update'])->name('usuario.update');
+Route::delete('usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/principal', function () {

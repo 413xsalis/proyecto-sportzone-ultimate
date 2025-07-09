@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class UsuarioController extends Controller
 {
@@ -39,41 +37,33 @@ public function store(Request $request)
         ->with('success', 'Usuario creado exitosamente.');
 }
 
-    public function show(User $Users)
+    public function show(User $usuario)
     {
-        return view('administrador.Gestion_usuarios.show', compact('Users'));
+        return view('administrador.Gestion_usuarios.show', compact('usuario'));
     }
 
- public function edit(User $Users)
+ public function edit(User $usuario)
     {
-        return view('administrador.Gestion_usuarios.edit', compact('Users'));
+        return view('administrador.Gestion_usuarios.edit', compact('usuario'));
     }
 
- public function update(Request $request, User $user) // Mejor nombre en singular
-{
+    public function update(Request $request, User $usuario)
+    {
     $request->validate([
-        'name' => 'required|max:255',
-        'email' => 'required|email|unique:users,email,'.$user->id,
-        'password' => 'nullable|min:8|confirmed'
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
     ]);
-
-    $data = $request->only(['name', 'email']);
-    
-    if ($request->password) {
-        $data['password'] = Hash::make($request->password);
-    }
-
-    $user->update($data);
+    $usuario->update($request->all());
 
     return redirect()->route('usuario.index')
         ->with('success', 'Usuario actualizado exitosamente');
 }
-    public function destroy(User $Users)
+    public function destroy(User $usuario)
     {
-        $Users->delete();
+        $usuario->delete();
 
         return redirect()->route('usuario.index')
-            ->with('success', 'Producto eliminado exitosamente');
+            ->with('success', 'Usuario eliminado exitosamente');
     }
 }
 
