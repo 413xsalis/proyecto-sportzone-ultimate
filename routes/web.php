@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\UsuarioController; 
+use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\EstudianteController;
@@ -18,7 +18,7 @@ Route::get('/', function () {
 
 
 // rutas del crud de gestion usuario--------------------------------------------------------//
-Route::get('/libros/crear',[UsuarioController::class, 'create'])->name('usuario.crear');
+Route::get('/libros/crear', [UsuarioController::class, 'create'])->name('usuario.crear');
 Route::resource('usuario', UsuarioController::class);
 Route::get('usuario', [UsuarioController::class, 'index'])->name('usuario.index');
 Route::get('usuario/create', [UsuarioController::class, 'create'])->name('usuario.create');
@@ -36,11 +36,11 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('admin/dashboard', AdminController::class)
-->middleware(['auth','role:admin']);
+    ->middleware(['auth', 'role:admin']);
 // Route::resource('editor/dashboard', EditorController::class)
 // ->middleware(['auth','role:editor']);
 Route::resource('colaborador/dashboard', ColaboradorController::class)
-->middleware(['auth','role:colaborador']);
+    ->middleware(['auth', 'role:colaborador']);
 
 
 Route::middleware(['auth'])->group(function () {
@@ -52,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/colaborador/principal', function () {
         return view('colaborador.inicio_colab.principal');
-    })->name('colaborador.dashboard')->middleware('role:colaborador'); 
+    })->name('colaborador.dashboard')->middleware('role:colaborador');
 
     Route::get('/instructor/principal', function () {
         return view('instructor.inicio.principal');
@@ -63,16 +63,16 @@ Route::middleware(['auth'])->group(function () {
 
 
 // rutas de vistas de admin----------------------------------------------------------------//
-Route::prefix('admin')->group(function() {
+Route::prefix('admin')->group(function () {
     Route::get('/principal', [AdminController::class, 'principal'])->name('admin.principal');
 });
-Route::prefix('admin')->group(function() {
+Route::prefix('admin')->group(function () {
     Route::get('/gestion', [AdminController::class, 'gestion'])->name('admin.Gestion_usuarios');
 });
-Route::prefix('admin')->group(function() {
+Route::prefix('admin')->group(function () {
     Route::get('/formulario', [AdminController::class, 'formulario'])->name('admin.Formulario_empleados');
 });
-Route::prefix('admin')->group(function() {
+Route::prefix('admin')->group(function () {
     Route::get('/create', [AdminController::class, 'create'])->name('admin.create');
 });
 //---------------------------------------------------------------------------------------------------------------------------//
@@ -121,15 +121,26 @@ Route::delete('/horarios/{horario}', [HorarioController::class, 'destroy'])->nam
 Route::get('/horarios/{id}/edit', [HorarioController::class, 'edit'])->name('horarios.edit');
 Route::put('/horarios/{id}', [HorarioController::class, 'update'])->name('horarios.update');
 
+
+
+
 // ================= ESTUDIANTES =================
-//Route::get('/inscribir', [EstudianteController::class, 'create'])->name('estudiantes.create');
-//Route::post('/inscribir', [EstudianteController::class, 'store'])->name('estudiantes.store');
-//Route::get('/colab/estudiante/{id}/edit', [EstudianteController::class, 'edit'])->name('colab.estudiantes.edit');
 Route::get('/inscripcion_estudiante', [EstudianteController::class, 'index'])->name('estudiantes.index');
+
+Route::get('/estudiantes/create', [EstudianteController::class, 'create'])->name('estudiantes.create');
+
 Route::post('/inscripcion_estudiante', [EstudianteController::class, 'store'])->name('estudiantes.store');
-Route::get('/inscripcion_estudiante/{id}/edit', [EstudianteController::class, 'edit'])->name('estudiantes.edit');
-Route::put('/inscripcion_estudiante/{id}', [EstudianteController::class, 'update'])->name('estudiantes.update');
-Route::delete('/inscripcion_estudiante/{id}', [EstudianteController::class, 'destroy'])->name('estudiantes.destroy');
+
+Route::get('/inscripcion_estudiante/{estudiante:documento}/edit', [EstudianteController::class, 'edit'])->name('estudiante.edit');
+
+Route::put('/inscripcion_estudiante/{estudiante:documento}', [EstudianteController::class, 'update'])->name('estudiantes.update');
+
+Route::delete('/inscripcion_estudiante/{estudiante:documento}', [EstudianteController::class, 'destroy'])->name('estudiantes.destroy');
+
+
+
+
+
 
 // ================= REPORTES =================
 Route::get('/reportes/inscripciones', [ReporteController::class, 'reporteInscripciones'])->name('reportes.inscripciones');

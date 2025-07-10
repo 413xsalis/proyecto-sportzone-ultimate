@@ -3,7 +3,7 @@
 @section('title', 'Gestión de Clases')
 
 @section('content')
-<main class="app-content">
+<main class="content">
   <div class="app-title">
     <div>
       <h1><i class="bi bi-speedometer"></i> Gestión de Clases </h1>

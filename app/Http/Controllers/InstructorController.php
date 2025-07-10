@@ -25,7 +25,7 @@ class InstructorController extends Controller
         'especialidad' => 'nullable|string|max:255',
     ]);
 
-    \App\Models\Instructor::create($request->all());
+    Instructor::create($request->all());
 
     return redirect()->back()->with('success', 'Instructor registrado correctamente.');
 }

@@ -1,11 +1,11 @@
 @extends('colaborador.inscripcion_estudent.layout')
 
 @section('content')
-<main class="app-content">
-  <div class="container mt-4">
+<main class="content">
+  <div class="app-title">
     <h2 class="text-center mb-4">Editar Estudiante</h2>
 
-    <form action="{{ route('estudiantes.update', $estudiante->id) }}" method="POST">
+    <form action="{{ route('estudiantes.update', $estudiante->documento) }}" method="POST">
         @csrf
         @method('PUT')
 

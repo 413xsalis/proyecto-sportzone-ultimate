@@ -1,7 +1,7 @@
 @extends('colaborador.inicio_colab.layout')
 
 @section('content')
-<main class="app-content">
+<main class="content">
   <div class="app-title">
     <h1>Editar Instructor</h1>
   </div>

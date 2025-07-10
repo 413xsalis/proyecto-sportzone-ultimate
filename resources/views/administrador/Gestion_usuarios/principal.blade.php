@@ -5,8 +5,11 @@
         <div class="app-title">
             <div>
                 <h1><i class="bi"></i> Gestion usuarios</h1>
+                <p> Modulo Administrador</p>
             </div>
         </div>
+
+
         <div class="container mt-3">
             <div class="d-flex justify-content-between mb-1">
                 <h2>Lista de Usuarios</h2>
