@@ -16,33 +16,39 @@ class InstructorController extends Controller
         return view('instructor.horarios.principal');
     }
 
+    public function create()
+    {
+        return view('colaborador.inicio_colab.create'); // o la vista correcta si usas otra ruta
+    }
+
     public function store(Request $request)
-{
-    $request->validate([
-        'nombre' => 'required|string|max:255',
-        'documento' => 'required|unique:instructores,documento',
-        'telefono' => 'nullable|string|max:20',
-        'especialidad' => 'nullable|string|max:255',
-    ]);
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'documento' => 'required|unique:instructores,documento',
+            'telefono' => 'nullable|string|max:20',
+            'especialidad' => 'nullable|string|max:255',
+        ]);
 
-    Instructor::create($request->all());
+        Instructor::create($request->all());
 
-    return redirect()->back()->with('success', 'Instructor registrado correctamente.');
-}
+        return redirect()->route('colab.principal')
+            ->with('success', 'Usuario creado exitosamente.');
+    }
 
-public function index()
-{
-    $instructores = Instructor::all();
-    return view('colaborador.inicio_colab.principal', compact('instructores'));
-}
+    public function index()
+    {
+        $instructores = Instructor::all();
+        return view('colaborador.inicio_colab.principal', compact('instructores'));
+    }
 
-public function edit($id)
-{
-    $instructor = Instructor::findOrFail($id);
-    return view('colaborador.inicio_colab.editar', compact('instructor'));
-}
+    public function edit($id)
+    {
+        $instructor = Instructor::findOrFail($id);
+        return view('colaborador.inicio_colab.editar', compact('instructor'));
+    }
 
- public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
@@ -54,16 +60,16 @@ public function edit($id)
         $instructor = Instructor::findOrFail($id);
         $instructor->update($request->all());
 
-        return redirect()->route('colaborador.inicio')->with('success', 'Instructor actualizado correctamente.');
+        return redirect()->route('colab.principal')->with('success', 'Instructor actualizado correctamente.');
     }
 
-public function destroy($id)
-{
-    $instructor = Instructor::findOrFail($id);
-    $instructor->delete();
+    public function destroy($id)
+    {
+        $instructor = Instructor::findOrFail($id);
+        $instructor->delete();
 
-    return redirect()->back()->with('success', 'Instructor eliminado correctamente.');
-}
+        return redirect()->back()->with('success', 'Instructor eliminado correctamente.');
+    }
 
 
 }

@@ -4,10 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ColaboradorController;
-use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\InstrucController;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\AsistenciaController;
 
 
 Route::get('/', function () {
@@ -35,6 +37,7 @@ Route::delete('usuario/{usuario}', [UsuarioController::class, 'destroy'])->name(
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 Route::resource('admin/dashboard', AdminController::class)
     ->middleware(['auth', 'role:admin']);
 // Route::resource('editor/dashboard', EditorController::class)
@@ -42,6 +45,8 @@ Route::resource('admin/dashboard', AdminController::class)
 Route::resource('colaborador/dashboard', ColaboradorController::class)
     ->middleware(['auth', 'role:colaborador']);
 
+Route::resource('instructor/dashboard', InstrucController::class)
+    ->middleware(['auth', 'role:instructor']);
 
 Route::middleware(['auth'])->group(function () {
 
@@ -57,6 +62,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/instructor/principal', function () {
         return view('instructor.inicio.principal');
     })->name('instructor.dashboard')->middleware('role:instructor');
+
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
 //---------------------------------------------------------------------------------------------------------------//
@@ -98,12 +104,14 @@ Route::get('/colaboradores/inicio', [ColaboradorController::class, 'principal'])
 
 
 // ================= INSTRUCTOR =================
-Route::prefix('inst')->group(function () {
-    Route::get('/principal', [InstructorController::class, 'principal'])->name('inst.principal');
-    Route::get('/horario', [InstructorController::class, 'horario'])->name('inst.horarios');
-});
+// Route::prefix('inst')->group(function () {
+//     Route::get('/principal', [InstructorController::class, 'principal'])->name('inst.principal');
+//     Route::get('/horario', [InstructorController::class, 'horario'])->name('inst.horarios');
+// });
 
 // Rutas para instructores
+
+Route::get('/instructores/create', [InstructorController::class, 'create'])->name('instructores.create');
 Route::resource('instructores', InstructorController::class);
 Route::get('/instructores/{id}/edit', [InstructorController::class, 'edit'])->name('instructores.edit');
 Route::put('/instructores/{id}', [InstructorController::class, 'update'])->name('instructores.update');
@@ -144,5 +152,25 @@ Route::delete('/inscripcion_estudiante/{estudiante:documento}', [EstudianteContr
 
 // ================= REPORTES =================
 Route::get('/reportes/inscripciones', [ReporteController::class, 'reporteInscripciones'])->name('reportes.inscripciones');
+
+
+
+
+//rutas de instructores//----------------------------//
+
+Route::prefix('inst')->group(function() {
+    Route::get('/principal', [InstrucController::class, 'principal'])->name('inst.principal');
+});
+
+Route::prefix('inst')->group(function() {
+    Route::get('/horario', [InstrucController::class, 'horario'])->name('inst.horarios');
+});
+
+Route::prefix('inst')->group(function() {
+    Route::get('/asistencia', [AsistenciaController::class, 'seleccionarGrupo'])->name('inst.asistencia');
+    Route::get('/asistencia/grupo/{nombre}', [AsistenciaController::class, 'tomarAsistencia'])->name('asistencia.tomar');
+    Route::post('/asistencia/guardar', [AsistenciaController::class, 'guardar'])->name('asistencia.guardar');
+});
+
 
 

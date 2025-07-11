@@ -41,7 +41,7 @@ class HomeController extends Controller
         }elseif($usuario->hasRole('colaborador')){
             return redirect('colaborador/dashboard');
         }elseif($usuario->hasRole('instructor')){
-            return redirect('instrutor/dashboard');
+            return redirect('instructor/dashboard');
         }
         return redirect('/');
         //return view('home');

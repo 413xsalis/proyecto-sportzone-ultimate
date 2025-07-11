@@ -8,14 +8,11 @@
       <p> Modulo Colaborador</p>
     </div>
     </div>
-
-    <div class="container mt-3" id="listadoEstudiantes">
-
-
     <div class="d-flex justify-content-between mb-1">
-      <h2>Lista de Usuarios</h2>
+      <h2>Lista de Estudiantes Registrados</h2>
       <a href="{{ route('estudiantes.create') }}" class="btn btn-success">Nuevo Estudiante</a>
     </div>
+    <br>
 
     <table class="table table-bordered">
       <tr>

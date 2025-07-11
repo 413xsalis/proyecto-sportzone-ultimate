@@ -1,9 +1,6 @@
 @extends('administrador.Gestion_usuarios.layout')
 
 
-@section('content')
-< @section('title', 'Crear Producto') 
-
 <! @section('content')
 <div class="container mt-3">
     <h2>Crear Nuevo  Usuario</h2>

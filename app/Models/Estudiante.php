@@ -12,6 +12,18 @@ class Estudiante extends Model
     public $incrementing = false;
     public $timestamps = true;
 
+
+    //     public function grupoNivel()
+    // {
+    //     return $this->belongsTo(GrupoNivel::class, 'id_grupo_nivel', 'id_grupo_nivel');
+    // }
+
+    // // Relación con grupo (por campo documento)
+    // public function grupo()
+    // {
+    //     return $this->hasOne(Grupo::class, 'documento', 'documento');
+    // }
+
     protected $fillable = [
         'documento',
         'nombre_1',
