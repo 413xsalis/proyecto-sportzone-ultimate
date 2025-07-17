@@ -11,10 +11,10 @@
 
 
         <div class="container mt-3">
-            <!-- <div class="d-flex justify-content-between mb-1">
+             <div class="d-flex justify-content-between mb-1">
                 <h2>Lista de Usuarios</h2>
-                <a href="{{ route('admin.create') }}" class="btn btn-success">Nuevo Usuario</a>
-            </div> -->
+                <a href="{{ route('admin.users.active') }}" class="btn btn-success">Nuevo Usuario</a>
+            </div> 
 
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">

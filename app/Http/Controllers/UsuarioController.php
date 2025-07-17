@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role; 
+use App\Http\Controllers\Controller;
+
 
 
 class UsuarioController extends Controller
@@ -101,5 +103,6 @@ class UsuarioController extends Controller
         return redirect()->route('usuario.index')
             ->with('success', 'Usuario eliminado exitosamente');
     }
+
 }
 
