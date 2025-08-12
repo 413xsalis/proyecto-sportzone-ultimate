@@ -1,10 +1,8 @@
 <?php
 namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
-use Illuminate\Database\Console\Seeds\WithoutModeLEvents;
-
-
 
 class RolePermissionSeeder extends Seeder
 {
@@ -23,3 +21,4 @@ class RolePermissionSeeder extends Seeder
     }
 
 }
+
