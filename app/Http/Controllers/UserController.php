@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use Spatie\Permission\Traits\HasRoles;
 use App\Models\User;
 
 class UserController extends Controller
@@ -13,8 +14,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $Useri = User::all(); // Puedes usar paginación también
-        return view('colaborador.inscripcion_estudent.principal', compact('User'));
+        
 
         $empleadosActivos = User::role(['admin', 'colaborador', 'instructor'])
             ->where('estado', 'activo')
