@@ -12,9 +12,23 @@
 
         <div class="container mt-3">
             <!-- <div class="d-flex justify-content-between mb-1">
-                <h2>Lista de Usuarios</h2>
-                <a href="{{ route('admin.create') }}" class="btn btn-success">Nuevo Usuario</a>
-            </div> -->
+                    <h2>Lista de Usuarios</h2>
+                    <a href="{{ route('admin.create') }}" class="btn btn-success">Nuevo Usuario</a>
+                </div> -->
+
+            <div class="container mt-4">
+                <h2>Empleados Activos</h2>
+                @include('usuarios.partials.tabla', ['usuarios' => $empleadosActivos, 'badge' => 'success'])
+
+                <h2 class="mt-5">Empleados Inactivos</h2>
+                @include('usuarios.partials.tabla', ['usuarios' => $empleadosInactivos, 'badge' => 'danger'])
+
+                <h2 class="mt-5">Alumnos Activos</h2>
+                @include('usuarios.partials.tabla', ['usuarios' => $alumnosActivos, 'badge' => 'success'])
+
+                <h2 class="mt-5">Alumnos Retirados</h2>
+                @include('usuarios.partials.tabla', ['usuarios' => $alumnosRetirados, 'badge' => 'secondary'])
+            </div>
 
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
