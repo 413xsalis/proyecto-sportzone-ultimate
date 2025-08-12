@@ -10,8 +10,7 @@ use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\AsistenciaController;
-use App\Http\Controllers\UserController;
-use App\Http\Middleware;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -175,12 +174,3 @@ Route::prefix('inst')->group(function() {
 
 
 
-//rutas de usuarios activos o inactivos-----------------------------------------------------------------
-
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/users/active', [UserController::class, 'activeUsers'])->name('admin.users.active');
-    Route::get('/users/inactive', [UserController::class, 'inactiveUsers'])->name('admin.users.inactive');
-    Route::patch('/users/{user}/deactivate', [UserController::class, 'deactivate'])->name('admin.users.deactivate');
-    Route::patch('/users/{user}/activate', [UserController::class, 'activate'])->name('admin.users.activate');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
-});
