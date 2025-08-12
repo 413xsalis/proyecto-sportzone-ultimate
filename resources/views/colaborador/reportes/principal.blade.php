@@ -1,7 +1,7 @@
 @extends('colaborador.reportes.layout')
 
 @section('content')
-<main class="app-content">
+<main class="content">
       <div class="app-title">
         <div>
           <h1><i class="bi bi-speedometer"></i> Reportes </h1>
@@ -32,29 +32,6 @@
       </div>
     </form>
   </div>
-
-  <!-- Calendario -->
-  <div class="row">
-    <div class="col-md-10 main-content p-4">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="titulo">Calendario</h1>
-        <!--
-        <div>
-          <i class="bi bi-bell mx-2"></i>
-          <i class="bi bi-box-arrow-right mx-2"></i>
-          <i class="bi bi-person-circle"></i>
-        </div>
-        -->
-      </div>
-
-      <div class="col-md-8 mb-4">
-        <label for="calendar" class="form-label">Selecciona una fecha:</label>
-        <input type="date" class="form-control" id="calendar">
-      </div>
-    </div>
-  </div>
-</main>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="app.js"></script>

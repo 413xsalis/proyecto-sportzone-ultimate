@@ -13,10 +13,14 @@
 </head>
 <body class="app sidebar-mini">
     @include('administrador.Gestion_usuarios.partials.header')
+
+    
     
     <div class="app-content">
         @yield('content')
+        
     </div>
+
 
     @include('administrador.Gestion_usuarios.partials.footer')
 </body>
