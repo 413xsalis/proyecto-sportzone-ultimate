@@ -20,13 +20,12 @@ class ReporteController extends Controller
         $pdf = Pdf::loadView('colaborador.reportes.pdf', compact('estudiantes', 'fechaInicio', 'fechaFin'));
 
         //return response($pdf->output(), 200)
-            //->header('Content-Type', 'application/pdf')
-            //->header('Content-Disposition', 'inline; filename="reporte_inscripciones.pdf"');
+        //->header('Content-Type', 'application/pdf')
+        //->header('Content-Disposition', 'inline; filename="reporte_inscripciones.pdf"');
 
         // ⬇️ Mostrar en navegador en vez de descargar
         return $pdf->stream('reporte_inscripciones.pdf');
     }
+
+    
 }
-
-
-

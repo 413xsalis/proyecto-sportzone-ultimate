@@ -49,12 +49,11 @@
     </div>
 
     <ul class="app-menu">
+      <a class="app-menu__item" href="{{ route('inst.principal') }}"></i><span class="app-menu__label">Inicio</span></a>
+
       <a class="app-menu__item" href="{{ route('inst.horarios') }}"></i><span class="app-menu__label">Horarios</span></a>
 
       <a class="app-menu__item" href="{{ route('inst.asistencia') }}"></i><span class="app-menu__label">Asistencia</span></a>
 
-      <a class="app-menu__item" href="{{ route('inst.reporte') }}"></i><span
-          class="app-menu__label">Reportes</span></a>
     </ul>
-
   </aside>

@@ -16,7 +16,7 @@ Bienvenido - Panel de control de instructores
       @foreach($grupos as $grupo)
       <li class="list-group-item d-flex justify-content-between align-items-center">
         {{ $grupo->nombre }}
-        <a href="{{ route('asistencia.tomar', ['nombre' => $grupo->nombre]) }}" class="btn btn-success btn-sm">
+        <a href="{{ route('asistencia.subgrupos', ['grupo_id' => $grupo->id]) }}" class="btn btn-success btn-sm">
           Tomar asistencia
         </a>
       </li>

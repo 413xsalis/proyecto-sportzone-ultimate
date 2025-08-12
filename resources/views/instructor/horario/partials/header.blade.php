@@ -15,7 +15,7 @@
 
 <body class="app sidebar-mini">
   <!-- Navbar-->
- <header class="app-header"><a class="app-header__logo" href="index.html">
+  <header class="app-header"><a class="app-header__logo" href="index.html">
       <img src="{{ asset('assets/images/logo_sf.png') }}" alt="Logo" style="height: 65px; vertical-align: middle;">
       <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
       <!-- Navbar Right Menu-->
@@ -23,14 +23,14 @@
         <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown"
             aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i></a>
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
-                <a class="dropdown-item dropdown-item bi bi-box-arrow-right me-2 fs-5" href="{{ route('logout') }}" onclick="event.preventDefault();
+            <a class="dropdown-item dropdown-item bi bi-box-arrow-right me-2 fs-5" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                  {{ __(' Cerrar sesion') }}
-                </a>
+              {{ __(' Cerrar sesion') }}
+            </a>
 
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                  @csrf
-                </form>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+              @csrf
+            </form>
           </ul>
         </li>
       </ul>
@@ -53,7 +53,8 @@
 
       <a class="app-menu__item" href="{{ route('inst.asistencia') }}"></i><span class="app-menu__label">Asistencia</span></a>
 
+      <a class="app-menu__item" href="{{ route('inst.reporte') }}"></i><span
+          class="app-menu__label">Reportes</span></a>
+
     </ul>
-
-
   </aside>

@@ -10,8 +10,8 @@ use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\AsistenciaController;
-use App\Http\Controllers\UserController;
-use App\Http\Middleware;
+use App\Http\Controllers\InstructorHorarioController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -159,28 +159,34 @@ Route::get('/reportes/inscripciones', [ReporteController::class, 'reporteInscrip
 
 //rutas de instructores//----------------------------//
 
-Route::prefix('inst')->group(function() {
+Route::prefix('inst')->group(function () {
     Route::get('/principal', [InstrucController::class, 'principal'])->name('inst.principal');
 });
 
-Route::prefix('inst')->group(function() {
-    Route::get('/horario', [InstrucController::class, 'horario'])->name('inst.horarios');
+Route::prefix('inst')->group(function () {
+    Route::get('/horario', [InstructorHorarioController::class, 'horario'])->name('inst.horarios');
+
+    Route::get('/horario/actividades', [InstructorHorarioController::class, 'obtenerActividades'])->name('inst.horarios.actividades');
+
+    Route::post('/horario/guardar', [InstructorHorarioController::class, 'guardarActividad'])->name('inst.horarios.guardar');
+
+    Route::put('/horario/actualizar/{id}', [InstructorHorarioController::class, 'actualizarActividad'])->name('inst.horarios.actualizar');
+    
+    Route::delete('/horario/eliminar/{id}', [InstructorHorarioController::class, 'eliminarActividad'])->name('inst.horarios.eliminar');
 });
 
-Route::prefix('inst')->group(function() {
+Route::prefix('inst')->group(function () {
     Route::get('/asistencia', [AsistenciaController::class, 'seleccionarGrupo'])->name('inst.asistencia');
-    Route::get('/asistencia/grupo/{nombre}', [AsistenciaController::class, 'tomarAsistencia'])->name('asistencia.tomar');
+
+    Route::get('/asistencia/grupo/{nombre}', [AsistenciaController::class, 'tomarAsistenciaPorGrupo'])->name('asistencia.tomar.grupo');
+
+    Route::get('/asistencia/{grupo_id}', [AsistenciaController::class, 'verSubgrupos'])->name('asistencia.subgrupos');
+
+    Route::get('/asistencia/subgrupo/{id}', [AsistenciaController::class, 'tomarAsistenciaPorSubgrupo'])->name('asistencia.tomar.subgrupo');
+
     Route::post('/asistencia/guardar', [AsistenciaController::class, 'guardar'])->name('asistencia.guardar');
 });
 
-
-
-//rutas de usuarios activos o inactivos-----------------------------------------------------------------
-
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/users/active', [UserController::class, 'activeUsers'])->name('admin.users.active');
-    Route::get('/users/inactive', [UserController::class, 'inactiveUsers'])->name('admin.users.inactive');
-    Route::patch('/users/{user}/deactivate', [UserController::class, 'deactivate'])->name('admin.users.deactivate');
-    Route::patch('/users/{user}/activate', [UserController::class, 'activate'])->name('admin.users.activate');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+Route::prefix('inst')->group(function () {
+    Route::get('/reporte', [AsistenciaController::class, 'reporteAsistencias'])->name('inst.reporte');
 });

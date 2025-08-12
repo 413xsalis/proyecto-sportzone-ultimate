@@ -13,16 +13,10 @@ class Estudiante extends Model
     public $timestamps = true;
 
 
-    //     public function grupoNivel()
-    // {
-    //     return $this->belongsTo(GrupoNivel::class, 'id_grupo_nivel', 'id_grupo_nivel');
-    // }
-
-    // // Relación con grupo (por campo documento)
-    // public function grupo()
-    // {
-    //     return $this->hasOne(Grupo::class, 'documento', 'documento');
-    // }
+    public function subgrupo()
+    {
+        return $this->belongsTo(Subgrupo::class, 'id_subgrupo', 'id');
+    }
 
     protected $fillable = [
         'documento',
@@ -36,4 +30,12 @@ class Estudiante extends Model
         'eps',
         'id_grupo_nivel'
     ];
+
+    public function getNombreCompletoAttribute(): string
+    {
+        return ($this->nombre_1 ?? '') . ' ' .
+            ($this->nombre_2 ?? '') . ' ' .
+            ($this->apellido_1 ?? '') . ' ' .
+            ($this->apellido_2 ?? '');
+    }
 }

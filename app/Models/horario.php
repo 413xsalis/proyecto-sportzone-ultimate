@@ -17,11 +17,18 @@ class Horario extends Model
         'hora_fin',
     ];
 
-    public function instructor() {
+    public function instructor()
+    {
         return $this->belongsTo(Instructor::class);
     }
 
-    public function grupo() {
+    public function grupo()
+    {
         return $this->belongsTo(Grupo::class);
+    }
+
+    public function actividades()
+    {
+        return $this->hasMany(Actividad::class);
     }
 }

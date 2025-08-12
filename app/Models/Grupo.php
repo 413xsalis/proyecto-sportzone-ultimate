@@ -12,4 +12,9 @@ class Grupo extends Model
     protected $table = 'grupos';
 
     protected $fillable = ['nombre'];
+
+    public function subgrupos()
+    {
+        return $this->hasMany(Subgrupo::class, 'grupo_id');
+    }
 }
