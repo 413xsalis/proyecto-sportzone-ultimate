@@ -16,41 +16,80 @@
                 <a href="{{ route('admin.create') }}" class="btn btn-success">Nuevo Usuario</a>
             </div> -->
 
+
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
                     {{ $message }}
                 </div>
             @endif
 
-            <table class="table table-bordered">
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Contraseña</th>
-                    <th width="280px">Acciones</th>
-                </tr>
-                @foreach ($Users as $usuario)
-                    <tr>
-                        <td>{{ $usuario->id }}</td>
-                        <td>{{ $usuario->name }}</td>
-                        <td>{{ $usuario->email }}</td>
-                        <td>{{ $usuario->password }}</td>
-                        <td>
-                            <form action="{{ route('usuario.destroy', $usuario->id) }}" method="POST">
-                                <a class="btn btn-info" href="{{ route('usuario.show', $usuario->id) }}">Ver</a>
-                                <a class="btn btn-primary" href="{{ route('usuario.edit', $usuario->id) }}">Editar</a>
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </table>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="app.js"></script>
-    </main>
-@endsection
+<!-- resources/views/users/index.blade.php -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Estado</th>
+            <th width="280px">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($Users as $usuario)
+        <tr>
+            <td>{{ $usuario->id }}</td>
+            <td>{{ $usuario->name }}</td>
+            <td>{{ $usuario->email }}</td>
+            <td>
+                @if($usuario->trashed())
+                    <span class="badge bg-danger">Inactivo</span>
+                @else
+                    <span class="badge bg-success">Activo</span>
+                @endif
+            </td>
+            <td>
+                @if($usuario->trashed())
+                    <!-- Botón para restaurar -->
+                    <form action="{{ route('usuario.restore', $usuario->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="btn btn-sm btn-success">
+                            <i class="fas fa-undo"></i> Reactivar
+                        </button>
+                    </form>
+                    
+                    <!-- Botón para eliminar permanentemente -->
+                    <form action="{{ route('usuario.force-delete', $usuario->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-outline-danger" 
+                            onclick="return confirm('¿Estás seguro de ELIMINAR PERMANENTEMENTE este usuario?')">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </form>
+                @else
+                    <!-- Botón para editar -->
+                    <a href="{{ route('usuario.edit', $usuario->id) }}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                                                    <a href="{{ route('usuarios.inactivos')}}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-edit"></i> usuarios inactiv
+                    </a>
+                    
+                    <!-- Botón para desactivar -->
+                    <form action="{{ route('usuario.destroy', $usuario->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger" 
+                            onclick="return confirm('¿Estás seguro de desactivar este usuario?')">
+                            <i class="fas fa-trash-alt"></i> Desactivar
+                        </button>
+                    </form>
+                    
+                @endif
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+  @endsection

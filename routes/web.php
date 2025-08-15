@@ -23,15 +23,24 @@ Route::get('/', function () {
 
 
 // rutas del crud de gestion usuario--------------------------------------------------------//
-Route::get('/libros/crear', [UsuarioController::class, 'create'])->name('usuario.crear');
-Route::resource('usuario', UsuarioController::class);
-Route::get('usuario', [UsuarioController::class, 'index'])->name('usuario.index');
-Route::get('usuario/create', [UsuarioController::class, 'create'])->name('usuario.create');
-Route::post('usuario', [UsuarioController::class, 'store'])->name('usuario.store');
-Route::get('usuario/{usuario}', [UsuarioController::class, 'show'])->name('usuario.show');
-Route::get('usuario/{usuario}/edit', [UsuarioController::class, 'edit'])->name('usuario.edit');
-Route::put('usuario/{usuario}', [UsuarioController::class, 'update'])->name('usuario.update');
-Route::delete('usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
+
+// Rutas resource estándar
+Route::resource('usuario', UsuarioController::class)->names([
+    'index' => 'usuario.index',
+    'create' => 'usuario.create',
+    'store' => 'usuario.store',
+    'show' => 'usuario.show',
+    'edit' => 'usuario.edit',
+    'update' => 'usuario.update',
+    'destroy' => 'usuario.destroy'
+]);
+
+// Ruta para usuarios inactivos
+Route::get('usuario/inactivos', [UsuarioController::class, 'indexInactivos'])->name('usuarios.inactivos');
+
+// Rutas adicionales para soft delete
+Route::patch('usuario/{usuario}/restore', [UsuarioController::class, 'restore'])->name('usuario.restore');
+Route::delete('usuario/{usuario}/force-delete', [UsuarioController::class, 'forceDelete'])->name('usuario.force-delete');
 //--------------------------------------------------------------------------------------------------------------------//
 
 
@@ -41,15 +50,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resource('admin/dashboard', AdminController::class)
-    ->middleware(['auth', 'role:admin']);
-// Route::resource('editor/dashboard', EditorController::class)
-// ->middleware(['auth','role:editor']);
-Route::resource('colaborador/dashboard', ColaboradorController::class)
-    ->middleware(['auth', 'role:colaborador']);
-
-Route::resource('instructor/dashboard', InstrucController::class)
-    ->middleware(['auth', 'role:instructor']);
 
 Route::middleware(['auth'])->group(function () {
 
@@ -60,11 +60,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/colaborador/principal', function () {
         return view('colaborador.inicio_colab.principal');
-    })->name('colaborador.dashboard')->middleware('role:colaborador');
+    })->name('colaborador.principal')->middleware('role:colaborador');
 
     Route::get('/instructor/principal', function () {
         return view('instructor.inicio.principal');
-    })->name('instructor.dashboard')->middleware('role:instructor');
+    })->name('instructor.principal')->middleware('role:instructor');
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
@@ -74,14 +74,8 @@ Route::middleware(['auth'])->group(function () {
 // rutas de vistas de admin----------------------------------------------------------------//
 Route::prefix('admin')->group(function () {
     Route::get('/principal', [AdminController::class, 'principal'])->name('admin.principal');
-});
-Route::prefix('admin')->group(function () {
-    Route::get('/gestion', [AdminController::class, 'gestion'])->name('admin.Gestion_usuarios');
-});
-Route::prefix('admin')->group(function () {
-    Route::get('/formulario', [AdminController::class, 'formulario'])->name('admin.Formulario_empleados');
-});
-Route::prefix('admin')->group(function () {
+    Route::get('/gestion', [AdminController::class, 'gestion'])->name('admin.gestion');
+    Route::get('/formulario', [AdminController::class, 'formulario'])->name('admin.formulario');
     Route::get('/create', [AdminController::class, 'create'])->name('admin.create');
 });
 //---------------------------------------------------------------------------------------------------------------------------//
