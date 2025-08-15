@@ -11,33 +11,46 @@ use Illuminate\Support\Facades\Auth;
 
 class InstructorHorarioController extends Controller
 {
-    // Mostrar la vista con el calendario y datos necesarios
+    /**
+     * Muestra la vista principal del horario del instructor, cargando los datos iniciales.
+     */
     public function horario()
     {
+        // NOTA: El ID del instructor está codificado aquí (ID = 2). 
+        // Cambiar a: Auth::user()->id
         $instructorId = 2;
-        // $instructorId = Auth::user()->id; 
 
+        // Obtiene todos los subgrupos y grupos disponibles.
+        // Estos datos se usarán en el menú desplegable del modal para asignar actividades.
         $subgrupos = Subgrupo::all();
         $grupos = Grupo::all();
 
+        // Obtiene todos los horarios asociados a este instructor.
+        // El método `with()` carga de forma anticipada las relaciones de 'grupo' e 'instructor'
+        // para evitar múltiples consultas a la base de datos (problema N+1).
         $horarios = Horario::with(['grupo', 'instructor'])
             ->where('instructor_id', $instructorId)
             ->get();
 
+        // Retorna la vista principal del horario, pasando los datos necesarios.
         return view('instructor.horario.principal', compact('subgrupos', 'grupos', 'horarios'));
     }
 
-    // Obtener actividades vía AJAX para el calendario
+    /**
+     * Obtiene y formatea las actividades del horario para ser consumidas por el calendario vía AJAX.
+     */
     public function obtenerActividades()
     {
+        // Obtiene todas las actividades y carga las relaciones anidadas (`horario`, `subgrupo`, etc.).
         $actividades = Actividad::with(['horario.instructor', 'subgrupo', 'horario.grupo'])->get();
 
+        // Transforma la colección de actividades a un formato JSON específico para el front-end.
         $datos = $actividades->map(function ($a) {
             return [
                 'id' => $a->id,
                 'nombre' => $a->actividad,
                 'horario_id' => $a->horario_id,
-                'dia' => strtolower($a->horario->dia ?? ''),
+                'dia' => strtolower($a->horario->dia ?? ''), // Obtiene el día y lo convierte a minúsculas.
                 'hora' => $a->horario->hora_inicio ?? '',
                 'hora_fin' => $a->horario->hora_fin ?? '',
                 'grupo' => $a->horario->grupo->nombre ?? '',
@@ -49,51 +62,76 @@ class InstructorHorarioController extends Controller
             ];
         });
 
+        // Devuelve los datos como una respuesta JSON.
         return response()->json($datos);
     }
 
-    // Guardar nueva actividad (desde modal)
+    /**
+     * Guarda una nueva actividad en el horario.
+     */
     public function guardarActividad(Request $request)
     {
+        // 1. Valida los datos recibidos del formulario del modal.
         $request->validate([
-            'horario_id' => 'required|exists:horarios,id',
+            'horario_id' => 'required|exists:horarios,id', // Debe existir un horario con este ID.
+            'subgrupo_id' => 'required|exists:subgrupos,id', // Debe existir un subgrupo con este ID.
             'actividad' => 'required|string|max:50',
+            'estado' => 'required|string|in:pendiente,activo,cancelado', // El estado debe ser uno de estos valores.
         ]);
 
         try {
-            // Obtener el horario y su subgrupo asociado
-            $horario = Horario::with('grupo')->findOrFail($request->horario_id);
-
-            // Crear la actividad con el subgrupo extraído del horario
+            // 2. Crea y guarda la nueva actividad en la base de datos.
             $actividad = Actividad::create([
-                'horario_id' => $horario->id,
-                'subgrupo_id' => $horario->grupo->id, // Aquí se asume que `grupo` es el subgrupo
+                'horario_id' => $request->horario_id,
+                'subgrupo_id' => $request->subgrupo_id,
                 'actividad' => $request->actividad,
                 'estado' => $request->estado,
             ]);
 
-            return response()->json(['success' => true, 'actividad' => $actividad]);
+            // 3. Obtiene el subgrupo y el horario relacionados para la respuesta.
+            $subgrupo = Subgrupo::find($request->subgrupo_id);
+            $horario = Horario::find($request->horario_id);
+
+            // 4. Retorna una respuesta JSON para que el front-end sepa que la operación fue exitosa
+            // y tenga los datos para actualizar la interfaz sin recargar.
+            return response()->json([
+                'success' => true,
+                'id' => $actividad->id,
+                'subgrupo_nombre' => $subgrupo->nombre,
+                'hora_inicio' => substr($horario->hora_inicio, 0, 5),
+                'hora_fin' => substr($horario->hora_fin, 0, 5)
+            ]);
         } catch (\Exception $e) {
+            // Maneja cualquier error que pueda ocurrir y devuelve un mensaje de error.
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
     }
 
-    // Actualizar actividad existente
+    /**
+     * Actualiza una actividad existente.
+     */
     public function actualizarActividad(Request $request, $id)
     {
+        // Busca la actividad por su ID. Si no la encuentra, lanza un error 404.
         $actividad = Actividad::findOrFail($id);
 
-        $actividad->update($request->only('actividad','estado'));
+        // Actualiza solo los campos 'actividad' y 'estado' con los datos del request.
+        $actividad->update($request->only('actividad', 'estado'));
 
+        // Devuelve una respuesta JSON simple de éxito.
         return response()->json(['success' => true]);
     }
 
-    // Eliminar actividad
+    /**
+     * Elimina una actividad del horario.
+     */
     public function eliminarActividad($id)
     {
+        // Busca la actividad por su ID y la elimina.
         $actividad = Actividad::findOrFail($id);
         $actividad->delete();
 
+        // Devuelve una respuesta JSON de éxito.
         return response()->json(['success' => true]);
     }
 }

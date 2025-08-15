@@ -11,7 +11,11 @@ Bienvenido - Panel de control de instructores
   <div class="container mt-5">
     <h4 class="mb-4 text-center fw-bold text-primary">Reporte de Asistencias</h4>
 
-    {{-- Filtro por subgrupo --}}
+    {{--
+      Formulario de filtrado por subgrupo.
+      - `method="GET"`: Utiliza el método GET para enviar los datos, ideal para filtros.
+      - `action="{{ route('inst.reporte') }}"`: Envía los datos del formulario a la misma URL para recargar la página con el filtro aplicado.
+    --}}
     <form method="GET" action="{{ route('inst.reporte') }}" class="row g-3 mb-4">
       <div class="col-md-4">
         <label for="subgrupo" class="form-label">Filtrar por Subgrupo</label>
@@ -28,9 +32,10 @@ Bienvenido - Panel de control de instructores
         <button type="submit" class="btn btn-success w-100">Filtrar</button>
       </div>
     </form>
-
-
-    {{-- Tabla estilo Excel --}}
+    {{--
+      Tabla de datos que muestra los registros de asistencia.
+      - `table-responsive`: Clase de Bootstrap para hacer la tabla responsive en dispositivos pequeños.
+    --}}
     <div class="table-responsive">
       <table class="table table-bordered table-hover text-center align-middle">
         <thead class="table-primary">
@@ -43,6 +48,10 @@ Bienvenido - Panel de control de instructores
           </tr>
         </thead>
         <tbody>
+          {{--
+            Directiva `forelse`: Recorre `$asistencias` y, si la colección está vacía, muestra el bloque `@empty`.
+            Esto evita tener que usar un `if` por separado.
+          --}}
           @forelse($asistencias as $asis)
           <tr>
             <td>{{ $asis->estudiante->nombre_completo ?? 'N/A' }}</td>
@@ -88,9 +97,7 @@ Bienvenido - Panel de control de instructores
     </div>
   </div> -->
 </main>
-
+@endsection
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="app.js"></script>
-</main>
-@endsection
