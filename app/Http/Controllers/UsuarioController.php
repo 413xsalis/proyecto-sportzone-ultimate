@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use Spatie\Permission\Models\Role; 
+use Spatie\Permission\Models\Role;
 
 
 class UsuarioController extends Controller
@@ -14,16 +14,16 @@ class UsuarioController extends Controller
 
     public function index()
     {
-        $Users = User::all();
-        return view('administrador.Gestion_usuarios.principal', compact('Users'));
+        $users = User::latest()->get();
+        return view('administrador.Gestion_usuarios.principal', compact('users'));
     }
 
-    
-public function indexInactivos()
-{
-    $inactiveUsers = User::onlyTrashed()->get();
-    return view('administrador.Gestion_usuarios.usuariosinactivos', compact('inactiveUsers'));
-}
+    public function trashed()
+    {
+        $users = User::onlyTrashed()->latest()->get();
+        return view('administrador.Gestion_usuarios.trashed', compact('users'));
+    }
+
 
     public function create()
     {
@@ -71,32 +71,29 @@ public function indexInactivos()
     }
 
     public function destroy($id)
-{
-    $usuario = User::findOrFail($id);
-    $usuario->delete();
+    {
+        $usuario = User::findOrFail($id);
+        $usuario->delete();
 
-    return redirect()->route('usuario.index')
-        ->with('success', 'Usuario desactivado exitosamente');
+        return redirect()->route('usuario.index')
+            ->with('success', 'Usuario desactivado exitosamente');
+    }
+
+    public function restore($id)
+    {
+        $usuario = User::withTrashed()->findOrFail($id);
+        $usuario->restore();
+
+        return redirect()->route('usuario.index')
+            ->with('success', 'Usuario reactivado exitosamente');
+    }
+
+    public function forceDelete($id)
+    {
+        $usuario = User::withTrashed()->findOrFail($id);
+        $usuario->forceDelete();
+
+        return redirect()->route('usuario.index')
+            ->with('success', 'Usuario eliminado permanentemente');
+    }
 }
-
-public function restore($id)
-{
-    $usuario = User::withTrashed()->findOrFail($id);
-    $usuario->restore();
-
-    return redirect()->route('usuario.index')
-        ->with('success', 'Usuario reactivado exitosamente');
-}
-
-public function forceDelete($id)
-{
-    $usuario = User::withTrashed()->findOrFail($id);
-    $usuario->forceDelete();
-
-    return redirect()->route('usuario.index')
-        ->with('success', 'Usuario eliminado permanentemente');
-}
-
-
-}
-

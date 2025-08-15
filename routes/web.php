@@ -21,23 +21,21 @@ Route::get('/', function () {
 
 
 // rutas del crud de gestion usuario--------------------------------------------------------//
-Route::resource('usuario', UsuarioController::class)->names([
-    'index' => 'usuario.index',
-    'create' => 'usuario.create',
-    'store' => 'usuario.store',
-    'show' => 'usuario.show',
-    'edit' => 'usuario.edit',
-    'update' => 'usuario.update',
-    'destroy' => 'usuario.destroy'
-]);
+Route::get('/libros/crear', [UsuarioController::class, 'create'])->name('usuario.crear');
+Route::resource('usuario', UsuarioController::class);
+Route::get('usuario', [UsuarioController::class, 'index'])->name('usuario.index');
+Route::get('usuario/create', [UsuarioController::class, 'create'])->name('usuario.create');
+Route::post('usuario', [UsuarioController::class, 'store'])->name('usuario.store');
+Route::get('usuario/{usuario}', [UsuarioController::class, 'show'])->name('usuario.show');
+Route::get('usuario/{usuario}/edit', [UsuarioController::class, 'edit'])->name('usuario.edit');
+Route::put('usuario/{usuario}', [UsuarioController::class, 'update'])->name('usuario.update');
+Route::delete('usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
 
-// Ruta para usuarios inactivos
-Route::get('usuario/inactivos', [UsuarioController::class, 'indexInactivos'])->name('usuarios.inactivos');
 
-// Rutas adicionales para soft delete
+Route::resource('usuario', 'UsuarioController');
+Route::get('usuario/trashed', [UsuarioController::class, 'trashed'])->name('usuario.trashed');
 Route::patch('usuario/{usuario}/restore', [UsuarioController::class, 'restore'])->name('usuario.restore');
-Route::delete('usuario/{usuario}/force-delete', [UsuarioController::class, 'forceDelete'])->name('usuario.force-delete');
-//--------------------------------------------------------------------------------------------------------------------//
+Route::delete('usuario/{usuario}/force-delete', [UsuarioController::class, 'forceDelete'])->name('usuario.force-delete');//--------------------------------------------------------------------------------------------------------------------//
 
 
 // rutas de autenticacion-----------------------------------------------------------//
@@ -178,7 +176,7 @@ Route::prefix('inst')->group(function () {
     Route::post('/horario/guardar', [InstructorHorarioController::class, 'guardarActividad'])->name('inst.horarios.guardar');
 
     Route::put('/horario/actualizar/{id}', [InstructorHorarioController::class, 'actualizarActividad'])->name('inst.horarios.actualizar');
-    
+
     Route::delete('/horario/eliminar/{id}', [InstructorHorarioController::class, 'eliminarActividad'])->name('inst.horarios.eliminar');
 });
 
