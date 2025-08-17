@@ -56,7 +56,7 @@ Bienvenido - Panel de control de instructores
               @endif>
               @if ($evento)
               {{-- Si hay un evento, muestra la información del grupo y el rango de horas. --}}
-              <div class="bg-success text-white py-1 px-2 rounded" style="cursor:pointer; display:inline-block; min-width:100px;">
+              <div class="bg-success text-white py-1 px-2 rounded btn-actividad" style="cursor:pointer; display:inline-block; min-width:100px;">
                 <strong>{{ $evento->grupo->nombre ?? 'Sin grupo' }}</strong><br>
                 <small>{{ substr($evento->hora_inicio, 0, 5) }} - {{ substr($evento->hora_fin, 0, 5) }}</small>
               </div>
@@ -74,106 +74,91 @@ Bienvenido - Panel de control de instructores
     {{-- Incluye la plantilla del modal. --}}
     @include('instructor.horario.partials.modal')
   </div>
-
-  <script>
+  @push('scripts')
+<script>
     document.addEventListener('DOMContentLoaded', function() {
       let selectedCell = null;
 
-      // 1️. Cargar actividades al iniciar: Este código está duplicado con la lógica de Blade de arriba. No es necesario.
-      // fetch('/instructor/horarios/actividades')
-      //   .then(response => response.json())
-      //   .then(actividades => {
-      //     actividades.forEach(act => {
-      //       const cell = document.querySelector(`[data-dia="${act.dia}"][data-hora="${act.hora}"]`);
-      //       if (cell) {
-      //         cell.textContent = act.nombre;
-      //         cell.style.backgroundColor = act.color;
-      //         cell.style.borderRadius = "20px";
-      //         cell.style.color = "white";
-      //         cell.style.textAlign = "center";
-      //         cell.dataset.actividadId = act.id;
-      //       }
-      //     });
-      //   })
-      //   .catch(error => console.error('Error cargando actividades:', error));
+      // Obtener la URL de la ruta de guardado desde Blade
+      const guardarUrl = "{{ route('inst.horarios.guardar') }}";
 
-      // 2. Evento para abrir el modal
-      document.querySelectorAll('.celda-horario').forEach(celda => {
-        celda.addEventListener('click', function() {
-          selectedCell = this;
-          const horarioId = this.dataset.horarioId;
-          const dia = this.dataset.dia;
-          const hora = this.dataset.hora;
+      // 1. Evento para abrir el modal al hacer clic en el botón de la actividad.
+      document.querySelectorAll('.btn-actividad').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const celda = this.closest('.celda-horario'); 
+          selectedCell = celda;
 
-          // Al abrir el modal, inicializamos los campos
+          const horarioId = celda.dataset.horarioId;
+          const dia = celda.dataset.dia;
+          const hora = celda.dataset.hora;
+
           document.getElementById('dia').value = dia;
           document.getElementById('hora').value = hora;
           document.getElementById('horario_id').value = horarioId;
 
-          // Si ya hay actividad, mostrarla en el modal
-          if (this.dataset.actividadId) {
-            fetch(`/instructor/horarios/actividad/${this.dataset.actividadId}`)
-              .then(response => response.json())
-              .then(data => {
-                document.getElementById('subgrupo_id').value = data.subgrupo_id;
-                document.getElementById('actividad').value = data.nombre;
-                document.getElementById('estado').value = data.estado;
-              });
-          } else {
-            // Reinicia los campos del modal si la celda está vacía.
-            document.getElementById('subgrupo_id').value = '';
-            document.getElementById('actividad').value = '';
-            document.getElementById('estado').value = 'activo';
-          }
+          document.getElementById('subgrupo_id').value = celda.dataset.subgrupoId;
+          document.getElementById('actividad').value = celda.dataset.nombre;
+          document.getElementById('estado').value = celda.dataset.estado;
 
           const modal = new bootstrap.Modal(document.getElementById('actividadModal'));
           modal.show();
         });
       });
 
-      // 3. Guardar actividad
+      // 2. Evento para guardar la actividad.
       document.getElementById('guardarActividad').addEventListener('click', function() {
         const horario_id = document.getElementById('horario_id').value;
         const subgrupo_id = document.getElementById('subgrupo_id').value;
         const actividad = document.getElementById('actividad').value;
         const estado = document.getElementById('estado').value;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        // Validar que los campos no estén vacíos
         if (!horario_id || !subgrupo_id || !actividad) {
           Swal.fire({
             icon: 'warning',
             title: 'Faltan datos',
-            text: 'Por favor, complete todos los campos.'
+            text: 'Por favor, complete todos los campos.',
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 3000
           });
           return;
         }
 
-        // Envía los datos al servidor mediante una solicitud HTTP (fetch).
-        fetch('/inst/horario/guardar', {
+        fetch(guardarUrl, { // Usar la URL generada por Blade
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+              'X-CSRF-TOKEN': csrfToken
             },
             body: JSON.stringify({
-              horario_id,
-              subgrupo_id,
-              actividad,
-              estado,
+              horario_id: horario_id,
+              subgrupo_id: subgrupo_id,
+              actividad: actividad,
+              estado: estado,
+              _token: csrfToken
             })
           })
-          .then(response => response.json())
+          .then(response => {
+            if (!response.ok) {
+                if (response.status === 419) {
+                    throw new Error('CSRF Token Mismatch - Por favor, recargue la página.');
+                }
+                throw new Error('Error en el servidor. Revisa el log de Laravel.');
+            }
+            return response.json();
+          })
           .then(data => {
             if (data.success) {
-              // Si la solicitud fue exitosa, actualiza la celda de la tabla con los nuevos datos.
               selectedCell.innerHTML = `<div class="bg-success text-white py-1 px-2 rounded" style="cursor:pointer; display:inline-block; min-width:100px;"><strong>${data.subgrupo_nombre}</strong><br><small>${data.hora_inicio} - ${data.hora_fin}</small></div>`;
               selectedCell.dataset.actividadId = data.id;
+              selectedCell.dataset.subgrupoId = subgrupo_id;
               selectedCell.dataset.grupo = data.subgrupo_nombre;
               selectedCell.dataset.nombre = actividad;
               selectedCell.dataset.estado = estado;
               selectedCell.dataset.horarioId = horario_id;
 
-              // Muestra una alerta de éxito.
               Swal.fire({
                 icon: 'success',
                 title: 'Actividad guardada correctamente',
@@ -184,11 +169,9 @@ Bienvenido - Panel de control de instructores
                 timerProgressBar: true
               });
 
-              // Cierra el modal.
               const modal = bootstrap.Modal.getInstance(document.getElementById('actividadModal'));
               modal.hide();
             } else {
-              // Muestra una alerta de error si la respuesta del servidor no fue exitosa.
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -201,26 +184,27 @@ Bienvenido - Panel de control de instructores
             }
           })
           .catch(error => {
-            // Muestra una alerta de error si hay un problema de conexión.
             console.error('Error guardando actividad:', error);
             Swal.fire({
               icon: 'error',
               title: 'Error de conexión',
-              text: 'Ocurrió un error al intentar comunicarse con el servidor.',
+              text: error.message || 'Ocurrió un error al intentar comunicarse con el servidor.',
               toast: true,
               position: 'bottom-end',
               showConfirmButton: false,
-              timer: 3000
+              timer: 5000
             });
           });
       });
     });
-  </script>
+</script>
+@endpush
+
+  {{-- Incluye las librerías de SweetAlert2 (alertas personalizadas) y otros scripts de Bootstrap. --}}
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+    @stack('scripts')
 </main>
 @endsection
-
-{{-- Incluye las librerías de SweetAlert2 (alertas personalizadas) y otros scripts de Bootstrap. --}}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="app.js"></script>
