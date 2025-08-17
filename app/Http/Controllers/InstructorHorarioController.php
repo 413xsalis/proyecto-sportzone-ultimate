@@ -7,6 +7,7 @@ use App\Models\Horario;
 use App\Models\Actividad;
 use App\Models\Subgrupo;
 use App\Models\Grupo;
+use App\Models\Instructor;
 use Illuminate\Support\Facades\Auth;
 
 class InstructorHorarioController extends Controller
@@ -14,28 +15,23 @@ class InstructorHorarioController extends Controller
     /**
      * Muestra la vista principal del horario del instructor, cargando los datos iniciales.
      */
-    public function horario()
+    public function horario($instructorId = null)
     {
-        // NOTA: El ID del instructor está codificado aquí (ID = 2). 
-        // Cambiar a: Auth::user()->id
-        $instructorId = 2;
-
-        // Obtiene todos los subgrupos y grupos disponibles.
-        // Estos datos se usarán en el menú desplegable del modal para asignar actividades.
         $subgrupos = Subgrupo::all();
         $grupos = Grupo::all();
 
-        // Obtiene todos los horarios asociados a este instructor.
-        // El método `with()` carga de forma anticipada las relaciones de 'grupo' e 'instructor'
-        // para evitar múltiples consultas a la base de datos (problema N+1).
-        $horarios = Horario::with(['grupo', 'instructor'])
-            ->where('instructor_id', $instructorId)
-            ->get();
+        if ($instructorId) {
+            $horarios = Horario::with(['grupo', 'instructor'])
+                ->where('instructor_id', $instructorId)
+                ->get();
+        } else {
+            $horarios = Horario::with(['grupo', 'instructor'])->get();
+        }
 
-        // Retorna la vista principal del horario, pasando los datos necesarios.
-        return view('instructor.horario.principal', compact('subgrupos', 'grupos', 'horarios'));
+        $instructores = Instructor::all();
+
+        return view('instructor.horario.principal', compact('subgrupos', 'grupos', 'horarios', 'instructores'));
     }
-
     /**
      * Obtiene y formatea las actividades del horario para ser consumidas por el calendario vía AJAX.
      */
@@ -90,19 +86,21 @@ class InstructorHorarioController extends Controller
 
             // 3. Obtiene el subgrupo y el horario relacionados para la respuesta.
             $subgrupo = Subgrupo::find($request->subgrupo_id);
-            $horario = Horario::find($request->horario_id);
+            $horario = Horario::with('grupo')->find($request->horario_id);
+            $grupo = $horario->grupo->nombre ?? 'Sin grupo';
 
-            // 4. Retorna una respuesta JSON para que el front-end sepa que la operación fue exitosa
-            // y tenga los datos para actualizar la interfaz sin recargar.
+            // 4. Retorna una respuesta JSON para que el front-end sepa que la
+            // operación fue exitosa y tenga los datos para actualizar la interfaz sin recargar.
             return response()->json([
                 'success' => true,
                 'id' => $actividad->id,
                 'subgrupo_nombre' => $subgrupo->nombre,
-                'hora_inicio' => substr($horario->hora_inicio, 0, 5),
-                'hora_fin' => substr($horario->hora_fin, 0, 5)
+                'grupo_nombre' => $grupo,
+                'hora_inicio' => $horario->hora_inicio,
+                'hora_fin' => $horario->hora_fin,
+                'estado' => $actividad->estado
             ]);
         } catch (\Exception $e) {
-            // Maneja cualquier error que pueda ocurrir y devuelve un mensaje de error.
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
     }

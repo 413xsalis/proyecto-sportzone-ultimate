@@ -11,11 +11,7 @@ Bienvenido - Panel de control de instructores
   <div class="container mt-5">
     <h4 class="mb-4 text-center fw-bold text-primary">Reporte de Asistencias</h4>
 
-    {{--
-      Formulario de filtrado por subgrupo.
-      - `method="GET"`: Utiliza el método GET para enviar los datos, ideal para filtros.
-      - `action="{{ route('inst.reporte') }}"`: Envía los datos del formulario a la misma URL para recargar la página con el filtro aplicado.
-    --}}
+    {{-- Formulario de filtrado --}}
     <form method="GET" action="{{ route('inst.reporte') }}" class="row g-3 mb-4">
       <div class="col-md-4">
         <label for="subgrupo" class="form-label">Filtrar por Subgrupo</label>
@@ -29,34 +25,30 @@ Bienvenido - Panel de control de instructores
         </select>
       </div>
       <div class="col-md-2 d-flex align-items-end">
-        <button type="submit" class="btn btn-success w-100">Filtrar</button>
+        <button type="submit" class="btn btn-info w-100">Filtrar</button>
       </div>
     </form>
-    {{--
-      Tabla de datos que muestra los registros de asistencia.
-      - `table-responsive`: Clase de Bootstrap para hacer la tabla responsive en dispositivos pequeños.
-    --}}
+
+    {{-- Tabla de datos --}}
     <div class="table-responsive">
-      <table class="table table-bordered table-hover text-center align-middle">
-        <thead class="table-primary">
+      <table id="tabla-asistencias" class="table table-bordered table-hover text-center align-middle">
+        <thead>
           <tr>
             <th>Estudiante</th>
             <th>Documento</th>
+            <th>Grupo</th>
             <th>Subgrupo</th>
             <th>Fecha</th>
             <th>Estado</th>
           </tr>
         </thead>
         <tbody>
-          {{--
-            Directiva `forelse`: Recorre `$asistencias` y, si la colección está vacía, muestra el bloque `@empty`.
-            Esto evita tener que usar un `if` por separado.
-          --}}
           @forelse($asistencias as $asis)
           <tr>
             <td>{{ $asis->estudiante->nombre_completo ?? 'N/A' }}</td>
             <td>{{ $asis->estudiante->documento ?? 'N/A' }}</td>
-            <td>{{ $asis->subgrupo->nombre ?? 'N/A' }}</td>
+            <td>{{ $asis->subgrupo->grupo->nombre ?? 'N/A' }}</td>
+            <td>{{ substr($asis->subgrupo->nombre ?? 'N/A', -1) }}</td>
             <td>{{ $asis->fecha }}</td>
             <td>
               <span class="badge {{ $asis->estado == 'Presente' ? 'bg-success' : 'bg-danger' }}">
@@ -66,38 +58,77 @@ Bienvenido - Panel de control de instructores
           </tr>
           @empty
           <tr>
-            <td colspan="5">No hay registros de asistencia para mostrar.</td>
+            <td colspan="6">No hay registros de asistencia para mostrar.</td>
           </tr>
           @endforelse
         </tbody>
       </table>
     </div>
+
+    <div class="d-flex justify-content-end mb-3">
+      <button type="button" class="btn btn-primary" onclick="generarReportePDF()">
+        Exportar PDF
+      </button>
+    </div>
+
   </div>
-  <!-- <div class="row">
-    <div class="col-md-4">
-      <h5>SportZone</h5>
-      <p class="text-muted">Sistema de gestión para escuelas deportivas</p>
-      <div class="d-flex">
-        <a href="#" class="me-3 text-muted"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="me-3 text-muted"><i class="bi bi-instagram"></i></a>
-        <a href="#" class="me-3 text-muted"><i class="bi bi-twitter"></i></a>
-        <a href="#" class="text-muted"><i class="bi bi-youtube"></i></a>
-      </div>
-    </div>
-    <div class="col-md-8 text-md-end">
-      <h5>Contacto</h5>
-      <p class="text-muted mb-0">
-        <i class="bi bi-envelope me-2"></i> info@sportzone.edu
-      </p>
-      <p class="text-muted mb-0">
-        <i class="bi bi-telephone me-2"></i> +57 123 456 7890
-      </p>
-      <p class="text-muted mb-0">v1.0.0</p>
-      <p class="text-muted">© {{ date('Y') }} Todos los derechos reservados</p>
-    </div>
-  </div> -->
+  <script>
+    // La función generarReportePDF() que te pasé antes va aquí sin ningún cambio.
+    function generarReportePDF() {
+      const tabla = document.getElementById('tabla-asistencias');
+      const filas = tabla.getElementsByTagName('tr');
+      if (filas.length <= 1) {
+        alert("No hay datos para generar un reporte.");
+        return;
+      }
+      const {
+        jsPDF
+      } = window.jspdf;
+      const doc = new jsPDF('p', 'mm', 'a4');
+      const titulo = "Reporte de Asistencias";
+      const fecha = new Date().toLocaleDateString('es-CO', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      const selectSubgrupo = document.getElementById('subgrupo');
+      const subgrupoSeleccionado = selectSubgrupo.options[selectSubgrupo.selectedIndex].text;
+      doc.setFontSize(18);
+      doc.text(titulo, 14, 22);
+      doc.setFontSize(11);
+      doc.setTextColor(100);
+      if (selectSubgrupo.value) {
+        doc.text(`Subgrupo: ${subgrupoSeleccionado}`, 14, 30);
+      }
+      doc.text(`Fecha de generación: ${fecha}`, 14, 35);
+      doc.autoTable({
+        html: '#tabla-asistencias',
+        startY: 40,
+        theme: 'grid',
+        headStyles: {
+          fillColor: [13, 110, 253],
+          textColor: 255,
+          fontStyle: 'bold'
+        },
+        didDrawCell: (data) => {
+          if (data.section === 'body' && data.column.index === 4) {
+            const texto = data.cell.text[0].trim().toLowerCase();
+            if (texto === 'presente') {
+              doc.setFillColor(25, 135, 84);
+            } else {
+              doc.setFillColor(220, 53, 69);
+            }
+          }
+        }
+      });
+      const nombreArchivo = `Reporte_Asistencia_${subgrupoSeleccionado.replace(' ', '_')}.pdf`;
+      doc.save(nombreArchivo);
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="app.js"></script>
 </main>
 @endsection
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="app.js"></script>

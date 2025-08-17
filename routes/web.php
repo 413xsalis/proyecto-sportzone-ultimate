@@ -4,13 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ColaboradorController;
-use App\Http\Controllers\InstrucController;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\InstrucController;
 use App\Http\Controllers\AsistenciaController;
 use App\Http\Controllers\InstructorHorarioController;
+use App\Http\Controllers\InstructorReporteController;
+
 
 
 Route::get('/', function () {
@@ -168,6 +170,8 @@ Route::prefix('inst')->group(function () {
 
     Route::get('/horario/actividades', [InstructorHorarioController::class, 'obtenerActividades'])->name('inst.horarios.actividades'); // Obtiene las actividades del horario en formato JSON para visualizarlas.
 
+    Route::get('/horario/{instructorId?}', [InstructorHorarioController::class, 'horario'])->name('inst.horarios');
+
     Route::post('/horario/guardar', [InstructorHorarioController::class, 'guardarActividad'])->name('inst.horarios.guardar'); //Guarda una nueva actividad asignada a una celda del horario.
 
     Route::put('/horario/actualizar/{id}', [InstructorHorarioController::class, 'actualizarActividad'])->name('inst.horarios.actualizar'); //Actualiza una actividad existente, identificada por su ID.
@@ -188,5 +192,6 @@ Route::prefix('inst')->group(function () {
 });
 
 Route::prefix('inst')->group(function () {
-    Route::get('/reporte', [AsistenciaController::class, 'reporteAsistencias'])->name('inst.reporte'); //Muestra un reporte de las asistencias registradas, con opciones para filtrar los datos.
+     Route::get('/reporte/asistencias', [InstructorReporteController::class, 'mostrarReporte'])->name('inst.reporte.asistencias');
+    Route::post('/reporte/asistencias/pdf', [InstructorReporteController::class, 'generarAsistenciasPDF'])->name('inst.reporte.asistencias.pdf');
 });
