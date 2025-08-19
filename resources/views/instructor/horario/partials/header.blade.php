@@ -53,7 +53,7 @@
 
       <a class="app-menu__item" href="{{ route('inst.asistencia') }}"></i><span class="app-menu__label">Asistencia</span></a>
 
-      <a class="app-menu__item" href="{{ route('inst.reporte') }}"></i><span
+      <a class="app-menu__item" href="{{ route('inst.reporte.asistencias') }}"></i><span
           class="app-menu__label">Reportes</span></a>
 
     </ul>

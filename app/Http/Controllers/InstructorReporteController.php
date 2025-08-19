@@ -3,52 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Models\Subgrupo;
-use App\Models\Asistencia; 
+use App\Models\Grupo;
+use App\Models\Asistencia;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon; 
 use Illuminate\Http\Request;
 
 class InstructorReporteController extends Controller
 {
-    // Método 1: Muestra la vista del reporte con los filtros
     public function mostrarReporte(Request $request)
     {
-        // Obtiene todos los subgrupos para poblar el filtro
-        $subgrupos = Subgrupo::all();
-
-        // Inicializa la variable de asistencias como una colección vacía
+        $grupos = Grupo::all();
         $asistencias = collect();
 
-        // Si el usuario ha seleccionado un subgrupo, filtra y obtiene los datos
-        if ($request->has('subgrupo_id')) {
+        if ($request->has('subgrupo_id') && $request->has('fecha')) {
             $subgrupoId = $request->input('subgrupo_id');
+            $fecha = $request->input('fecha');
             $asistencias = Asistencia::where('subgrupo_id', $subgrupoId)
+                ->where('fecha', $fecha)
                 ->with(['estudiante', 'subgrupo.grupo'])
                 ->get();
         }
 
-        // Retorna la vista con los datos del filtro y las asistencias
-        return view('instructor.reportes.asistencias', compact('subgrupos', 'asistencias'));
+        return view('instructor.reporte.principal', compact('grupos', 'asistencias'));
     }
 
-    // Método 2: Genera el reporte en PDF
     public function generarAsistenciasPDF(Request $request)
     {
-        // Valida que el ID del subgrupo esté presente en el request
+        // Valida que el ID del subgrupo y la fecha estén presentes
         $request->validate([
-            'subgrupo_id' => 'required|exists:subgrupos,id'
+            'subgrupo_id' => 'required|exists:subgrupos,id',
+            'fecha' => 'required|date'
         ]);
 
         $subgrupoId = $request->input('subgrupo_id');
+        $fecha = $request->input('fecha');
+        $fechaGeneracion = Carbon::now()->format('d-m-Y'); // Obtiene la fecha y hora actuales
 
-        // Obtiene los datos de asistencia para el PDF
+        // Obtiene los datos de asistencia para el PDF filtrando también por la fecha
         $asistencias = Asistencia::where('subgrupo_id', $subgrupoId)
+            ->where('fecha', $fecha)
             ->with(['estudiante', 'subgrupo.grupo'])
             ->get();
 
-        // Carga la vista Blade específica para el PDF
-        $pdf = Pdf::loadView('instructor.reportes.asistencias_pdf', compact('asistencias'));
+        // Pasa la fecha de generación a la vista del PDF
+        $pdf = Pdf::loadView('instructor.reporte.asistencias_pdf', compact('asistencias', 'fechaGeneracion'));
 
-        // Retorna el PDF para que se muestre en el navegador
         return $pdf->stream('reporte_asistencias.pdf');
+    }
+
+    public function getSubgrupos($grupoId)
+    {
+        $subgrupos = Subgrupo::where('grupo_id', $grupoId)->get();
+        return response()->json($subgrupos);
     }
 }
