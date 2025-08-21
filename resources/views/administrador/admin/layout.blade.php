@@ -17,6 +17,7 @@
     <div class="app-content">
         @yield('content')
     </div>
+    
 
     @include('administrador.admin.partials.footer')
 </body>

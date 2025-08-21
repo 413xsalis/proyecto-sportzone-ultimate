@@ -37,7 +37,7 @@
                         <button type="submit" class="btn btn-success">Restaurar</button>
                     </form>
                     
-                    <form action="{{ route('usuario.force-delete', $user->id) }}" method="POST" style="display:inline;">
+                    <form action="{{ route('usuario.forceDelete', $user->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger" 
