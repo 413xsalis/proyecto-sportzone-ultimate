@@ -23,21 +23,19 @@ Route::get('/', function () {
 
 
 // rutas del crud de gestion usuario--------------------------------------------------------//
-Route::get('/libros/crear', [UsuarioController::class, 'create'])->name('usuario.crear');
-Route::resource('usuario', UsuarioController::class);
-Route::get('usuario', [UsuarioController::class, 'index'])->name('usuario.index');
-Route::get('usuario/create', [UsuarioController::class, 'create'])->name('usuario.create');
-Route::post('usuario', [UsuarioController::class, 'store'])->name('usuario.store');
-Route::get('usuario/{usuario}', [UsuarioController::class, 'show'])->name('usuario.show');
-Route::get('usuario/{usuario}/edit', [UsuarioController::class, 'edit'])->name('usuario.edit');
-Route::put('usuario/{usuario}', [UsuarioController::class, 'update'])->name('usuario.update');
-Route::delete('usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
+    Route::resource('usuario', UsuarioController::class);
 
+    // Rutas extra para la papelera (SoftDeletes)
+    Route::get('usuario/trashed', [UsuarioController::class, 'trashed'])
+        ->name('usuario.trashed');
 
-Route::resource('usuario', 'UsuarioController');
-Route::get('usuario/trashed', [UsuarioController::class, 'trashed'])->name('usuario.trashed');
-Route::patch('usuario/{usuario}/restore', [UsuarioController::class, 'restore'])->name('usuario.restore');
-Route::delete('usuario/{usuario}/force-delete', [UsuarioController::class, 'forceDelete'])->name('usuario.force-delete');//--------------------------------------------------------------------------------------------------------------------//
+    Route::post('usuario/{id}/restore', [UsuarioController::class, 'restore'])
+        ->name('usuario.restore');
+
+    Route::delete('usuario/{id}/forceDelete', [UsuarioController::class, 'forceDelete'])
+        ->name('usuario.forceDelete');
+
+//--------------------------------------------------------------------------------------------------------------------//
 
 
 // rutas de autenticacion-----------------------------------------------------------//
@@ -72,6 +70,9 @@ Route::middleware(['auth'])->group(function () {
     })->name('instructor.dashboard')->middleware('role:instructor');
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
+Route::prefix('admin')->group(function () {
+    Route::get('/gestion/trashed', [UsuarioController::class, 'trashed'])->name('usuario.trashed');
 });
 //---------------------------------------------------------------------------------------------------------------//
 
