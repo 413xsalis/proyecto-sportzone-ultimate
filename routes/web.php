@@ -4,13 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ColaboradorController;
-use App\Http\Controllers\InstrucController;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\InstrucController;
 use App\Http\Controllers\AsistenciaController;
 use App\Http\Controllers\InstructorHorarioController;
+use App\Http\Controllers\InstructorReporteController;
+
 
 
 Route::get('/', function () {
@@ -165,34 +167,42 @@ Route::get('/reportes/inscripciones', [ReporteController::class, 'reporteInscrip
 
 //rutas de instructores//----------------------------//
 
-Route::prefix('inst')->group(function () {
-    Route::get('/principal', [InstrucController::class, 'principal'])->name('inst.principal');
-});
+// INICIO
 
 Route::prefix('inst')->group(function () {
-    Route::get('/horario', [InstructorHorarioController::class, 'horario'])->name('inst.horarios');
+    Route::get('/principal', [InstrucController::class, 'principal'])->name('inst.principal');  //Ruta principal del instructor. Muestra la página de inicio o panel de control.
 
-    Route::get('/horario/actividades', [InstructorHorarioController::class, 'obtenerActividades'])->name('inst.horarios.actividades');
+    // HORARIOS
 
-    Route::post('/horario/guardar', [InstructorHorarioController::class, 'guardarActividad'])->name('inst.horarios.guardar');
+    Route::get('/horario', [InstructorHorarioController::class, 'horario'])->name('inst.horarios'); //Muestra la tabla de horario del instructor.
 
-    Route::put('/horario/actualizar/{id}', [InstructorHorarioController::class, 'actualizarActividad'])->name('inst.horarios.actualizar');
+    Route::get('/horario/actividades', [InstructorHorarioController::class, 'obtenerActividades'])->name('inst.horarios.actividades'); // Obtiene las actividades del horario en formato JSON para visualizarlas.
 
-    Route::delete('/horario/eliminar/{id}', [InstructorHorarioController::class, 'eliminarActividad'])->name('inst.horarios.eliminar');
-});
+    Route::get('/horario/{instructorId?}', [InstructorHorarioController::class, 'horario'])->name('inst.horarios');
 
-Route::prefix('inst')->group(function () {
-    Route::get('/asistencia', [AsistenciaController::class, 'seleccionarGrupo'])->name('inst.asistencia');
+    Route::post('/horario/guardar', [InstructorHorarioController::class, 'guardarActividad'])->name('inst.horarios.guardar'); //Guarda una nueva actividad asignada a una celda del horario.
 
-    Route::get('/asistencia/grupo/{nombre}', [AsistenciaController::class, 'tomarAsistenciaPorGrupo'])->name('asistencia.tomar.grupo');
+    Route::put('/horario/actualizar/{id}', [InstructorHorarioController::class, 'actualizarActividad'])->name('inst.horarios.actualizar'); //Actualiza una actividad existente, identificada por su ID.
 
-    Route::get('/asistencia/{grupo_id}', [AsistenciaController::class, 'verSubgrupos'])->name('asistencia.subgrupos');
+    Route::delete('/horario/eliminar/{id}', [InstructorHorarioController::class, 'eliminarActividad'])->name('inst.horarios.eliminar'); //Elimina una actividad del horario.
 
-    Route::get('/asistencia/subgrupo/{id}', [AsistenciaController::class, 'tomarAsistenciaPorSubgrupo'])->name('asistencia.tomar.subgrupo');
+    // ASISTENCIAS
 
-    Route::post('/asistencia/guardar', [AsistenciaController::class, 'guardar'])->name('asistencia.guardar');
-});
+    Route::get('/asistencia', [AsistenciaController::class, 'seleccionarGrupo'])->name('inst.asistencia'); //Muestra la página para seleccionar un grupo.
 
-Route::prefix('inst')->group(function () {
-    Route::get('/reporte', [AsistenciaController::class, 'reporteAsistencias'])->name('inst.reporte');
+    Route::get('/asistencia/grupo/{nombre}', [AsistenciaController::class, 'tomarAsistenciaPorGrupo'])->name('asistencia.tomar.grupo'); //Permite tomar asistencia a un grupo específico por su nombre.
+
+    Route::get('/asistencia/{grupo_id}', [AsistenciaController::class, 'verSubgrupos'])->name('asistencia.subgrupos'); //Muestra los subgrupos de un grupo seleccionado.
+
+    Route::get('/asistencia/subgrupo/{id}', [AsistenciaController::class, 'tomarAsistenciaPorSubgrupo'])->name('asistencia.tomar.subgrupo'); //Permite tomar asistencia a un subgrupo en particular.
+
+    Route::post('/asistencia/guardar', [AsistenciaController::class, 'guardar'])->name('asistencia.guardar'); //Guarda los registros de asistencia enviados por el formulario.
+
+    // REPORTES
+
+    Route::get('/reporte/asistencias', [InstructorReporteController::class, 'mostrarReporte'])->name('inst.reporte.asistencias');
+
+    Route::post('/reporte/asistencias/pdf', [InstructorReporteController::class, 'generarAsistenciasPDF'])->name('inst.reporte.asistencias.pdf');
+    
+    Route::get('/subgrupos/{grupoId}', [InstructorReporteController::class, 'getSubgrupos'])->name('inst.get.subgrupos');
 });

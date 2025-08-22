@@ -25,7 +25,5 @@ class ReporteController extends Controller
 
         // ⬇️ Mostrar en navegador en vez de descargar
         return $pdf->stream('reporte_inscripciones.pdf');
-    }
-
-    
+    }   
 }
