@@ -15,6 +15,7 @@ class UsuarioController extends Controller
     public function index()
     {
         $users = User::latest()->get();
+        $users = User::with('roles')->get();
         return view('administrador.Gestion_usuarios.principal', compact('users'));
     }
 
@@ -22,12 +23,15 @@ class UsuarioController extends Controller
     {
         $users = User::onlyTrashed()->latest()->get();
         return view('administrador.Gestion_usuarios.trashed', compact('users'));
+
+
     }
 
 
     public function create()
     {
-        return view('administrador.Gestion_usuarios.create');
+        $roles = Role::all(); // Obtén todos los roles disponibles desde el modelo de Spatie
+        return view('administrador.Gestion_usuarios.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -38,11 +42,23 @@ class UsuarioController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password), // ¡Importante hashear la contraseña!
+            'roles' => ['array'], // Asegura que 'roles' sea un array
+            // Valida que los roles enviados existan en la tabla 'roles' de Spatie.
+            // Si tu select envía los NOMBRES de los roles:
+            'roles.*' => ['exists:roles,name'],
+            // Si tu select envía los IDs de los roles:
+            // 'roles.*' => ['exists:roles,id'],
         ]);
+
+        // Asigna los roles al usuario usando Spatie.
+        // Si el input 'roles' contiene los NOMBRES de los roles (lo más común con Spatie):
+        $user->assignRole($request->input('roles', []));
+        // Si el input 'roles' contiene los IDs de los roles:
+        // $user->syncRoles($request->input('roles', [])); // syncRoles funciona con IDs o nombres
 
         return redirect()->route('usuario.index')
             ->with('success', 'Usuario creado exitosamente.');
@@ -50,12 +66,18 @@ class UsuarioController extends Controller
 
     public function show(User $usuario)
     {
+        // Los roles del usuario se pueden acceder directamente a través de $usuario->roles
+        // gracias al trait HasRoles. Puedes cargarlos explícitamente si es necesario.
+        $usuario->load('roles');
         return view('administrador.Gestion_usuarios.show', compact('usuario'));
     }
 
     public function edit(User $usuario)
     {
-        return view('administrador.Gestion_usuarios.edit', compact('usuario'));
+        $roles = Role::all(); // Obtén todos los roles disponibles de Spatie
+        // Los roles asignados al usuario se obtienen con $usuario->roles (gracias a HasRoles)
+        return view('administrador.Gestion_usuarios.edit', compact('usuario', 'roles'));
+
     }
 
     public function update(Request $request, User $usuario)
@@ -63,8 +85,17 @@ class UsuarioController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($usuario->id)],
+            'roles' => ['array'],
+            // Valida que los roles enviados existan
+            'roles.*' => ['exists:roles,name'], // O 'exists:roles,id' si envías IDs
         ]);
         $usuario->update($request->all());
+
+        // Sincroniza los roles del usuario usando Spatie.
+        // `syncRoles` es el método ideal para actualizar un multi-select,
+        // ya que elimina los roles que ya no están seleccionados y añade los nuevos.
+        // Puedes pasarle nombres o IDs de roles.
+        $usuario->syncRoles($request->input('roles', []));
 
         return redirect()->route('usuario.index')
             ->with('success', 'Usuario actualizado exitosamente');
