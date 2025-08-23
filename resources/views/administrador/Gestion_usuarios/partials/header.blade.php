@@ -21,44 +21,55 @@
   <!-- Navbar-->
   <header class="app-header"><a class="app-header__logo" href="index.html">
       <img src="{{ asset('assets/images/logo_sf.png') }}" alt="Logo" style="height: 65px; vertical-align: middle;">
+
       <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
       <!-- Navbar Right Menu-->
       <ul class="app-nav">
         <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown"
             aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i></a>
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
-                <a class="dropdown-item dropdown-item bi bi-box-arrow-right me-2 fs-5" href="{{ route('logout') }}" onclick="event.preventDefault();
+            <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person me-2"></i> Perfil</a>
+            </li>
+            <a class="dropdown-item dropdown-item bi bi-box-arrow-right me-2 fs-5" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                  {{ __(' Cerrar sesion') }}
-                </a>
-
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                  @csrf
-                </form>
+              {{ __(' Cerrar sesion') }}
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+              @csrf
+            </form>
           </ul>
         </li>
       </ul>
   </header>
   <!-- Sidebar menu-->
-  <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
   <aside class="app-sidebar">
-    <div class="app-sidebar__user"><img class="" src="" alt="">
-      <div>
-        <ul class="app-breadcrumb breadcrumb">
-          <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-          <li class="app-sidebar__user-designation breadcrumb-item"><a href="{{ route('admin.principal') }}">Inicio</a>
-          </li>
-
+    <div class="app-sidebar__user">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-person-badge fs-1 me-3"></i>
+        <div>
+          <p class="mb-0">Administrador</p>
+          <small>Bienvenido al sistema</small>
+        </div>
       </div>
     </div>
-    <ul class="app-menu">
-      <a class="app-menu__item" href="{{ route('admin.Gestion_usuarios') }}"></i><span class="app-menu__label">Gestion
-          de
-          usuarios</span></a>
 
-      <a class="app-menu__item" href="{{ route('admin.Formulario_empleados') }}"></i><span
-          class="app-menu__label">Formulario de
-          empleados</span></a>
-      <a class="app-menu__item" href="index.php?accion=reportes_admin"></i><span
-          class="app-menu__label">Reportes</span></a>
+    <a class="app-menu__item" href="{{ route('admin.principal') }}">
+      <i class="bi bi-house-door"></i>
+      <span class="app-menu__label">Inicio</span>
+    </a>
+
+    <a class="app-menu__item" href="{{ route('admin.Gestion_usuarios') }}">
+      <i class="bi bi-people"></i>
+      <span class="app-menu__label">Gestión de usuarios</span>
+    </a>
+
+    <a class="app-menu__item" href="{{ route('admin.Formulario_empleados') }}">
+      <i class="bi bi-person-badge"></i>
+      <span class="app-menu__label">Formulario de empleados</span>
+    </a>
+
+    <a class="app-menu__item" href="#">
+      <i class="bi bi-clipboard-data"></i>
+      <span class="app-menu__label">Reportes</span>
+    </a>
   </aside>
