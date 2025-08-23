@@ -21,7 +21,7 @@
         <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown"
             aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i></a>
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
-            <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person me-2"></i> Perfil</a>
+            <li><a class="dropdown-item" href="{{ route('perfilcolab.edit') }}"><i class="bi bi-person me-2"></i> Perfil</a>
             </li>
             <a class="dropdown-item dropdown-item bi bi-box-arrow-right me-2 fs-5" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -43,7 +43,7 @@
    <div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-          <li class="app-sidebar__user-designation breadcrumb-item"><a href="#">Inicio</a></li>
+          <li class="app-sidebar__user-designation breadcrumb-item"><a href="{{ route('colab.principal') }}">Inicio</a></li>
 
         </div>
       </div>
