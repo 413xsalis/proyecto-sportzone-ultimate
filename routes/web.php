@@ -10,8 +10,9 @@ use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\AsistenciaController;
-use App\Http\Controllers\Colaborador\PagoController;
-use App\Http\Controllers\ContactoController;
+use App\Http\Controllers\InstructorHorarioController;
+use App\Http\Controllers\InstructorReporteController;
+use App\Http\Controllers\ProfileController;
 
 
 Route::get('/', function () {
@@ -19,8 +20,13 @@ Route::get('/', function () {
 });
 
 
-
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/upload-document', [ProfileController::class, 'uploadDocument'])->name('profile.uploadDocument');
+    Route::post('/profile/upload-logo', [ProfileController::class, 'uploadLogo'])->name('profile.uploadLogo');
+    Route::post('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
+});
 
 // rutas del crud de gestion usuario--------------------------------------------------------//
 Route::get('/libros/crear', [UsuarioController::class, 'create'])->name('usuario.crear');
