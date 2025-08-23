@@ -12,7 +12,11 @@ use App\Http\Controllers\InstrucController;
 use App\Http\Controllers\AsistenciaController;
 use App\Http\Controllers\InstructorHorarioController;
 use App\Http\Controllers\InstructorReporteController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PerfilAdminController;
+use App\Http\Controllers\PerfilColabController;
+use App\Http\Controllers\PerfilInstController;
+
+
 
 
 Route::get('/', function () {
@@ -21,11 +25,30 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::post('/profile/upload-document', [ProfileController::class, 'uploadDocument'])->name('profile.uploadDocument');
-    Route::post('/profile/upload-logo', [ProfileController::class, 'uploadLogo'])->name('profile.uploadLogo');
-    Route::post('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
+    Route::get('/perfil/instructor', [PerfilInstController::class, 'edit'])->name('perfilinst.edit');
+    Route::put('/perfil/instructor', [PerfilInstController::class, 'update'])->name('perfilinst.update');
+    Route::post('/perfil/instructor/upload-document', [PerfilInstController::class, 'uploadDocument'])->name('perfilinst.uploadDocument');
+    Route::post('/perfil/instructor/upload-logo', [PerfilInstController::class, 'uploadLogo'])->name('perfilinst.uploadLogo');
+    Route::post('/perfil/instructor/change-password', [PerfilInstController::class, 'changePassword'])->name('perfilinst.changePassword');
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/perfil/colaborador', [PerfilColabController::class, 'edit'])->name('perfilcolab.edit');
+    Route::put('/perfil/colaborador', [PerfilColabController::class, 'update'])->name('perfilcolab.update');
+    Route::post('/perfil/colaborador/upload-document', [PerfilColabController::class, 'uploadDocument'])->name('perfilcolab.uploadDocument');
+    Route::post('/perfil/colaborador/upload-logo', [PerfilColabController::class, 'uploadLogo'])->name('perfilcolab.uploadLogo');
+    Route::post('/perfil/colaborador/change-password', [PerfilColabController::class, 'changePassword'])->name('perfilcolab.changePassword');
+});
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [PerfilAdminController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [PerfilAdminController::class, 'update'])->name('profile.update');
+    Route::post('/profile/upload-document', [PerfilAdminController::class, 'uploadDocument'])->name('profile.uploadDocument');
+    Route::post('/profile/upload-logo', [PerfilAdminController::class, 'uploadLogo'])->name('profile.uploadLogo');
+    Route::post('/profile/change-password', [PerfilAdminController::class, 'changePassword'])->name('profile.changePassword');
 });
 
 // rutas del crud de gestion usuario--------------------------------------------------------//

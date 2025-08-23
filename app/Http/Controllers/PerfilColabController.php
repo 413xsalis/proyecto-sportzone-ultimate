@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-class ProfileController extends Controller
+class PerfilColabController extends Controller
 {
     public function edit()
     {
-        return view('administrador.Formulario_empleados.profile');
+        return view('colaborador.inicio_colab.perfilcolab');
     }
 
     public function update(Request $request)
@@ -30,7 +30,7 @@ class ProfileController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('profile.edit')->with('success', 'Perfil actualizado correctamente.');
+        return redirect()->route('perfilcolab.edit')->with('success', 'Perfil actualizado correctamente.');
     }
 
     public function uploadDocument(Request $request)
@@ -51,7 +51,7 @@ class ProfileController extends Controller
         $user->foto_documento = $path;
         $user->save();
 
-        return redirect()->route('profile.edit')->with('success', 'Documento subido correctamente.');
+        return redirect()->route('perfilcolab.edit')->with('success', 'Documento subido correctamente.');
     }
 
     public function uploadLogo(Request $request)
@@ -76,7 +76,7 @@ class ProfileController extends Controller
         $user->logo_personalizado = $path;
         $user->save();
 
-        return redirect()->route('profile.edit')->with('success', 'Logo actualizado correctamente.');
+        return redirect()->route('perfilcolab.edit')->with('success', 'Logo actualizado correctamente.');
     }
 
     public function changePassword(Request $request)
@@ -95,7 +95,7 @@ class ProfileController extends Controller
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return redirect()->route('profile.edit')->with('success', 'Contraseña cambiada correctamente.');
+        return redirect()->route('perfilcolab.edit')->with('success', 'Contraseña cambiada correctamente.');
     }
 }
 
