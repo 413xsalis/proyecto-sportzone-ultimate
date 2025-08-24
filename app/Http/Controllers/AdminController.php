@@ -8,9 +8,14 @@ use App\Models\Horario;
 use Carbon\Carbon;
 use App\Models\User;
 
-
 class AdminController extends Controller
 {
+    public function index()
+    {
+        // Redirige al método principal que sí tiene los datos
+        return $this->principal();
+    }
+
     public function principal()
     {
         // Total de alumnos
@@ -50,10 +55,6 @@ class AdminController extends Controller
             'instructores'
         ));
     }
-    public function index(){
-        return view('administrador.admin.principal');
-    }
-
 
     public function create()
     {
