@@ -83,43 +83,75 @@
     </header>
 
     <!-- Sidebar menu-->
-    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-    <aside class="app-sidebar">
-      <div class="app-sidebar__user">
-        @if(Auth::user()->foto_perfil && Storage::disk('public')->exists(Auth::user()->foto_perfil))
-          <img src="{{ asset('storage/' . Auth::user()->foto_perfil) }}" alt="Foto de perfil" class="profile-image-sidebar">
-        @else
-          <div class="default-avatar default-avatar-sidebar">
-            <i class="bi bi-person fs-4"></i>
-          </div>
-        @endif      
-      <div>
-        <p class="mb-0">Administrador</p>
-        <small>Bienvenido al sistema</small>
-      </div>
-    </div>
+     <div class="app-sidebar__overlay" data-toggle="sidebar" id="sidebarOverlay"></div>
+    <aside class="app-sidebar" id="sidebar">
+        <div class="app-sidebar__user">
+            <div class="d-flex align-items-center">
+                @if(Auth::user()->foto_perfil && Storage::disk('public')->exists(Auth::user()->foto_perfil))
+                    <img src="{{ asset('storage/' . Auth::user()->foto_perfil) }}" alt="Foto de perfil" class="profile-image-sidebar me-3">
+                @else
+                    <div class="default-avatar default-avatar-sidebar me-3">
+                        <i class="bi bi-person fs-4"></i>
+                    </div>
+                @endif
+                <div>
+                    <p class="mb-0 text-white fw-bold">{{ Auth::user()->name }}</p>
+                    <small class="text-white-50">Administrador</small>
+                </div>
+            </div>
+        </div>
 
-    <ul class="app-menu">
-      <li>
-        <a class="app-menu__item" href="{{ route('admin.principal') }}">
-          <i class="bi bi-house-door"></i>
-          <span class="app-menu__label">Inicio</span>
-        </a>
-      </li>
-      
-      <li>
-        <a class="app-menu__item" href="{{ route('admin.Gestion_usuarios') }}">
-          <i class="bi bi-people"></i>
-          <span class="app-menu__label">Gestión de usuarios</span>
-        </a>
-      </li>
-      
-      
-      <li>
-        <a class="app-menu__item" href="#">
-          <i class="bi bi-clipboard-data"></i>
-          <span class="app-menu__label">Reportes</span>
-        </a>
-      </li>
-    </ul>
-  </aside>
+        <ul class="app-menu mt-3">
+            <li>
+                <a class="app-menu__item {{ request()->routeIs('admin.principal') ? 'active' : '' }}" href="{{ route('admin.principal') }}">
+                    <i class="bi bi-house-door"></i>
+                    <span class="app-menu__label">Inicio</span>
+                </a>
+            </li>
+            
+            <li>
+                <a class="app-menu__item {{ request()->routeIs('usuario.index') ? 'active' : '' }}" href="{{ route('usuario.index') }}">
+                    <i class="bi bi-people"></i>
+                    <span class="app-menu__label">Gestión de Usuarios</span>
+                </a>
+            </li>
+            
+            <li>
+                <a class="app-menu__item" href="#">
+                    <i class="bi bi-calendar-event"></i>
+                    <span class="app-menu__label">Gestión de Clases</span>
+                </a>
+            </li>
+            
+            <li>
+                <a class="app-menu__item" href="#">
+                    <i class="bi bi-person-badge"></i>
+                    <span class="app-menu__label">Entrenadores</span>
+                </a>
+            </li>
+            
+            <li>
+                <a class="app-menu__item" href="#">
+                    <i class="bi bi-currency-dollar"></i>
+                    <span class="app-menu__label">Pagos</span>
+                </a>
+            </li>
+            
+            <li>
+                <a class="app-menu__item" href="#">
+                    <i class="bi bi-clipboard-data"></i>
+                    <span class="app-menu__label">Reportes</span>
+                </a>
+            </li>
+            
+            <li>
+                <a class="app-menu__item" href="#">
+                    <i class="bi bi-gear"></i>
+                    <span class="app-menu__label">Configuración</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Bootstrap 5 JS -->
+ 

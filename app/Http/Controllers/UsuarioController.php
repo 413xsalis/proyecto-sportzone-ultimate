@@ -23,6 +23,7 @@ class UsuarioController extends Controller
         $inactiveUsers = User::onlyTrashed()->count();
 
         return view('administrador.Gestion_usuarios.principal', compact('users', 'totalUsers', 'activeUsers', 'inactiveUsers'));
+        
     }
 
 
