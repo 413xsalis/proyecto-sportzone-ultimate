@@ -10,6 +10,8 @@ use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\AsistenciaController;
+use App\Http\Controllers\Colaborador\PagoController;
+use App\Http\Controllers\ContactoController;
 
 
 Route::get('/', function () {
@@ -94,13 +96,9 @@ Route::prefix('colab')->group(function () {
     Route::get('/gestion', [ColaboradorController::class, 'gestion'])->name('colab.gestion_clases');
     Route::get('/inscripcion', [ColaboradorController::class, 'inscripcion'])->name('colab.inscripcion');
     Route::get('/reportes', [ColaboradorController::class, 'reportes'])->name('colab.reportes');
+    Route::get('/pagos', [ColaboradorController::class, 'pagos'])->name('colab.pagos');
+
 });
-
-// Ruta adicional para compatibilidad
-Route::get('/colaboradores/inicio', [ColaboradorController::class, 'principal'])->name('colaboradores.inicio');
-
-
-
 
 
 // ================= INSTRUCTOR =================
@@ -128,7 +126,8 @@ Route::put('/horarios/{horario}', [HorarioController::class, 'update'])->name('h
 Route::delete('/horarios/{horario}', [HorarioController::class, 'destroy'])->name('horarios.destroy');
 Route::get('/horarios/{id}/edit', [HorarioController::class, 'edit'])->name('horarios.edit');
 Route::put('/horarios/{id}', [HorarioController::class, 'update'])->name('horarios.update');
-
+Route::get('/horarios', [HorarioController::class, 'index'])->name('horarios.index');
+Route::post('/horarios', [HorarioController::class, 'store'])->name('horarios.store');
 
 
 
@@ -153,6 +152,12 @@ Route::delete('/inscripcion_estudiante/{estudiante:documento}', [EstudianteContr
 // ================= REPORTES =================
 Route::get('/reportes/inscripciones', [ReporteController::class, 'reporteInscripciones'])->name('reportes.inscripciones');
 
+// Reportes de Pagos (PDF y Excel)
+Route::get('/reportes/pagos/pdf', [ReporteController::class, 'pagosPDF'])
+    ->name('reportes.pagos');
+
+Route::get('/reportes/pagos/excel', [ReporteController::class, 'pagosExcel'])
+    ->name('reportes.pagos.excel');
 
 
 
@@ -170,7 +175,36 @@ Route::prefix('inst')->group(function() {
     Route::get('/asistencia', [AsistenciaController::class, 'seleccionarGrupo'])->name('inst.asistencia');
     Route::get('/asistencia/grupo/{nombre}', [AsistenciaController::class, 'tomarAsistencia'])->name('asistencia.tomar');
     Route::post('/asistencia/guardar', [AsistenciaController::class, 'guardar'])->name('asistencia.guardar');
+    
 });
 
+// ========== Pagos ==========
+
+Route::prefix('colaborador/pagos')->name('pagos.')->group(function () {
+    Route::get('/', [PagoController::class, 'index'])->name('index'); // pagos.principal
+
+    Route::get('/inscripciones', [PagoController::class, 'inscripciones'])->name('inscripciones.index'); // pagos.inscripciones.principal.index
+    Route::post('/inscripciones', [PagoController::class, 'storeInscripcion'])->name('inscripciones.store'); // pagos.inscripciones.store
+    
+
+    Route::get('/mensualidades', [PagoController::class, 'mensualidades'])->name('mensualidades');
+    Route::post('/mensualidades', [PagoController::class, 'storeMensualidad'])->name('mensualidades.store');
+
+    Route::get('/mensualidades/{id}/edit', [PagoController::class, 'edit'])->name('mensualidades.edit');
+
+     // Editar y eliminar
+
+    Route::get('{id}/editar', [PagoController::class, 'edit'])->name('edit');
+    Route::delete('{id}', [PagoController::class, 'destroy'])->name('destroy');
+
+
+    Route::resource('pagos', PagoController::class);
+
+}); 
+
+
+// ========== Contacto ==========
+
+    Route::post('/contacto', [ContactoController::class, 'store'])->name('contacto.store');
 
 

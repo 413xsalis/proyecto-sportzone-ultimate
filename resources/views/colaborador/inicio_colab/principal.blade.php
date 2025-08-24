@@ -25,20 +25,23 @@
     <table class="table table-hover table-bordered text-center shadow-sm">
       <thead>
       <tr>
-      <th><i class="bi bi-person-fill"></i> Nombre</th>
+      <th><i class="bi bi-person-fill"></i> Nombres</th>
+      <th><i class="bi bi-person-fill"></i> Apellidos</th>
       <th><i class="bi bi-card-text"></i> Documento</th>
       <th><i class="bi bi-telephone-fill"></i> Teléfono</th>
-      <th>Especialidad</th>
+      <th><i class="bi bi-envelope-at-fill"></i> Correo Electrónico</th>
+      
       <th>Acciones</th>
       </tr>
       </thead>
       <tbody>
       @foreach($instructores as $instructor)
       <tr>
-      <td>{{ $instructor->nombre }}</td>
+      <td>{{ $instructor->nombres }}</td>
+      <td>{{ $instructor->apellidos}}</td>
       <td>{{ $instructor->documento }}</td>
       <td>{{ $instructor->telefono }}</td>
-      <td>{{ $instructor->especialidad }}</td>
+      <td>{{ $instructor->email }}</td>
       <td>
       {{-- Botón Editar --}}
       <a href="{{ route('instructores.edit', $instructor->id) }}" class="btn btn-sm btn-warning">

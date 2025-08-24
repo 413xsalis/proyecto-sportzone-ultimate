@@ -13,6 +13,10 @@ class HorarioController extends Controller
     {
         $horarios = Horario::with(['instructor', 'grupo'])->get();
         return view('gestion_clases.horario', compact('horarios'));
+        $instructores = Instructor::all();
+        $grupos = Grupo::all();
+
+        return view('colaborador.gestion_clases.principal', compact('horarios', 'instructores', 'grupos'));
     }
 
     public function mostrarPrincipal()
@@ -34,7 +38,7 @@ class HorarioController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'dia' => 'required',
+            'fecha' => 'required',
             'hora_inicio' => 'required',
             'hora_fin' => 'required',
             'instructor_id' => 'required|exists:instructores,id',
@@ -49,10 +53,10 @@ class HorarioController extends Controller
     public function edit($id)
     {
         $horario = Horario::findOrFail($id);
-    $horarios = Horario::with(['instructor', 'grupo'])->get();
-    $instructores = Instructor::all();
-    $grupos = Grupo::all();
-    $editar = true; // Indicador para saber que se está editando
+        $horarios = Horario::with(['instructor', 'grupo'])->get();
+        $instructores = Instructor::all();
+        $grupos = Grupo::all();
+        $editar = true; // Indicador para saber que se está editando
 
     return view('colaborador.gestion_clases.principal', compact('horario', 'horarios', 'instructores', 'grupos', 'editar'));
     }
@@ -60,7 +64,7 @@ class HorarioController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'dia' => 'required',
+            'fecha' => 'required',
             'hora_inicio' => 'required',
             'hora_fin' => 'required',
             'instructor_id' => 'required|exists:instructores,id',

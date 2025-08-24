@@ -41,6 +41,11 @@
             </div>
 
             <div class="col-md-6">
+                <label for="nombre_contacto" class="form-label">Nombre de Contacto</label>
+                <input type="text" name="nombre_contacto" class="form-control" value="{{ old('nombre_contacto', $estudiante->nombre_contacto) }}">
+            </div>
+
+            <div class="col-md-6">
                 <label for="telefono_contacto" class="form-label">Teléfono de Contacto</label>
                 <input type="text" name="telefono_contacto" class="form-control" value="{{ old('telefono_contacto', $estudiante->telefono_contacto) }}">
             </div>

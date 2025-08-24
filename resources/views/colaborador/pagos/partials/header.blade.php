@@ -8,11 +8,12 @@
     <link rel="stylesheet" type="text/css" href="assets/css/main.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <title>Proyecto sportzone</title>
   </head>
   <body class="app sidebar-mini">
     <!-- Navbar-->
-   <header class="app-header"><a class="app-header__logo" href="index.html">
+  <header class="app-header"><a class="app-header__logo" href="index.html">
       <img src="{{ asset('assets/images/logo_sf.png') }}" alt="Logo" style="height: 65px; vertical-align: middle;">
       <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
       <!-- Navbar Right Menu-->
@@ -37,16 +38,15 @@
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
       <div class="app-sidebar__user"><img class="" src="" alt="">
-
-        <div>
+   <div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-          <li class="app-sidebar__user-designation breadcrumb-item"><a href="{{ route('colab.principal') }}">Inicio</a></li>
+          <li class="app-sidebar__user-designation breadcrumb-item"><a href="{{ route('colab.principal') }}">Inicio</a></li> 
 
         </div>
       </div>
 
-            <ul class="app-menu">
+      <ul class="app-menu">
         <a class="app-menu__item" href="{{ route('colab.gestion_clases') }}">
       <i class="bi bi-journal-bookmark me-2"></i>
       <span class="app-menu__label">Gestion de clases</span>
@@ -68,8 +68,5 @@
         </a>
 
       </ul>
-
-
- 
+            
     </aside>
- 

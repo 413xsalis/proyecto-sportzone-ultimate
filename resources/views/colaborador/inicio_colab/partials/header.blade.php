@@ -45,13 +45,30 @@
         </div>
       </div>
 
-      <ul class="app-menu">
-        <a class="app-menu__item" href="{{ route('colab.gestion_clases') }}"></i><span
-            class="app-menu__label">Gestion de clases</span></a>
-        <a class="app-menu__item" href="{{ route('colab.inscripcion') }}"></i><span
-            class="app-menu__label">Inscripcíon de Estudiantes</span></a>
-        <a class="app-menu__item" href="{{ route('colab.reportes') }}"></i><span
-            class="app-menu__label">Reportes</span></a>
+            <ul class="app-menu">
+        <a class="app-menu__item" href="{{ route('colab.gestion_clases') }}">
+      <i class="bi bi-journal-bookmark me-2"></i>
+      <span class="app-menu__label">Gestion de clases</span>
+      </a>
+
+        <a class="app-menu__item" href="{{route('estudiantes.index')}}">
+          <i class="bi bi-person-plus me-2"></i>
+          <span class="app-menu__label">Inscripcíon de Estudiantes</span>
+        </a>
+
+        <a class="app-menu__item" href="{{ route('pagos.index') }}">
+          <i class="bi bi-cash-coin me-2"></i>
+          <span class="app-menu__label">Pagos</span>
+          </a>
+
+        <a class="app-menu__item" href="{{ route('colab.reportes') }}">
+          <i class="bi bi-bar-chart-line me-2"></i>
+          <span class="app-menu__label">Reportes</span>
+        </a>
+
+      </ul>
+
+
 
     </aside>
 

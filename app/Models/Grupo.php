@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,5 +12,10 @@ class Grupo extends Model
 
     protected $table = 'grupos';
 
-    protected $fillable = ['nombre'];
+    protected $fillable = ['nombre', 'descripcion']; // pon aquí los campos de tu tabla
+
+    public function horarios()
+    {
+        return $this->hasMany(Horario::class);
+    }
 }

@@ -9,6 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <!-- Estilos personalizados -->
     <style>
         :root {
@@ -169,11 +171,10 @@
                             JARD TI <span class="text-custom-limon">TECNOLOGIA Y Desarrollo</span>
                         </h1>
                         <p class="lead mb-4">
-                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                            Minima odio possimus rem. Ab, natus ad hic nisi enim ex omnis mollitia dolor,
-                            neque laborum saepe debitis eius. Perspiciatis, molestias laudantium.
+                            Construimos soluciones digitales que impulsan tu negocio.
+                            Más que código, creamos oportunidades,Transformando ideas en experiencias digitales.
                         </p>
-                        <a href="#" class="btn btn-custom btn-lg px-4">MAS DETALLES</a>
+                        <!--<a href="#" class="btn btn-custom btn-lg px-4">MAS DETALLES</a>-->
                     </div>
                     <div class="col-lg-6">
                         <img src="{{ asset('assets/imginicio/copa-ganadora-concepto-medalla-oro.png') }}"
@@ -198,12 +199,11 @@
                                     class="img-fluid mb-4" style="max-width: 50%;">
                                 <h3 class="h4 mb-3">Empresa de Desarrollo TI</h3>
                                 <p class="mb-4">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                    Voluptas suscipit illum a repellendus adipisci ullam nesciunt!
-                                    Dolores, in! Deleniti omnis amet animi voluptate
-                                    quod molestias perspiciatis sint laborum autem id!
+                                    Somos una empresa dedicada al diseño, desarrollo e implementación de soluciones tecnológicas innovadoras.
+                                    Nuestro equipo combina creatividad y experiencia para transformar ideas en herramientas digitales funcionales,
+                                    desde sitios web y aplicaciones móviles hasta sistemas empresariales personalizados.
                                 </p>
-                                <a href="#" class="btn btn-custom">VER MAS</a>
+                                <!--<a href="#" class="btn btn-custom">VER MAS</a>-->
                             </div>
                         </div>
                     </div>
@@ -216,12 +216,11 @@
                                     class="img-fluid mb-4" style="max-width: 50%;">
                                 <h3 class="h4 mb-3">Compromiso al Desarrollo TI</h3>
                                 <p class="mb-4">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                    Voluptas suscipit illum a repellendus adipisci ullam nesciunt!
-                                    Dolores, in! Deleniti omnis amet animi voluptate
-                                    quod molestias perspiciatis sint laborum autem id!
+                                    En cada proyecto que emprendemos, nuestro compromiso es absoluto.
+                                     Nos aseguramos de comprender a fondo las necesidades de nuestros clientes para ofrecer resultados que superen sus expectativas.
+                                      Trabajamos con metodologías ágiles que nos permiten adaptarnos a los cambios y garantizar entregas puntuales sin sacrificar calidad.
                                 </p>
-                                <a href="#" class="btn btn-custom">VER MAS</a>
+                               <!-- <a href="#" class="btn btn-custom">VER MAS</a>-->
                             </div>
                         </div>
                     </div>
@@ -234,12 +233,12 @@
                                     class="img-fluid mb-4" style="max-width: 50%;">
                                 <h3 class="h4 mb-3">Versatilidad</h3>
                                 <p class="mb-4">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                    Voluptas suscipit illum a repellendus adipisci ullam nesciunt!
-                                    Dolores, in! Deleniti omnis amet animi voluptate
-                                    quod molestias perspiciatis sint laborum autem id!
+                                    Nos caracterizamos por nuestra capacidad de adaptación a distintos sectores y desafíos tecnológicos.
+                                     Utilizamos una amplia gama de lenguajes de programación, frameworks y herramientas
+                                      que nos permiten crear soluciones a medida para cada tipo de cliente
+
                                 </p>
-                                <a href="#" class="btn btn-custom">VER MAS</a>
+                                <!--<a href="#" class="btn btn-custom">VER MAS</a>-->
                             </div>
                         </div>
                     </div>
@@ -255,13 +254,14 @@
                 <div class="row align-items-center">
                     <div class="col-lg-6 order-lg-2">
                         <div class="ps-lg-5">
-                            <h3 class="h2 mb-4">Empresa de Desarrollo</h3>
-                            <p class="lead mb-4">
-                                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                Quam quod corrupti cupiditate alias quo iure suscipit id ad.
-                                Reprehenderit ipsum totam quisquam autem dolore,
-                                rem commodi culpa minus beatae minima!
-                            </p>
+                              <h2>Ofrecemos Servicios de:</h2>
+                                <ul style="list-style: none; padding: 0; margin:40px; line-height: 2.2;">
+                                <li><i class="fa-solid fa-code"></i> Desarrollo Web Personalizado</li>
+                                <li><i class="fa-solid fa-mobile-screen"></i> Aplicaciones Móviles</li>
+                                <li><i class="fa-solid fa-gears"></i> Sistemas y Software Empresarial</li>
+                                <li><i class="fa-solid fa-shield-halved"></i> Mantenimiento y Soporte Técnico</li>
+                                </ul>  
+                            
                             <div class="d-flex gap-3">
                                 <a href="#" class="btn btn-custom flex-grow-1">
                                     <i class="fab fa-google-play me-2"></i> GOOGLE PLAY
@@ -286,31 +286,49 @@
             <div class="container">
                 <div class="row g-4">
                     <div class="col-lg-6">
-                        <img src="{{ asset('assets/imginicio/contactos.jpg') }}"
+                        <img src="{{ asset('assets/imginicio/contactos_logo.png') }}"
                             alt="Contactos"
                             class="img-fluid rounded">
                     </div>
                     <div class="col-lg-6">
-                        <form class="bg-white p-4 rounded shadow-sm">
+
+                        @if(session('success'))
+                            <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+
+                        <form action="{{ route('contacto.store') }}" method="POST" class="bg-white p-4 rounded shadow-sm">
+                            @csrf
+
                             <h2 class="heading mb-4">Contactos</h2>
 
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="nombre" placeholder="Nombre" required>
+                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" required>
                                 <label for="nombre">Nombre</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="email" placeholder="Email" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                                 <label for="email">Email</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input type="tel" class="form-control" id="telefono" placeholder="Teléfono" required>
+                                <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Teléfono" required>
                                 <label for="telefono">Teléfono</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <textarea class="form-control" id="mensaje" placeholder="Mensaje" style="height: 150px"></textarea>
+                                <textarea class="form-control" id="mensaje" name="mensaje" placeholder="Mensaje" style="height: 150px"></textarea>
                                 <label for="mensaje">Mensaje</label>
                             </div>
 

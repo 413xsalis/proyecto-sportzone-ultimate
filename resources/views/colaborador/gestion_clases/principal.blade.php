@@ -14,6 +14,7 @@
   <div class="container mt-4">
     <h2 class="mb-4 text-center">Horario de Clases</h2>
 
+
     <table class="table table-bordered table-striped">
       <thead class="table-dark text-center">
   <tr>
@@ -27,9 +28,9 @@
 <tbody class="text-center">
   @foreach ($horarios as $horario)
     <tr>
-      <td>{{ ucfirst($horario->dia) }}</td>
-      <td>{{ $horario->hora_inicio }} - {{ $horario->hora_fin }}</td>
-      <td>{{ $horario->instructor->nombre }}</td>
+      <td>{{ \Carbon\Carbon::parse($horario->fecha)->format('d/m/Y') }}</td>
+      <td>{{ $horario->hora_inicio }}  {{ $horario->hora_fin }}</td>
+      <td>{{ $horario->instructor->nombre }} {{$horario->instructor->apellidos}} </td>
       <td>{{ $horario->grupo->nombre }}</td>
       <td>
         <a href="{{ route('horarios.edit', $horario->id) }}" class="btn btn-sm btn-primary">Editar</a>
@@ -58,18 +59,18 @@
         @method('PUT')
     @endif
 
-    <div class="row g-3">
-        <div class="col-md-3">
-            <label for="dia" class="form-label">Día</label>
-            <select name="dia" id="dia" class="form-select" required>
-                <option value="">Selecciona un día</option>
-                @foreach(['lunes','martes','miércoles','jueves','viernes','sábado','domingo'] as $dia)
-                    <option value="{{ $dia }}" {{ (old('dia', $horario->dia ?? '') == $dia) ? 'selected' : '' }}>
-                        {{ ucfirst($dia) }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+
+         <!-- Selección de fecha con calendario -->
+        <div class="row g-3"> 
+      <div class="col-md-3">
+        <label for="fecha" class="form-label">Fecha</label>
+        <input type="date" 
+               name="fecha" 
+               id="fecha" 
+               class="form-control"
+               value="{{ old('fecha', $horario->fecha ?? '') }}" 
+               required>
+    </div>
 
         <div class="col-md-2">
             <label for="hora_inicio" class="form-label">Hora Inicio</label>
@@ -90,7 +91,7 @@
                 @foreach($instructores as $instructor)
                     <option value="{{ $instructor->id }}"
                         {{ (old('instructor_id', $horario->instructor_id ?? '') == $instructor->id) ? 'selected' : '' }}>
-                        {{ $instructor->nombre }}
+                        {{ $instructor->nombres }} {{ $instructor->apellidos }}
                     </option>
                 @endforeach
             </select>
