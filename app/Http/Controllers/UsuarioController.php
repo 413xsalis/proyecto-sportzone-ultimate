@@ -12,8 +12,15 @@ class UsuarioController extends Controller
     {
         $users = User::latest()->get();
         $users = User::with('roles')->get();
-        return view('administrador.Gestion_usuarios.principal', compact('users'));
+
+        $users = User::with('roles')->paginate(10);
+        $totalUsers = User::withTrashed()->count();
+        $activeUsers = User::whereNull('deleted_at')->count();
+        $inactiveUsers = User::onlyTrashed()->count();
+
+        return view('administrador.Gestion_usuarios.principal', compact('users', 'totalUsers', 'activeUsers', 'inactiveUsers'));
     }
+
 
     public function trashed()
     {

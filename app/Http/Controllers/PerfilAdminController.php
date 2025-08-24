@@ -11,7 +11,7 @@ class PerfilAdminController extends Controller
 {
     public function edit()
     {
-        return view('administrador.Formulario_empleados.perfiladmin');
+        return view('administrador.admin.perfiladmin');
     }
 
     public function update(Request $request)

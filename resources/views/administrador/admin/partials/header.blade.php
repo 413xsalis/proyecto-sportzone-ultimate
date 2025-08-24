@@ -46,7 +46,7 @@
   </head>
   <body class="app sidebar-mini">
     <!-- Navbar-->
-    <header class="app-header">
+  <header class="app-header">
       <a class="app-header__logo" href="index.html">
         <img src="{{ asset('assets/images/logo_sf.png') }}" alt="Logo" style="height: 65px; vertical-align: middle;">
       </a>
@@ -114,12 +114,6 @@
         </a>
       </li>
       
-      <li>
-        <a class="app-menu__item" href="{{ route('admin.Formulario_empleados') }}">
-          <i class="bi bi-person-badge"></i>
-          <span class="app-menu__label">Formulario de empleados</span>
-        </a>
-      </li>
       
       <li>
         <a class="app-menu__item" href="#">

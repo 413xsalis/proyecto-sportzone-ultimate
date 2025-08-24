@@ -1,9 +1,9 @@
-@extends('administrador.Formulario_empleados.layout')
+@extends('administrador.admin.layout')
 
 @section('title', 'Perfil de Usuario')
 
 @section('content')
-<main class="content" style="margin-left: 240px; padding: 20px;">
+<main class="content" >
         <div class="container-fluid">
             <div class="row mb-4">
                 <div class="col-12">
