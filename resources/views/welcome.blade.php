@@ -137,9 +137,14 @@
                 <ul class="navbar-nav auth-nav">
                     @auth
                     <li class="nav-item">
-                        <a href="{{ route('admin.principal') }}" class="nav-link text-custom-green">
-                            Dashboard
-                        </a>
+    <a href="{{ 
+        auth()->user()->hasRole('admin') ? route('admin.principal') : 
+        (auth()->user()->hasRole('colaborador') ? route('colaborador.dashboard') : 
+        (auth()->user()->hasRole('instructor') ? route('instructor.dashboard') : 
+        route('home')))
+    }}" class="dashboard-link">
+        Dashboard
+    </a>
                     </li>
                     @else
                         <li class="nav-item">

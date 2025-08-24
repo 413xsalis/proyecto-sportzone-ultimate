@@ -15,30 +15,27 @@
 
 <body class="app sidebar-mini">
   {{-- Encabezado de la página. Contiene el logo, el botón para colapsar la barra lateral y el menú de usuario. --}}
-  <header class="app-header">
-    {{-- Enlace del logo que lleva a la página de inicio. Usa `asset()` para obtener la ruta correcta. --}}
-    <a class="app-header__logo" href="index.html">
+  <header class="app-header"><a class="app-header__logo" href="index.html">
       <img src="{{ asset('assets/images/logo_sf.png') }}" alt="Logo" style="height: 65px; vertical-align: middle;">
-    </a>
-    {{-- Botón para mostrar u ocultar la barra lateral en dispositivos móviles. El atributo `data-toggle="sidebar"` es para JavaScript. --}}
-    <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
-    <ul class="app-nav">
-      {{-- Menú desplegable para el perfil del usuario --}}
-      <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown"
-          aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i></a>
-        <ul class="dropdown-menu settings-menu dropdown-menu-right">
-          {{-- Enlace para cerrar sesión. La lógica de `onclick` llama a un formulario oculto. --}}
-          <a class="dropdown-item dropdown-item bi bi-box-arrow-right me-2 fs-5" href="{{ route('logout') }}" onclick="event.preventDefault();
-                       document.getElementById('logout-form').submit();">
-            {{ __(' Cerrar sesion') }}
-          </a>
-          {{-- Formulario oculto que se envía al hacer clic en el botón de cerrar sesión. Es una práctica de seguridad estándar en Laravel. --}}
-          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-            @csrf
-          </form>
-        </ul>
-      </li>
-    </ul>
+
+      <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+        <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown"
+            aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right">
+            <li><a class="dropdown-item" href="{{ route('perfilinst.edit') }}"><i class="bi bi-person me-2"></i> Perfil</a>
+            </li>
+            <a class="dropdown-item dropdown-item bi bi-box-arrow-right me-2 fs-5" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+              {{ __(' Cerrar sesion') }}
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+              @csrf
+            </form>
+          </ul>
+        </li>
+      </ul>
   </header>
 
   <!-- Sidebar menu-->
