@@ -15,7 +15,7 @@ use App\Http\Controllers\InstructorReporteController;
 use App\Http\Controllers\PerfilAdminController;
 use App\Http\Controllers\PerfilColabController;
 use App\Http\Controllers\PerfilInstController;
-
+use App\Http\Controllers\HomeController;
 
 
 
@@ -71,37 +71,53 @@ Route::middleware(['auth'])->group(function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::resource('admin/dashboard', AdminController::class)
-    ->middleware(['auth', 'role:admin']);
-// Route::resource('editor/dashboard', EditorController::class)
-// ->middleware(['auth','role:editor']);
-Route::resource('colaborador/dashboard', ColaboradorController::class)
-    ->middleware(['auth', 'role:colaborador']);
-
-Route::resource('instructor/dashboard', InstrucController::class)
-    ->middleware(['auth', 'role:instructor']);
-
+// Redirección principal según rol
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+// Rutas para administradores
+Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('administrador.admin.principal');
+    })->name('admin.dashboard');
+    
+    Route::get('/gestion/trashed', [UsuarioController::class, 'trashed'])->name('usuario.trashed');
+    
+    // O si prefieres usar resource:
+    Route::resource('dashboard', AdminController::class);
+});
 Route::middleware(['auth'])->group(function () {
-
+    // Ruta para administradores
     Route::get('/admin/principal', function () {
         return view('administrador.admin.principal');
-    })->name('admin.dashboard')->middleware('role:administrador');
+    })->name('admin.dashboard')->middleware('role:admin');
 
-
+    // Ruta para colaboradores
     Route::get('/colaborador/principal', function () {
         return view('colaborador.inicio_colab.principal');
     })->name('colaborador.dashboard')->middleware('role:colaborador');
 
+    // Ruta para instructores
     Route::get('/instructor/principal', function () {
         return view('instructor.inicio.principal');
     })->name('instructor.dashboard')->middleware('role:instructor');
-
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
-Route::prefix('admin')->group(function () {
-    Route::get('/gestion/trashed', [UsuarioController::class, 'trashed'])->name('usuario.trashed');
+// Rutas para colaboradores
+Route::prefix('colaborador')->middleware(['auth', 'role:colaborador'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('colaborador.inicio_colab.principal');
+    })->name('colaborador.dashboard');
+    
+    // O si prefieres usar resource:
+    Route::resource('dashboard', ColaboradorController::class);
+});
+
+// Rutas para instructores
+Route::prefix('instructor')->middleware(['auth', 'role:instructor'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('instructor.inicio.principal');
+    })->name('instructor.dashboard');
+    
+    // O si prefieres usar resource:
+    Route::resource('dashboard', InstrucController::class);
 });
 //---------------------------------------------------------------------------------------------------------------//
 
