@@ -43,18 +43,18 @@ Bienvenido - Panel de control de instructores
                 <div class="mt-4" id="dailyEvents">
                     <h5 class="mb-3">Actividades para hoy</h5>
                     <div class="list-group">
-                         <p class="text-muted text-center p-3 mb-0">
-                           Selecciona una fecha en el calendario para ver o agregar actividades.
-                       </p>
+                        <p class="text-muted text-center p-3 mb-0">
+                            Selecciona una fecha en el calendario para ver o agregar actividades.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-lg-4">
-             <div class="text-center" style="height: 100%;">
+            <div class="text-center" style="height: 100%;">
                 <img src="{{ asset('assets/images/imagen.jpg') }}" alt="Deportes" class="img-fluid rounded-4" style="height: 100%; object-fit: cover;">
-             </div>
+            </div>
         </div>
     </div>
 
@@ -63,6 +63,19 @@ Bienvenido - Panel de control de instructores
             <div class="tile shadow-sm rounded-4">
                 <h5 class="mb-3"><i class="bi bi-bell me-2"></i>Últimas notificaciones</h5>
                 <div class="list-group" id="notificationList">
+                    {{-- **INICIO DEL CÓDIGO DE NOTIFICACIONES** --}}
+                    @forelse ($asistenciasHoy as $asistencia)
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Asistencia guardada</h5>
+                            <small class="text-muted">{{ \Carbon\Carbon::parse($asistencia->fecha)->format('d/m/Y') }}</small>
+                        </div>
+                        <p class="mb-1">Se ha registrado la asistencia para el estudiante <strong>{{ $asistencia->estudiante->nombre_completo }}</strong> del subgrupo <strong>{{ $asistencia->subgrupo->nombre }}</strong> con estado **{{ $asistencia->estado }}**.</p>
+                    </div>
+                    @empty
+                    <p class="text-center text-muted p-3">No hay asistencias registradas para hoy.</p>
+                    @endforelse
+                    {{-- **FIN DEL CÓDIGO DE NOTIFICACIONES** --}}
                 </div>
             </div>
         </div>

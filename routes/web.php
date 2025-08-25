@@ -159,14 +159,15 @@ Route::get('/reportes/inscripciones', [ReporteController::class, 'reporteInscrip
 
 
 
-//rutas de instructores//----------------------------//
+// rutas de instructores //----------------------------//
 
-// INICIO
+    // INICIO
 
 Route::prefix('inst')->group(function () {
-    Route::get('/principal', [InstrucController::class, 'principal'])->name('inst.principal');  //Ruta principal del instructor. Muestra la página de inicio o panel de control.
+    
+    Route::get('/index', [InstrucController::class, 'index'])->name('inst.principal'); 
 
-    // HORARIOS
+     // HORARIOS
 
     Route::get('/horario', [InstructorHorarioController::class, 'horario'])->name('inst.horarios'); //Muestra la tabla de horario del instructor.
 

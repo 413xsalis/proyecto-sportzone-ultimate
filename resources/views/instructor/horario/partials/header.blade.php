@@ -39,22 +39,15 @@
   <!-- Sidebar menu-->
   <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
   <aside class="app-sidebar">
-    <div class="app-sidebar__user"><img class="" src="" alt="">
-      <div>
-        <ul class="app-breadcrumb breadcrumb">
-          <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-          <li class="app-sidebar__user-designation breadcrumb-item"><a href="#">Inicio</a></li>
-
-      </div>
-    </div>
 
     <ul class="app-menu">
-      <a class="app-menu__item" href="{{ route('inst.principal') }}"></i><span class="app-menu__label">Inicio</span></a>
+      {{-- Enlace de inicio corregido --}}
+      <a class="app-menu__item" href="{{ route('inst.principal') }}"><i class="app-menu__icon bi bi-house"></i><span class="app-menu__label">Inicio</span></a>
 
-      <a class="app-menu__item" href="{{ route('inst.asistencia') }}"></i><span class="app-menu__label">Asistencia</span></a>
+      <a class="app-menu__item" href="{{ route('inst.horarios') }}"><i class="app-menu__icon bi bi-calendar2-week"></i><span class="app-menu__label">Horarios</span></a>
 
-      <a class="app-menu__item" href="{{ route('inst.reporte.asistencias') }}"></i><span
-          class="app-menu__label">Reportes</span></a>
+      <a class="app-menu__item" href="{{ route('inst.asistencia') }}"><i class="app-menu__icon bi bi-person-check"></i><span class="app-menu__label">Asistencia</span></a>
 
+      <a class="app-menu__item" href="{{ route('inst.reporte.asistencias') }}"><i class="app-menu__icon bi bi-file-earmark-bar-graph"></i><span class="app-menu__label">Reportes</span></a>
     </ul>
   </aside>

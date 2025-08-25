@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class InstructorReporteController extends Controller
 {
+    public function reporte()
+    {
+        return view('instructor.reporte.principal');
+    }
+    
     public function mostrarReporte(Request $request)
     {
         $grupos = Grupo::all();
