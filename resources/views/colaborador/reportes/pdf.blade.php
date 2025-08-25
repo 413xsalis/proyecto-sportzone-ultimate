@@ -4,52 +4,83 @@
     <meta charset="UTF-8">
     <title>Reporte de Inscripciones</title>
     <style>
-         body {
-            font-family: DejaVu Sans, sans-serif;
+        body {
+            font-family: Arial, sans-serif;
             font-size: 12px;
-            margin: 30px;
+            margin: 0;
+            padding: 0;
         }
 
-        h1 {
+        header {
             text-align: center;
-            font-size: 20px;
+            padding: 10px 0;
+            border-bottom: 2px solid #333;
+        }
+
+        header img {
+            width: 80px;
+            height: auto;
             margin-bottom: 5px;
         }
 
-        p {
+        h2 {
+            margin: 5px 0;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 14px;
+            font-size: 10px;
+            border-top: 1px solid #a00707;
+            padding-top: 5px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        thead {
-            background-color: #c7faec;
+            margin-top: 15px;
         }
 
         th, td {
-            border: 1px solid #4efc99;
-            padding: 8px;
-            text-align: left;
+            border: 1px solid #a00707;
+            padding: 6px;
+            text-align: center;
         }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .resumen {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .resumen {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: right;
         }
     </style>
 </head>
 <body>
-    <h1>Reporte de Inscripciones</h1>
+
+    <header>
+        <img src="{{ public_path('assets/images/logo_escuela.png') }}" alt="Logo">
+        <h2>Escuela Safuka</h2>
+        <h2>Reporte de Inscripciones</h2>   
      <p>
         Desde: {{ \Carbon\Carbon::parse($fechaInicio)->format('d/m/Y') }} &nbsp;
         Hasta: {{ \Carbon\Carbon::parse($fechaFin)->format('d/m/Y') }}
     </p>
+    </header>
 
+
+<main>
     <table>
         <thead>
             <tr>
@@ -74,6 +105,11 @@
             @endforelse
         </tbody>
     </table>
+</main>
+<footer>
+    © {{ date('Y') }} Escuela Deportiva Safuka | Generado el {{ date('d/m/Y H:i') }}
+</footer>
+
 </body>
 </html>
 

@@ -12,29 +12,26 @@
   </head>
   <body class="app sidebar-mini">
     <!-- Navbar-->
-    <header class="app-header"><a class="app-header__logo" href="index.html">
+  <header class="app-header"><a class="app-header__logo" href="index.html">
       <img src="{{ asset('assets/images/logo_sf.png') }}" alt="Logo" style="height: 65px; vertical-align: middle;">
-
       <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
       <!-- Navbar Right Menu-->
       <ul class="app-nav">
         <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown"
             aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i></a>
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
-            <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person me-2"></i> Perfil</a>
-            </li>
-            <a class="dropdown-item dropdown-item bi bi-box-arrow-right me-2 fs-5" href="{{ route('logout') }}" onclick="event.preventDefault();
+                <a class="dropdown-item dropdown-item bi bi-box-arrow-right me-2 fs-5" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-              {{ __(' Cerrar sesion') }}
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-              @csrf
-            </form>
+                  {{ __(' Cerrar sesion') }}
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                  @csrf
+                </form>
           </ul>
         </li>
       </ul>
   </header>
-
 
     <!-- Sidebar menu-->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
@@ -48,14 +45,30 @@
         </div>
       </div>
 
-      <ul class="app-menu">
-        <a class="app-menu__item" href="{{ route('colab.gestion_clases') }}"></i><span
-            class="app-menu__label">Gestion de clases</span></a>
-        <a class="app-menu__item" href="#"></i><span
-            class="app-menu__label">Inscripcíon de Estudiantes</span></a>
-        <a class="app-menu__item" href="{{ route('colab.reportes') }}"></i><span
-            class="app-menu__label">Reportes</span></a>
-            
+            <ul class="app-menu">
+        <a class="app-menu__item" href="{{ route('colab.gestion_clases') }}">
+      <i class="bi bi-journal-bookmark me-2"></i>
+      <span class="app-menu__label">Gestion de clases</span>
+      </a>
+
+        <a class="app-menu__item" href="{{route('estudiantes.index')}}">
+          <i class="bi bi-person-plus me-2"></i>
+          <span class="app-menu__label">Inscripcíon de Estudiantes</span>
+        </a>
+
+        <a class="app-menu__item" href="{{ route('pagos.index') }}">
+          <i class="bi bi-cash-coin me-2"></i>
+          <span class="app-menu__label">Pagos</span>
+          </a>
+
+        <a class="app-menu__item" href="{{ route('colab.reportes') }}">
+          <i class="bi bi-bar-chart-line me-2"></i>
+          <span class="app-menu__label">Reportes</span>
+        </a>
+
+      </ul>
+
+
     </aside>
 
  

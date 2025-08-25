@@ -1,296 +1,140 @@
 @extends('instructor.horario.layout')
 
+
 @section('nav-message')
 Bienvenido - Panel de control de instructores
 @endsection
 
+
 @section('content')
+
 <main class="app-content">
-  <div class="container">
-    <h2 class="mb-4">Horario del Instructor</h2>
-    <form id="filter-form" action="{{ route('inst.horarios') }}" method="GET">
-      <div class="row align-items-end mb-4">
-        <div class="col-sm-6 col-lg-4">
-          <label for="instructor_select">Seleccionar Instructor</label>
-          <select class="form-control" id="instructor_select" name="instructorId">
-            <option value="">Todos los instructores</option>
-            @foreach($instructores as $instructor)
-            <option value="{{ $instructor->id }}">{{ $instructor->nombre }}</option>
-            @endforeach
-          </select>
-        </div>
-        <div class="col-sm-6 col-lg-2">
-          <button type="submit" class="btn btn-info w-100">Filtrar</button>
+  <div class="container-fluid py-4">
+
+    {{-- Buscador inteligente --}}
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="Buscar alumno, clase o grupo...">
+      </div>
+    </div>
+
+    {{-- Recordatorios importantes del día --}}
+    <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+      <i class="bi bi-clock-history me-2 fs-4"></i>
+      <div>
+        Tienes una clase en 30 minutos: <strong>Fútbol Juvenil - Grupo A</strong> en la cancha 1.
+      </div>
+    </div>
+
+    {{-- Vista semanal tipo calendario --}}
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Horario semanal</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered text-center">
+            <thead class="table-light">
+              <tr>
+                <th>Hora</th>
+                @foreach(['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'] as $dia)
+                <th>{{ $dia }}</th>
+                @endforeach
+              </tr>
+            </thead>
+            <tbody>
+              @for($h = 7; $h <= 18; $h++)
+                <tr>
+                <td>{{ $h }}:00</td>
+                @for($d = 1; $d <= 6; $d++)
+                  @php
+                  $estado=['activo', 'pendiente' , 'cancelado' ][rand(0,2)];
+                  $clase=$estado=='activo' ? 'Fútbol Grupo A' : ($estado=='pendiente' ? 'Básquet Grupo B' : '—' );
+                  $bg=$estado=='activo' ? 'bg-success text-white' : ($estado=='pendiente' ? 'bg-warning text-dark' : 'bg-secondary text-white' );
+                  @endphp
+                  <td
+                  class="{{ $clase === '—' ? '' : $bg }}"
+                  style="background-color: {{ $clase === '—' ? '#f0f2f5' : '' }}; color: {{ $clase === '—' ? '#555' : 'white' }}; cursor: pointer;"
+                  onclick="alert('Detalles de la clase: {{ $clase }}')">
+                  {{ $clase }}
+                  </td>
+
+                  @endfor
+                  </tr>
+                  @endfor
+            </tbody>
+          </table>
         </div>
       </div>
-    </form>
-    <div class="table-responsive mt-4">
-      <table class="table table-bordered text-center" id="tablaHorario">
-        <thead class="table-light">
-          <tr>
-            <th>Lunes</th>
-            <th>Martes</th>
-            <th>Miércoles</th>
-            <th>Jueves</th>
-            <th>Viernes</th>
-            <th>Sábado</th>
-            <th>Domingo</th>
-          </tr>
-        </thead>
-        <tbody>
-          @php
-          // Extrae las horas únicas de la colección de horarios y las ordena.
-          $horas = $horarios->pluck('hora_inicio')->unique()->sort()->values();
-          // Define un array con los días de la semana.
-          $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-          @endphp
-
-          {{-- Bucle principal para iterar sobre cada hora única. --}}
-          @foreach ($horas as $hora)
-          <tr>
-            {{-- Bucle anidado para iterar sobre cada día de la semana. --}}
-            @foreach ($dias as $dia)
-            @php
-            // Busca si existe un evento en el horario para la hora y el día actuales. `first()` detiene el bucle tan pronto como encuentra una coincidencia.
-            $evento = $horarios->first(function ($h) use ($hora, $dia) {
-            return strtolower($h->dia) === strtolower($dia) && $h->hora_inicio === $hora;
-            });
-            @endphp
-            {{-- Celda del horario. `data-*` son atributos de datos para que JavaScript pueda acceder a la información. --}}
-            <td class="celda-horario"
-              data-dia="{{ strtolower($dia) }}"
-              data-hora="{{ $hora }}"
-              data-horario-id="{{ $evento->id ?? '' }}"
-              @if($evento)
-              data-grupo="{{ $evento->grupo->nombre ?? '' }}"
-              data-nombre="{{ $evento->nombre ?? '' }}"
-              data-estado="{{ $evento->estado ?? 'Programada' }}"
-              @endif>
-              @if ($evento)
-              {{-- Si hay un evento, muestra la información del grupo y el rango de horas. --}}
-              <div class="bg-success text-white py-1 px-2 rounded btn-actividad" style="cursor:pointer; display:inline-block; min-width:100px;">
-                <strong>{{ $evento->grupo->nombre ?? 'Sin grupo' }}</strong><br>
-                <small>{{ substr($evento->hora_inicio, 0, 5) }} - {{ substr($evento->hora_fin, 0, 5) }}</small>
-              </div>
-              @else
-              {{-- Si no hay evento, muestra un guion. --}}
-              <span class="text-muted" style="cursor:pointer;">—</span>
-              @endif
-            </td>
-            @endforeach
-          </tr>
-          @endforeach
-        </tbody>
-      </table>
     </div>
-    {{-- Incluye la plantilla del modal. --}}
-    @include('instructor.horario.partials.modal')
+
+    {{-- Estadísticas de la semana --}}
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card text-white bg-success mb-3 shadow-sm">
+          <div class="card-body">
+            <h6 class="card-title"><i class="bi bi-check-circle me-2"></i>Clases impartidas</h6>
+            <h3 class="card-text">15</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-warning mb-3 shadow-sm">
+          <div class="card-body">
+            <h6 class="card-title"><i class="bi bi-clock me-2"></i>Clases pendientes</h6>
+            <h3 class="card-text">4</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-danger mb-3 shadow-sm">
+          <div class="card-body">
+            <h6 class="card-title"><i class="bi bi-x-circle me-2"></i>Clases canceladas</h6>
+            <h3 class="card-text">1</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
-  @push('scripts')
-  <script>
-    document.getElementById('filter-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const instructorId = document.getElementById('instructor_select').value;
-      window.location.href = `{{ route('inst.horarios') }}/${instructorId}`;
-    });
 
-    document.addEventListener('DOMContentLoaded', function() {
-      let selectedCell = null;
+  {{-- Pequeña animación --}}
+  <style>
+    td:hover {
+      transform: scale(1.02);
+      transition: all 0.2s ease;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 
-      // Obtener la URL de la ruta de guardado desde Blade
-      const guardarUrl = "{{ route('inst.horarios.guardar') }}";
+  <footer class="bg-white py-4 mt-auto">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>SportZone</h5>
+        <p class="text-muted">Sistema de gestión para escuelas deportivas</p>
+        <div class="d-flex">
+          <a href="#" class="me-3 text-muted"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="me-3 text-muted"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="me-3 text-muted"><i class="bi bi-twitter"></i></a>
+          <a href="#" class="text-muted"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="col-md-8 text-md-end">
+        <h5>Contacto</h5>
+        <p class="text-muted mb-0">
+          <i class="bi bi-envelope me-2"></i> info@sportzone.edu
+        </p>
+        <p class="text-muted mb-0">
+          <i class="bi bi-telephone me-2"></i> +57 123 456 7890
+        </p>
+        <p class="text-muted mb-0">v1.0.0</p>
+        <p class="text-muted">© {{ date('Y') }} Todos los derechos reservados</p>
+      </div>
+    </div>
+</main>
 
-      // Mapea el estado a las clases de color de Bootstrap
-      const estadoColores = {
-        'activo': {
-          bg: 'bg-success',
-          border: 'border-success',
-          text: 'text-white'
-        },
-        'cancelado': {
-          bg: 'bg-danger',
-          border: 'border-danger',
-          text: 'text-white'
-        },
-        'pendiente': {
-          bg: 'bg-warning',
-          border: 'border-warning',
-          text: 'text-dark'
-        }
-      };
-
-      // Función para aplicar los colores iniciales o por defecto
-      function aplicarColorInicial() {
-        document.querySelectorAll('.celda-horario').forEach(celda => {
-          const estado = celda.dataset.estado;
-          const contenedorActividad = celda.querySelector('.btn-actividad');
-
-          // Si no hay una actividad preexistente en la celda
-          if (!contenedorActividad) {
-            const horarioId = celda.dataset.horarioId;
-            const subgrupoId = celda.dataset.subgrupoId;
-            const actividadNombre = celda.dataset.nombre;
-
-            // Verifica si la celda es "asignable" (tiene horario_id pero no subgrupo_id ni nombre)
-            if (horarioId && (!subgrupoId || !actividadNombre)) {
-              celda.innerHTML = `<div class="bg-info text-white border border-info py-1 px-2 rounded btn-actividad" style="cursor:pointer; display:inline-block; min-width:100px;">
-                            <strong>+ Añadir</strong><br>
-                            <small>Actividad</small>
-                        </div>`;
-              celda.dataset.estado = '';
-            }
-          } else {
-            // Si ya hay una actividad, aplica el color según su estado
-            const colores = estadoColores[estado.toLowerCase().trim()] || {
-              bg: 'bg-secondary',
-              border: 'border-secondary',
-              text: 'text-white'
-            };
-            contenedorActividad.classList.remove('bg-secondary', 'bg-success', 'bg-danger', 'bg-warning', 'border-secondary', 'border-success', 'border-danger', 'border-warning', 'text-white', 'text-dark', 'bg-info', 'border-info');
-            contenedorActividad.classList.add(colores.bg, colores.border, colores.text);
-          }
-        });
-      }
-
-      // Aplica los colores al cargar la página
-      aplicarColorInicial();
-
-      // 1. Evento para abrir el modal al hacer clic en el botón de la actividad.
-      document.querySelectorAll('.btn-actividad').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const celda = this.closest('.celda-horario');
-          selectedCell = celda;
-
-          const horarioId = celda.dataset.horarioId;
-          const dia = celda.dataset.dia;
-          const hora = celda.dataset.hora;
-
-          document.getElementById('dia').value = dia;
-          document.getElementById('hora').value = hora;
-          document.getElementById('horario_id').value = horarioId;
-          document.getElementById('subgrupo_id').value = celda.dataset.subgrupoId || '';
-          document.getElementById('actividad').value = celda.dataset.nombre || '';
-          document.getElementById('estado').value = celda.dataset.estado || 'activo';
-
-          const modal = new bootstrap.Modal(document.getElementById('actividadModal'));
-          modal.show();
-        });
-      });
-
-      // 2. Evento para guardar la actividad.
-      document.getElementById('guardarActividad').addEventListener('click', function() {
-        const horario_id = document.getElementById('horario_id').value;
-        const subgrupo_id = document.getElementById('subgrupo_id').value;
-        const actividad = document.getElementById('actividad').value;
-        const estado = document.getElementById('estado').value;
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        if (!horario_id || !subgrupo_id || !actividad) {
-          Swal.fire({
-            icon: 'warning',
-            title: 'Faltan datos',
-            text: 'Por favor, complete todos los campos.',
-            toast: true,
-            position: 'bottom-end',
-            showConfirmButton: false,
-            timer: 3000
-          });
-          return;
-        }
-
-        fetch(guardarUrl, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-CSRF-TOKEN': csrfToken
-            },
-            body: JSON.stringify({
-              horario_id: horario_id,
-              subgrupo_id: subgrupo_id,
-              actividad: actividad,
-              estado: estado,
-              _token: csrfToken
-            })
-          })
-          .then(response => {
-            if (!response.ok) {
-              console.error("Respuesta del servidor no exitosa:", response.status, response.statusText);
-              throw new Error('Error en el servidor. Revisa el log de Laravel.');
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log("Datos recibidos del servidor:", data);
-
-            if (data.success) {
-              // Mapea el estado a las clases de color de Bootstrap
-              const estadoRecibido = data.estado ? data.estado.toLowerCase().trim() : '';
-              const colores = estadoColores[estadoRecibido] || {
-                bg: 'bg-secondary',
-                border: 'border-secondary',
-                text: 'text-white'
-              };
-
-              const grupoSubgrupo = `${data.grupo_nombre} / ${data.subgrupo_nombre}`;
-
-              selectedCell.innerHTML = `<div class="${colores.bg} ${colores.text} border ${colores.border} py-1 px-2 rounded btn-actividad" style="cursor:pointer; display:inline-block; min-width:100px;">
-                        <strong>${grupoSubgrupo}</strong><br>
-                        <small>${data.hora_inicio} - ${data.hora_fin}</small>
-                    </div>`;
-
-              selectedCell.dataset.actividadId = data.id;
-              selectedCell.dataset.subgrupoId = subgrupo_id;
-              selectedCell.dataset.grupo = data.grupo_nombre;
-              selectedCell.dataset.nombre = actividad;
-              selectedCell.dataset.estado = estado;
-              selectedCell.dataset.horarioId = horario_id;
-
-              Swal.fire({
-                icon: 'success',
-                title: 'Actividad guardada correctamente',
-                toast: true,
-                position: 'bottom-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true
-              });
-
-              const modal = bootstrap.Modal.getInstance(document.getElementById('actividadModal'));
-              modal.hide();
-            } else {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: data.error || 'No se pudo guardar la actividad.',
-                toast: true,
-                position: 'bottom-end',
-                showConfirmButton: false,
-                timer: 3000
-              });
-            }
-          })
-          .catch(error => {
-            console.error('Error guardando actividad:', error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error de conexión',
-              text: error.message || 'Ocurrió un error al intentar comunicarse con el servidor.',
-              toast: true,
-              position: 'bottom-end',
-              showConfirmButton: false,
-              timer: 5000
-            });
-          });
-      });
-    });
-  </script>
-  @endpush
-
-  {{-- Incluye las librerías de SweetAlert2 (alertas personalizadas) y otros scripts de Bootstrap. --}}
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="app.js"></script>
-  @stack('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="app.js"></script>
 </main>
 @endsection

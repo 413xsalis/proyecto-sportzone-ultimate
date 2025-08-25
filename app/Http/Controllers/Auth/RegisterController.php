@@ -7,53 +7,45 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request; // Añade esta importación
 
 class RegisterController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Register Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles the registration of new users as well as their
+    | validation and creation. By default this controller uses a trait to
+    | provide this functionality without requiring any additional code.
+    |
+    */
+
     use RegistersUsers;
 
-    // ... (el resto del código se mantiene igual)
+    /**
+     * Where to redirect users after registration.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/home';
 
     /**
-     * Create a new user instance after a valid registration.
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
+
+    /**
+     * Get a validator for an incoming registration request.
      *
      * @param  array  $data
-     * @return \App\Models\User
+     * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function create(array $data)
-    {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-
-        // Asignar el rol de 'instructor' al usuario registrado
-        $user->assignRole('instructor');
-
-        return $user;
-    }
-
-    /**
-     * Sobrescribe el método para redirigir según el rol después del registro
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
-     * @return mixed
-     */
-    protected function registered(Request $request, $user)
-    {
-        if ($user->hasRole('admin')) {
-            return redirect()->route('admin.dashboard');
-        } elseif ($user->hasRole('colaborador')) {
-            return redirect()->route('colaborador.dashboard');
-        } elseif ($user->hasRole('instructor')) {
-            return redirect()->route('instructor.dashboard');
-        }
-
-        return redirect('/home');
-    }
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -62,4 +54,28 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
+
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return \App\Models\User
+     */
+
+
+    protected function create(array $data)
+    {
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+
+        // Asignar el rol de 'admin' al primer usuario registrado
+        // Para los siguientes usuarios, cambiar a 'editor'
+        $user->assignRole('instructor'); // O 'editor' para usuarios posteriores
+
+        return $user;
+    }
+
 }
