@@ -2,18 +2,32 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Instructor extends Model
 
 {
+    use HasFactory;
+
     protected $table = 'instructores';
     
     protected $fillable = [
-        'nombre',
+        'nombres',
+        'apellidos',
         'documento',
         'telefono',
-        'especialidad',
+        'email',
     ];
+
+      public function horarios()
+    {
+        return $this->hasMany(Horario::class);
+    }
+
+    public function getNombreCompletoAttribute()
+{
+    return "{$this->nombres} {$this->apellidos}";
+}
 
 }

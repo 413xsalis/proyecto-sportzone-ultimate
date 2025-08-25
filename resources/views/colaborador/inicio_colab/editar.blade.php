@@ -12,9 +12,12 @@
       @method('PUT')
 
       <div class="mb-3">
-        <label class="form-label">Nombre:</label>
+        <label class="form-label">Nombres:</label>
         <input type="text" name="nombre" class="form-control" value="{{ $instructor->nombre }}" required>
       </div>
+      <div class="mb-3">
+        <label class="form-label">Apellidos:</label>
+        <input type="text" name="apellidos" class="form-control" value="{{ $instructor->apellidos }}" required>
 
       <div class="mb-3">
         <label class="form-label">Documento:</label>
@@ -25,11 +28,10 @@
         <label class="form-label">Teléfono:</label>
         <input type="text" name="telefono" class="form-control" value="{{ $instructor->telefono }}" required>
       </div>
-
       <div class="mb-3">
-        <label class="form-label">Especialidad:</label>
-        <input type="text" name="especialidad" class="form-control" value="{{ $instructor->especialidad }}" required>
-      </div>
+        <label class="form-label">Correo Electrónico:</label>
+        <input type="email" name="email" class="form-control" value="{{ $instructor->email }}" required>
+
 
       <button type="submit" class="btn btn-success">
         <i class="bi bi-save"></i> Guardar Cambios

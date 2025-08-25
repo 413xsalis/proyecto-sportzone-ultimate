@@ -23,14 +23,14 @@
         <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown"
             aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i></a>
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
-            <a class="dropdown-item dropdown-item bi bi-box-arrow-right me-2 fs-5" href="{{ route('logout') }}" onclick="event.preventDefault();
+                <a class="dropdown-item dropdown-item bi bi-box-arrow-right me-2 fs-5" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-              {{ __(' Cerrar sesion') }}
-            </a>
+                  {{ __(' Cerrar sesion') }}
+                </a>
 
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-              @csrf
-            </form>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                  @csrf
+                </form>
           </ul>
         </li>
       </ul>
@@ -51,10 +51,11 @@
     <ul class="app-menu">
       <a class="app-menu__item" href="{{ route('inst.principal') }}"></i><span class="app-menu__label">Inicio</span></a>
 
-      <a class="app-menu__item" href="{{ route('inst.horarios') }}"></i><span
-          class="app-menu__label">Horarios</span></a>
+      <ul class="app-menu">
+        <a class="app-menu__item" href="{{ route('inst.horarios') }}"></i><span
+            class="app-menu__label">Horarios</span></a>
 
-      <a class="app-menu__item" href="{{ route('inst.reporte.asistencias') }}"></i><span
-          class="app-menu__label">Reportes</span></a>
-    </ul>
+
+      </ul>
+
   </aside>

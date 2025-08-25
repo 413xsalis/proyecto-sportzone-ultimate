@@ -20,6 +20,7 @@
       <th>Documento</th>
       <th>Nombre</th>
       <th>Teléfono</th>
+      <th>Nombre de Contacto</th>
       <th>Telefono de Contacto</th>
       <th>EPS</th>
       <th>Grupo/Nivel</th>
@@ -32,6 +33,7 @@
       <td>{{ $est->documento }}</td>
       <td>{{ $est->nombre_1 }} {{ $est->apellido_1 }}</td>
       <td>{{ $est->telefono }}</td>
+      <td>{{ $est->nombre_contacto}}</td>
       <td>{{ $est->telefono_contacto }}</td>
       <td>{{ $est->eps }}</td>
       <td>{{ $est->id_grupo_nivel }}</td>

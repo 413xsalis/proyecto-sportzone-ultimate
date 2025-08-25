@@ -5,12 +5,11 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {{-- Enlaza a los estilos CSS principales de tu aplicación --}}
+  <!-- Main CSS-->
   <link rel="stylesheet" type="text/css" href="assets/css/main.css">
-  {{-- Enlaza a los íconos de Bootstrap Icons --}}
+  <!-- Font-icon css-->
   <link rel="stylesheet" type="text/css"
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  {{-- Define el título de la página --}}
   <title>Proyecto sportzone</title>
 </head>
 
@@ -42,30 +41,23 @@
     </ul>
   </header>
 
-  {{-- Overlay de la barra lateral. Se muestra al abrir el menú en dispositivos pequeños. --}}
+  <!-- Sidebar menu-->
   <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-  {{-- Barra lateral de navegación --}}
   <aside class="app-sidebar">
     <div class="app-sidebar__user"><img class="" src="" alt="">
       <div>
-        {{-- Estructura de "breadcrumbs" (migas de pan) para mostrar la ruta de navegación --}}
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
           <li class="app-sidebar__user-designation breadcrumb-item"><a href="#">Inicio</a></li>
-        </ul>
+
       </div>
     </div>
 
-    {{-- Lista de enlaces del menú principal --}}
     <ul class="app-menu">
-      {{-- Enlace al módulo de horarios. `route()` es una función de Laravel para generar URL. --}}
-      <a class="app-menu__item" href="{{ route('inst.horarios') }}"><i class="app-menu__icon bi bi-calendar2-week"></i><span class="app-menu__label">Horarios</span></a>
+      <a class="app-menu__item" href="{{ route('inst.horarios') }}"></i><span class="app-menu__label">Horarios</span></a>
 
-      {{-- Enlace al módulo de asistencia --}}
-      <a class="app-menu__item" href="{{ route('inst.asistencia') }}"><i class="app-menu__icon bi bi-person-check"></i><span class="app-menu__label">Asistencia</span></a>
+      <a class="app-menu__item" href="{{ route('inst.asistencia') }}"></i><span class="app-menu__label">Asistencia</span></a>
 
-      {{-- Enlace al módulo de reportes --}}
-      <a class="app-menu__item" href="{{ route('inst.reporte.asistencias') }}"><i class="app-menu__icon bi bi-file-earmark-bar-graph"></i><span
-          class="app-menu__label">Reportes</span></a>
     </ul>
+
   </aside>

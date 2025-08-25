@@ -27,6 +27,17 @@ class AdminController extends Controller
         return view('administrador.Gestion_usuarios.create');
     }
 
+
+
+
+
+
+
+
+    
+    /**
+     * Muestra la gestión de usuarios con productos
+     */
     public function gestion()
     {
         $users = User::all(); // Obtener todos los productos
