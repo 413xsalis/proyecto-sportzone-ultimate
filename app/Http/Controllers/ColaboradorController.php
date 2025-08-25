@@ -3,33 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Horario;     // Modelo de horario
-use App\Models\Instructor;  // Modelo de instructor
-use App\Models\Grupo;       // Modelo de grupo
+use App\Models\Horario;
+use App\Models\Grupo;
 use App\Models\Estudiante;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class ColaboradorController extends Controller
 {
-
-
-    // public function index(){
-    //     return view ('colaborador.inicio_colab.principal');
-    // }
-    public function index(){
-    $instructores = Instructor::all();
-    return view('colaborador.inicio_colab.principal', compact('instructores'));
+    public function index()
+    {
+        // Obtener solo usuarios con rol de instructor
+        $instructores = User::role('instructor')->get();
+        return view('colaborador.inicio_colab.principal', compact('instructores'));
     }
 
-    public function principal(){
-    $instructores = Instructor::all();
-    return view('colaborador.inicio_colab.principal', compact('instructores'));
+    public function principal()
+    {
+        // Obtener solo usuarios con rol de instructor
+        $instructores = User::role('instructor')->get();
+        return view('colaborador.inicio_colab.principal', compact('instructores'));
     }
 
     public function gestion()
     {
         // Cargar datos necesarios para la vista
         $horarios = Horario::with(['instructor', 'grupo'])->get();
-        $instructores = Instructor::all();
+        $instructores = User::all();
         $grupos = Grupo::all();
 
         // Pasar datos a la vista principal de gestión

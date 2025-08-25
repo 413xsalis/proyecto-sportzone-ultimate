@@ -156,13 +156,7 @@ Route::prefix('colab')->group(function () {
 
 // Rutas para instructores
 
-Route::get('/instructores/create', [InstructorController::class, 'create'])->name('instructores.create');
-Route::resource('instructores', InstructorController::class);
-Route::get('/instructores/{id}/edit', [InstructorController::class, 'edit'])->name('instructores.edit');
-Route::put('/instructores/{id}', [InstructorController::class, 'update'])->name('instructores.update');
-Route::post('/colaboradores/instructores', [InstructorController::class, 'store'])->name('instructores.store');
-Route::get('/colaboradores/instructores', [InstructorController::class, 'index'])->name('instructores.index');
-Route::get('/colaborador/inicio', [InstructorController::class, 'principal'])->name('colaborador.inicio');
+Route::get('/instructores', [InstructorController::class, 'index'])->name('instructores.index');
 
 // ================= HORARIOS =================
 Route::get('/gestion_clases/principal', [HorarioController::class, 'mostrarPrincipal'])->name('gestion_clases.principal');

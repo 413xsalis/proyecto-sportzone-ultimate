@@ -5,7 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Instructor;
+use App\Models\User;
 use App\Models\Grupo;
 
 class Horario extends Model
@@ -22,7 +22,7 @@ class Horario extends Model
     ];
 
     public function instructor() {
-        return $this->belongsTo(Instructor::class, );
+        return $this->belongsTo(User::class, );
     }
 
     public function grupo() {

@@ -21,7 +21,7 @@ public function index()
         $totalAlumnos = Estudiante::count();
         
         // Total de instructores
-        $totalInstructores = Instructor::count();
+        $totalInstructores = User::count();
         
         // Obtener la fecha actual
         $fechaActual = Carbon::now()->format('Y-m-d');
@@ -35,7 +35,7 @@ public function index()
         $clasesHoyCount = $clasesHoy->count();
         
         // Todos los instructores
-        $instructores = Instructor::all();
+        $instructores = User::all();
 
         return view('administrador.admin.principal', compact(
             'totalAlumnos', 
