@@ -10,13 +10,12 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\InstrucController;
 use App\Http\Controllers\AsistenciaController;
-use App\Http\Controllers\InstructorHorarioController;
-use App\Http\Controllers\InstructorReporteController;
 use App\Http\Controllers\PerfilAdminController;
 use App\Http\Controllers\PerfilColabController;
 use App\Http\Controllers\PerfilInstController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\Colaborador\PagoController;
+use App\Http\Controllers\ContactoController;
 
 
 Route::get('/', function () {
@@ -138,20 +137,15 @@ Route::prefix('admin')->group(function () {
 
 
 
-
 // ================= COLABORADOR =================
 Route::prefix('colab')->group(function () {
     Route::get('/principal', [ColaboradorController::class, 'principal'])->name('colab.principal');
     Route::get('/gestion', [ColaboradorController::class, 'gestion'])->name('colab.gestion_clases');
     Route::get('/inscripcion', [ColaboradorController::class, 'inscripcion'])->name('colab.inscripcion');
     Route::get('/reportes', [ColaboradorController::class, 'reportes'])->name('colab.reportes');
+    Route::get('/pagos', [ColaboradorController::class, 'pagos'])->name('colab.pagos');
+
 });
-
-// Ruta adicional para compatibilidad
-Route::get('/colaboradores/inicio', [ColaboradorController::class, 'principal'])->name('colaboradores.inicio');
-
-
-
 
 
 // ================= INSTRUCTOR =================
@@ -179,7 +173,8 @@ Route::put('/horarios/{horario}', [HorarioController::class, 'update'])->name('h
 Route::delete('/horarios/{horario}', [HorarioController::class, 'destroy'])->name('horarios.destroy');
 Route::get('/horarios/{id}/edit', [HorarioController::class, 'edit'])->name('horarios.edit');
 Route::put('/horarios/{id}', [HorarioController::class, 'update'])->name('horarios.update');
-
+Route::get('/horarios', [HorarioController::class, 'index'])->name('horarios.index');
+Route::post('/horarios', [HorarioController::class, 'store'])->name('horarios.store');
 
 
 
@@ -204,6 +199,12 @@ Route::delete('/inscripcion_estudiante/{estudiante:documento}', [EstudianteContr
 // ================= REPORTES =================
 Route::get('/reportes/inscripciones', [ReporteController::class, 'reporteInscripciones'])->name('reportes.inscripciones');
 
+// Reportes de Pagos (PDF y Excel)
+Route::get('/reportes/pagos/pdf', [ReporteController::class, 'pagosPDF'])
+    ->name('reportes.pagos');
+
+Route::get('/reportes/pagos/excel', [ReporteController::class, 'pagosExcel'])
+    ->name('reportes.pagos.excel');
 
 
 

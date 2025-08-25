@@ -41,6 +41,12 @@
         <input type="number" class="form-control" name="telefono" id="telefono" required>
         </div>
 
+        <div class="form-group col-md-6">
+    <label for="nombre_contacto">Nombre de Contacto</label>
+    <input type="text" class="form-control" id="nombre_contacto" name="nombre_contacto" value="{{ old('nombre_contacto') }}">
+</div>
+
+
         <div class="col-md-6 mb-3">
         <label for="nombre_contacto" class="form-label">Telefono de Contacto</label>
         <input type="number" class="form-control" name="telefono_contacto" id="telefono_contacto" required>
