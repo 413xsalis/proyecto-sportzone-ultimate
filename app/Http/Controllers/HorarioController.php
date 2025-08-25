@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Instructor;
+use App\Models\User;
 use App\Models\Grupo;
 use App\Models\Horario;
 use Illuminate\Http\Request;
@@ -12,7 +12,7 @@ class HorarioController extends Controller
     public function index()
     {
         $horarios = Horario::with(['instructor', 'grupo'])->get();
-        $instructores = Instructor::all();
+        $instructores = User::all();
         $grupos = Grupo::all();
         $editar = false; // Indicador para saber que no se está editando
 
@@ -22,7 +22,7 @@ class HorarioController extends Controller
     public function mostrarPrincipal()
     {
         $horarios = Horario::with(['instructor', 'grupo'])->get();
-        $instructores = Instructor::all();
+        $instructores = User::all();
         $grupos = Grupo::all();
 
         return view('colaborador.gestion_clases.principal', compact('horarios', 'instructores', 'grupos'));
@@ -30,7 +30,7 @@ class HorarioController extends Controller
 
     public function create()
     {
-        $instructores = Instructor::all();
+        $instructores = User::all();
         $grupos = Grupo::all();
         return view('colaborador.gestion_clases.crear', compact('instructores', 'grupos'));
     }
@@ -54,7 +54,7 @@ class HorarioController extends Controller
     {
         $horario = Horario::findOrFail($id);
         $horarios = Horario::with(['instructor', 'grupo'])->get();
-        $instructores = Instructor::all();
+        $instructores = User::all();
         $grupos = Grupo::all();
         $editar = true; // Indicador para saber que se está editando
 

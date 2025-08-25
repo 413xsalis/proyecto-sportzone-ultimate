@@ -7,17 +7,117 @@
 
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to right, #00274D, #77DAB5);
-    }
+}
 
-    @media (min-width: 768px) {
+@media (min-width: 768px) {
     .gradient-form {
-    height: 100vh !important;
+        height: 100vh !important;
     }
-    }
-    @media (min-width: 769px) {
+}
+
+@media (min-width: 769px) {
     .gradient-custom-2 {
-    border-top-right-radius: .3rem;
-    border-bottom-right-radius: .3rem;
+        border-top-right-radius: .3rem;
+        border-bottom-right-radius: .3rem;
     }
+}
+
+/* ========================================= */
+/* ANIMACIONES NUEVAS Y AVANZADAS      */
+/* ========================================= */
+
+/* Animación para el contenedor principal del formulario (efecto de rebote) */
+.animated-card {
+    animation: bounceIn 1.2s ease-out forwards;
+    opacity: 0;
+    transform: scale(0.8);
+    transform-origin: center bottom;
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
     }
 
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    75% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Animación de pulso para el fondo */
+.pulse-bg {
+    animation: background-pulse 4s infinite ease-in-out;
+}
+
+@keyframes background-pulse {
+    0% {
+        box-shadow: 0 0 15px rgba(0, 39, 77, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(119, 218, 181, 0.8), 0 0 20px rgba(0, 39, 77, 0.6);
+    }
+
+    100% {
+        box-shadow: 0 0 15px rgba(0, 39, 77, 0.4);
+    }
+}
+
+/* Animación y retraso para los elementos internos */
+.text-center img,
+.form-outline.mb-4,
+.text-center.pt-1,
+.d-flex.align-items-center.justify-content-center.pb-4,
+.col-lg-6.d-flex.align-items-center.gradient-custom-2 {
+    opacity: 0;
+    animation: fadeIn 1.2s ease-out forwards;
+}
+
+.text-center img {
+    animation-delay: 0.5s;
+}
+
+.form-outline.mb-4:nth-of-type(1) {
+    animation-delay: 1s;
+}
+
+.form-outline.mb-4:nth-of-type(2) {
+    animation-delay: 1.2s;
+}
+
+.text-center.pt-1 {
+    animation-delay: 1.4s;
+}
+
+.d-flex.align-items-center.justify-content-center.pb-4 {
+    animation-delay: 1.6s;
+}
+
+.col-lg-6.d-flex.align-items-center.gradient-custom-2 {
+    animation-delay: 0.8s;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Efecto hover brutal en campos de entrada y botón */
+.form-control:focus,
+.btn-block {
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 0 10px rgba(119, 218, 181, 0.8), 0 0 5px rgba(0, 39, 77, 0.4);
+    border: 1px solid #77DAB5;
+}

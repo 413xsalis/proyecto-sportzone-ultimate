@@ -62,7 +62,7 @@
       <a class="app-menu__item" href="{{ route('inst.asistencia') }}"><i class="app-menu__icon bi bi-person-check"></i><span class="app-menu__label">Asistencia</span></a>
 
       {{-- Enlace al módulo de reportes --}}
-      <a class="app-menu__item" href="{{ route('inst.reporte.asistencias') }}"><i class="app-menu__icon bi bi-file-earmark-bar-graph"></i><span
+      <a class="app-menu__item" href="#"><i class="app-menu__icon bi bi-file-earmark-bar-graph"></i><span
           class="app-menu__label">Reportes</span></a>
     </ul>
   </aside>
