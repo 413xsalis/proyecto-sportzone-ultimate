@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-08-2025 a las 17:19:57
+-- Tiempo de generación: 25-08-2025 a las 15:45:28
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -24,46 +24,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `actividades`
---
-
-CREATE TABLE `actividades` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `horario_id` bigint(20) UNSIGNED NOT NULL,
-  `subgrupo_id` int(10) UNSIGNED NOT NULL,
-  `actividad` varchar(50) NOT NULL,
-  `estado` enum('activo','pendiente','cancelado') NOT NULL DEFAULT 'pendiente',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `asistencias`
---
-
-CREATE TABLE `asistencias` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `estudiante_documento` int(12) NOT NULL,
-  `subgrupo_id` int(10) UNSIGNED NOT NULL,
-  `fecha` date NOT NULL,
-  `estado` enum('presente','ausente','justificado') NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `asistencias`
---
-
-INSERT INTO `asistencias` (`id`, `estudiante_documento`, `subgrupo_id`, `fecha`, `estado`, `created_at`, `updated_at`) VALUES
-(1, 300400500, 3, '2025-07-30', 'ausente', NULL, NULL),
-(2, 1073599534, 1, '2025-07-30', 'presente', NULL, NULL);
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `cache`
 --
 
@@ -72,18 +32,6 @@ CREATE TABLE `cache` (
   `value` mediumtext NOT NULL,
   `expiration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `cache`
---
-
-INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('laravel_cache_admin@gmail.com|::1', 'i:1;', 1752202051),
-('laravel_cache_admin@gmail.com|::1:timer', 'i:1752202051;', 1752202051),
-('laravel_cache_hola22@gmail.com|::1', 'i:1;', 1752204834),
-('laravel_cache_hola22@gmail.com|::1:timer', 'i:1752204834;', 1752204834),
-('laravel_cache_ricardo@gmail.com|::1', 'i:1;', 1752202041),
-('laravel_cache_ricardo@gmail.com|::1:timer', 'i:1752202041;', 1752202041);
 
 -- --------------------------------------------------------
 
@@ -100,12 +48,34 @@ CREATE TABLE `cache_locks` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `contactos`
+--
+
+CREATE TABLE `contactos` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `telefono` varchar(255) DEFAULT NULL,
+  `mensaje` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `contactos`
+--
+
+INSERT INTO `contactos` (`id`, `nombre`, `email`, `telefono`, `mensaje`, `created_at`, `updated_at`) VALUES
+(1, 'Darío Barrios', 'dario@email.com', '100200300', 'petición de una cotización.', '2025-08-18 07:28:57', '2025-08-18 07:28:57');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `estudiantes`
 --
 
 CREATE TABLE `estudiantes` (
-  `id` int(100) NOT NULL,
-  `documento` int(12) NOT NULL,
+  `documento` bigint(20) UNSIGNED NOT NULL,
   `nombre_1` varchar(255) NOT NULL,
   `nombre_2` varchar(255) DEFAULT NULL,
   `apellido_1` varchar(255) NOT NULL,
@@ -116,19 +86,17 @@ CREATE TABLE `estudiantes` (
   `eps` varchar(255) DEFAULT NULL,
   `id_grupo_nivel` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `id_subgrupo` int(10) UNSIGNED DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `estudiantes`
 --
 
-INSERT INTO `estudiantes` (`id`, `documento`, `nombre_1`, `nombre_2`, `apellido_1`, `apellido_2`, `telefono`, `nombre_contacto`, `telefono_contacto`, `eps`, `id_grupo_nivel`, `created_at`, `updated_at`, `id_subgrupo`) VALUES
-(2, 200300412, 'Rafael', 'Ricardo', 'Pinzón', 'Mayorga', '3174800393', 'Señor Pinzón', '300100203', 'compensar', '1', '2025-06-20 17:20:42', '2025-07-11 08:38:40', 2),
-(3, 300400500, 'Carlos1', 'Andres', 'Ruiz', 'Ruiz', '2004000', 'Señora Ruiz', '3004000', 'Sanitas', '1', '2025-06-29 22:33:44', '2025-07-10 06:07:24', 3),
-(4, 1073599572, 'alex', 'no aplica', 'veloza', 'gutierrez', '3242434312', NULL, '3247749658', 'qwer', '2', '2025-07-10 01:18:49', '2025-07-11 08:57:43', NULL),
-(5, 1073599534, 'diego', 'no aplicassd', 'mora', 'millan', '3242434331', NULL, '1324152532', 'qrqweqwf', '2', '2025-07-10 02:28:49', '2025-07-10 02:28:49', 1);
+INSERT INTO `estudiantes` (`documento`, `nombre_1`, `nombre_2`, `apellido_1`, `apellido_2`, `telefono`, `nombre_contacto`, `telefono_contacto`, `eps`, `id_grupo_nivel`, `created_at`, `updated_at`) VALUES
+(10000, 'Darío', 'Darío', 'Peraz', 'perez', '300100200', 'Sañora Perez', '300200100', 'Sanitas', '1', '2025-08-18 18:05:14', '2025-08-18 18:05:14'),
+(500600700, 'Camila', 'Andrea', 'Villa', 'Villa', '311900900', 'Sra. Villa', '311700700', 'Sura', '3', '2025-08-24 19:38:34', '2025-08-24 19:38:34'),
+(700700700, 'Rafael', 'Ricardo', 'Pinzon', 'Mayorga', '3174800399', 'señora Mayorga', '200200200', 'Nueva EPS', '2', '2025-08-18 19:36:22', '2025-08-18 19:36:22');
 
 -- --------------------------------------------------------
 
@@ -166,7 +134,8 @@ CREATE TABLE `grupos` (
 INSERT INTO `grupos` (`id`, `nombre`, `created_at`, `updated_at`) VALUES
 (1, 'Infantil', NULL, NULL),
 (2, 'Juvenil', NULL, NULL),
-(3, 'Avanzado', NULL, NULL);
+(3, 'Avanzado', NULL, NULL),
+(4, 'Experto', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -176,7 +145,7 @@ INSERT INTO `grupos` (`id`, `nombre`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `horarios` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `dia` varchar(255) NOT NULL,
+  `fecha` varchar(255) NOT NULL,
   `hora_inicio` time NOT NULL,
   `hora_fin` time NOT NULL,
   `instructor_id` bigint(20) UNSIGNED NOT NULL,
@@ -189,10 +158,10 @@ CREATE TABLE `horarios` (
 -- Volcado de datos para la tabla `horarios`
 --
 
-INSERT INTO `horarios` (`id`, `dia`, `hora_inicio`, `hora_fin`, `instructor_id`, `grupo_id`, `created_at`, `updated_at`) VALUES
-(11, 'lunes', '07:30:00', '08:30:00', 2, 2, '2025-07-06 22:03:48', '2025-07-06 22:04:44'),
-(13, 'domingo', '07:30:00', '08:30:00', 2, 2, '2025-07-10 01:13:55', '2025-07-10 01:16:12'),
-(14, 'viernes', '10:33:00', '13:34:00', 1, 3, '2025-07-10 01:17:01', '2025-07-10 01:17:20');
+INSERT INTO `horarios` (`id`, `fecha`, `hora_inicio`, `hora_fin`, `instructor_id`, `grupo_id`, `created_at`, `updated_at`) VALUES
+(2, '2025-08-24', '08:00:00', '09:00:00', 2, 2, '2025-08-24 06:40:32', '2025-08-24 06:40:32'),
+(4, '2025-08-29', '12:30:00', '14:30:00', 3, 2, '2025-08-24 06:43:58', '2025-08-24 18:34:25'),
+(5, '2025-08-30', '14:30:00', '17:30:00', 1, 1, '2025-08-24 18:46:29', '2025-08-24 18:50:31');
 
 -- --------------------------------------------------------
 
@@ -202,23 +171,23 @@ INSERT INTO `horarios` (`id`, `dia`, `hora_inicio`, `hora_fin`, `instructor_id`,
 
 CREATE TABLE `instructores` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nombre` varchar(255) NOT NULL,
+  `documento` varchar(255) NOT NULL,
+  `telefono` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `nombres` varchar(255) NOT NULL,
+  `apellidos` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `documento` varchar(25) NOT NULL,
-  `telefono` varchar(20) NOT NULL,
-  `especialidad` varchar(50) NOT NULL
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `instructores`
 --
 
-INSERT INTO `instructores` (`id`, `nombre`, `created_at`, `updated_at`, `documento`, `telefono`, `especialidad`) VALUES
-(1, 'Carlito Gómez', NULL, '2025-07-11 08:37:41', '1122334455', '301795312', 'instructor incremento físico'),
-(2, 'Laura Ramírez', NULL, NULL, '77889944', '200100300', 'instructor ejercicios de estiramientos'),
-(3, 'Andrés Torres', NULL, NULL, '44556677', '600500400', 'instructor categoría infantil'),
-(8, 'alika', '2025-07-11 09:24:00', '2025-07-11 09:24:00', '1022962623', '3242434312', 'futbol');
+INSERT INTO `instructores` (`id`, `documento`, `telefono`, `email`, `nombres`, `apellidos`, `created_at`, `updated_at`) VALUES
+(1, '20500500', '300123456', 'dario@email.com', 'Darío', 'Peraz', '2025-08-24 01:26:10', '2025-08-24 01:26:10'),
+(2, '200200100', '130789456', 'carlos@email.com', 'Carlos Andres', 'Romero Romero', '2025-08-24 01:33:29', '2025-08-24 01:34:07'),
+(3, '80500200', '3115006000', 'julio@email.com', 'julio andres', 'torres flores', '2025-08-24 06:43:10', '2025-08-24 06:43:10');
 
 -- --------------------------------------------------------
 
@@ -275,16 +244,26 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '0001_01_01_000000_create_users_table', 1),
 (2, '0001_01_01_000001_create_cache_table', 1),
 (3, '0001_01_01_000002_create_jobs_table', 1),
-(4, '2025_06_19_184223_create_estudiantes_table', 1),
-(5, '2025_06_23_205042_create_instructores_table', 1),
-(6, '2025_06_23_205251_create_grupos_table', 1),
-(7, '2025_06_23_205802_create_horarios_table', 1),
-(8, '2025_06_29_163749_add_timestamps_to_estudiantes_table', 2),
-(9, '2025_06_19_181702_create_products_table', 3),
-(10, '2025_06_30_202209_create_permission_tables', 3),
-(11, '2025_07_17_172711_create_subgrupos_table', 4),
-(12, '2025_07_27_201347_create_asistencias_table', 5),
-(13, '2025_08_12_142642_create_actividades_table', 6);
+(4, '2025_06_19_181702_create_products_table', 1),
+(5, '2025_06_19_184223_create_estudiantes_table', 1),
+(6, '2025_06_23_205042_create_instructores_table', 1),
+(7, '2025_06_23_205251_create_grupos_table', 1),
+(8, '2025_06_23_205802_create_horarios_table', 1),
+(9, '2025_06_29_163749_add_timestamps_to_estudiantes_table', 1),
+(10, '2025_06_30_202209_create_permission_tables', 1),
+(11, '2025_08_03_004144_create_pagos_table', 1),
+(12, '2025_08_11_210559_add_concepto_to_pagos_table', 1),
+(13, '2025_08_18_015600_create_contactos_table', 2),
+(14, '2025_08_18_020122_create_contactos_table', 3),
+(15, '2025_08_18_142535_remove_mes_anio_from_pagos_table', 4),
+(16, '2025_08_18_153509_add_unique_pagos', 5),
+(17, '2025_08_18_153850_add_unique_estudiante_tipo_to_pagos_table', 5),
+(18, '2025_08_23_190210_add_documento_email_to_instructores', 6),
+(19, '2025_08_23_191400_rename_nombre_add_apellidos_to_instructores', 7),
+(20, '2025_08_23_200014_add_telefono_to_instructores_table', 8),
+(21, '2025_08_24_013052_rename_dia_to_fecha_in_horarios_table', 9),
+(22, '2025_07_17_172711_create_subgrupos_table', 10),
+(23, '2025_08_15_023001_add_deleted_at_to_users_table--table=users', 10);
 
 -- --------------------------------------------------------
 
@@ -315,9 +294,41 @@ CREATE TABLE `model_has_roles` (
 --
 
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
-(1, 'App\\Models\\User', 2),
+(1, 'App\\Models\\User', 1),
 (2, 'App\\Models\\User', 3),
+(3, 'App\\Models\\User', 2),
 (3, 'App\\Models\\User', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pagos`
+--
+
+CREATE TABLE `pagos` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `concepto` varchar(255) DEFAULT NULL,
+  `tipo` varchar(255) NOT NULL,
+  `valor` decimal(10,2) NOT NULL,
+  `fecha_pago` date NOT NULL,
+  `estado` varchar(255) NOT NULL,
+  `estudiante_documento` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `medio_pago` enum('efectivo','nequi','daviplata','transferencia') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `pagos`
+--
+
+INSERT INTO `pagos` (`id`, `concepto`, `tipo`, `valor`, `fecha_pago`, `estado`, `estudiante_documento`, `created_at`, `updated_at`, `medio_pago`) VALUES
+(1, 'mes de septiembre', 'mensualidad', 400000.00, '2025-08-18', 'Pagado', 10000, '2025-08-18 19:34:25', '2025-08-23 21:01:50', 'transferencia'),
+(4, NULL, 'inscripción', 900000.00, '2025-08-01', 'Pagado', 10000, '2025-08-18 20:02:15', '2025-08-18 20:02:15', 'transferencia'),
+(8, NULL, 'inscripción', 220000.00, '2025-08-22', 'Pagado', 700700700, '2025-08-23 21:15:11', '2025-08-23 21:17:47', 'transferencia'),
+(10, 'pago mes septiembre', 'mensualidad', 230000.00, '2025-08-23', 'Pagado', 700700700, '2025-08-23 21:16:59', '2025-08-23 21:16:59', 'efectivo'),
+(11, NULL, 'inscripción', 650000.00, '2025-08-24', 'Pagado', 500600700, '2025-08-24 19:39:23', '2025-08-24 19:39:23', 'daviplata'),
+(12, 'pago agosto', 'mensualidad', 210000.00, '2025-08-24', 'Pagado', 500600700, '2025-08-24 19:40:15', '2025-08-24 19:40:15', 'transferencia');
 
 -- --------------------------------------------------------
 
@@ -364,9 +375,9 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'web', '2025-07-10 01:09:41', '2025-07-10 01:09:41'),
-(2, 'colaborador', 'web', '2025-07-10 01:09:41', '2025-07-10 01:09:41'),
-(3, 'instructor', 'web', '2025-07-10 01:09:41', '2025-07-10 01:09:41');
+(1, 'admin', 'web', '2025-08-25 18:13:37', '2025-08-25 18:13:37'),
+(2, 'colaborador', 'web', '2025-08-25 18:13:49', '2025-08-25 18:13:49'),
+(3, 'instructor', 'web', '2025-08-25 18:14:00', '2025-08-25 18:14:00');
 
 -- --------------------------------------------------------
 
@@ -399,7 +410,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('4Lk9UUEXsLQ4J8eW4OCWVKHgL02uDCb5NDh3ajc1', 4, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTkdpVTJJQlB2bm1VdW92QXdnYUxhMTNaWm5ENEQyYVAzdVpzZTZQTCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NjQ6Imh0dHA6Ly9sb2NhbGhvc3QvcHJveWVjdG8tc3BvcnR6b25lLXVsdGltYXRlL3B1YmxpYy9pbnN0L2hvcmFyaW8iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo0O3M6NDoiYXV0aCI7YToxOntzOjIxOiJwYXNzd29yZF9jb25maXJtZWRfYXQiO2k6MTc1NTAwNTg1ODt9fQ==', 1755010734);
+('A1xMQsQBTNNQsgWyOS97INXX1vaBjpxzlIFXGuhZ', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiSkdSNm1JeVhid21XdTA1VzB6T2pMdTRiam5VZEtBajNGV0tQTmppNSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MTEyOiJodHRwOi8vbG9jYWxob3N0L3Nwb3J0em9uZV91bHRpbWF0ZV8xL3B1YmxpYy9yZXBvcnRlcy9pbnNjcmlwY2lvbmVzP2ZlY2hhX2Zpbj0yMDI1LTA4LTMxJmZlY2hhX2luaWNpbz0yMDI1LTA4LTAxIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1756046504),
+('Tdg7px2lbD5ACQdz6ShVb6d71tk5FyELYT4QxYV5', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition std-1)', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiMTRkeUc2dnJLZWx3OWhwWmFZNzNkd3BMbnpzV1ZqamFlOHcwdndmTyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wcm9maWxlIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NTYxMjg2NzI7fX0=', 1756129498);
 
 -- --------------------------------------------------------
 
@@ -408,21 +420,12 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 --
 
 CREATE TABLE `subgrupos` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `grupo_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `subgrupos`
---
-
-INSERT INTO `subgrupos` (`id`, `nombre`, `grupo_id`, `created_at`, `updated_at`) VALUES
-(1, 'Grupo A', 1, NULL, NULL),
-(2, 'Grupo B', 2, NULL, NULL),
-(3, 'Grupo B', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -436,19 +439,26 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
+  `eps` varchar(255) DEFAULT NULL,
+  `documento_identidad` varchar(255) DEFAULT NULL,
+  `foto_documento` varchar(255) DEFAULT NULL,
+  `direccion_hogar` text DEFAULT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `telefono` varchar(255) DEFAULT NULL,
+  `foto_perfil` varchar(255) DEFAULT NULL,
+  `logo_personalizado` varchar(255) DEFAULT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(2, 'alex', 'hola@email.com', NULL, '$2y$12$y4kWNn6s3251ByCuwh32wOBbzTr3Ra49n8CJZbf3o4IkJ2UHBwG8i', NULL, '2025-07-10 01:11:04', '2025-07-11 08:49:58'),
-(3, 'ricardo', 'hola1@email.com', NULL, '$2y$12$K5me7kJSdaBKbxBW3Q9y8OvBre6qt6WTQoNcgzS/7/XeFKqOVC11C', NULL, '2025-07-10 01:12:01', '2025-07-10 01:12:01'),
-(4, 'leidi', 'leidi@gmail.com', NULL, '$2y$12$9Uf8/4fjT78iFxAj4k7oR.JTCli4xLsbGEdmd1DYmth.pF1m7tkPG', NULL, '2025-07-11 07:33:34', '2025-07-11 07:33:34');
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `eps`, `documento_identidad`, `foto_documento`, `direccion_hogar`, `fecha_nacimiento`, `telefono`, `foto_perfil`, `logo_personalizado`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'alex', 'hola@email.com', NULL, '$2y$12$nYlts78jo4zfTTIjpl1R/OJQdPwk1N7dYpqQ5uRyRR4U9oiDynAee', 'Coomeva', '1073599572', NULL, 'sgasdg', '2011-05-09', '3242434312', NULL, NULL, NULL, '2025-08-25 17:56:13', '2025-08-25 18:44:54', NULL);
 
 -- --------------------------------------------------------
 
@@ -470,22 +480,6 @@ CREATE TABLE `usuarios` (
 --
 
 --
--- Indices de la tabla `actividades`
---
-ALTER TABLE `actividades`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `actividades_horario_id_foreign` (`horario_id`),
-  ADD KEY `actividades_subgrupo_id_foreign` (`subgrupo_id`);
-
---
--- Indices de la tabla `asistencias`
---
-ALTER TABLE `asistencias`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `asistencias_estudiante_documento_fecha_unique` (`estudiante_documento`,`fecha`),
-  ADD KEY `asistencias_subgrupo_id_foreign` (`subgrupo_id`);
-
---
 -- Indices de la tabla `cache`
 --
 ALTER TABLE `cache`
@@ -498,12 +492,16 @@ ALTER TABLE `cache_locks`
   ADD PRIMARY KEY (`key`);
 
 --
+-- Indices de la tabla `contactos`
+--
+ALTER TABLE `contactos`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `estudiantes`
 --
 ALTER TABLE `estudiantes`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `documento` (`documento`),
-  ADD KEY `fk_estudiantes_subgrupo` (`id_subgrupo`);
+  ADD PRIMARY KEY (`documento`);
 
 --
 -- Indices de la tabla `failed_jobs`
@@ -530,7 +528,9 @@ ALTER TABLE `horarios`
 -- Indices de la tabla `instructores`
 --
 ALTER TABLE `instructores`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `instructores_documento_unique` (`documento`),
+  ADD UNIQUE KEY `instructores_email_unique` (`email`);
 
 --
 -- Indices de la tabla `jobs`
@@ -564,6 +564,14 @@ ALTER TABLE `model_has_permissions`
 ALTER TABLE `model_has_roles`
   ADD PRIMARY KEY (`role_id`,`model_id`,`model_type`),
   ADD KEY `model_has_roles_model_id_model_type_index` (`model_id`,`model_type`);
+
+--
+-- Indices de la tabla `pagos`
+--
+ALTER TABLE `pagos`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `pagos_estudiante_documento_tipo_unique` (`estudiante_documento`,`tipo`),
+  ADD UNIQUE KEY `unique_pago_estudiante_tipo` (`estudiante_documento`,`tipo`);
 
 --
 -- Indices de la tabla `password_reset_tokens`
@@ -625,22 +633,10 @@ ALTER TABLE `usuarios`
 --
 
 --
--- AUTO_INCREMENT de la tabla `actividades`
+-- AUTO_INCREMENT de la tabla `contactos`
 --
-ALTER TABLE `actividades`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `asistencias`
---
-ALTER TABLE `asistencias`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de la tabla `estudiantes`
---
-ALTER TABLE `estudiantes`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+ALTER TABLE `contactos`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `failed_jobs`
@@ -652,19 +648,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT de la tabla `grupos`
 --
 ALTER TABLE `grupos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `horarios`
 --
 ALTER TABLE `horarios`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `instructores`
 --
 ALTER TABLE `instructores`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `jobs`
@@ -676,7 +672,13 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT de la tabla `pagos`
+--
+ALTER TABLE `pagos`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `permissions`
@@ -694,13 +696,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `subgrupos`
 --
 ALTER TABLE `subgrupos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
@@ -711,26 +713,6 @@ ALTER TABLE `usuarios`
 --
 -- Restricciones para tablas volcadas
 --
-
---
--- Filtros para la tabla `actividades`
---
-ALTER TABLE `actividades`
-  ADD CONSTRAINT `actividades_horario_id_foreign` FOREIGN KEY (`horario_id`) REFERENCES `horarios` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `actividades_subgrupo_id_foreign` FOREIGN KEY (`subgrupo_id`) REFERENCES `subgrupos` (`id`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `asistencias`
---
-ALTER TABLE `asistencias`
-  ADD CONSTRAINT `asistencias_subgrupo_id_foreign` FOREIGN KEY (`subgrupo_id`) REFERENCES `subgrupos` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_estudiante_documento` FOREIGN KEY (`estudiante_documento`) REFERENCES `estudiantes` (`documento`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `estudiantes`
---
-ALTER TABLE `estudiantes`
-  ADD CONSTRAINT `fk_estudiantes_subgrupo` FOREIGN KEY (`id_subgrupo`) REFERENCES `subgrupos` (`id`) ON DELETE SET NULL;
 
 --
 -- Filtros para la tabla `horarios`
@@ -750,6 +732,12 @@ ALTER TABLE `model_has_permissions`
 --
 ALTER TABLE `model_has_roles`
   ADD CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `pagos`
+--
+ALTER TABLE `pagos`
+  ADD CONSTRAINT `pagos_estudiante_documento_foreign` FOREIGN KEY (`estudiante_documento`) REFERENCES `estudiantes` (`documento`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `role_has_permissions`
