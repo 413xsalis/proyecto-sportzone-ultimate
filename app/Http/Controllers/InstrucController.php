@@ -25,11 +25,6 @@ class InstrucController extends Controller
     {
         return view('instructor.asistencia.principal');
     }
-
-    public function reporte()
-    {
-        return view('instructor.reporte.principal');
-    }
 }
 
 

@@ -10,9 +10,8 @@ use App\Models\User;
 
 class AdminController extends Controller
 {
-    public function index()
+public function index()
     {
-        // Redirige al método principal que sí tiene los datos
         return $this->principal();
     }
 
@@ -24,21 +23,12 @@ class AdminController extends Controller
         // Total de instructores
         $totalInstructores = Instructor::count();
         
-        // Obtener el día actual en español
-        $dias = [
-            'Sunday' => 'Domingo',
-            'Monday' => 'Lunes',
-            'Tuesday' => 'Martes',
-            'Wednesday' => 'Miércoles',
-            'Thursday' => 'Jueves',
-            'Friday' => 'Viernes',
-            'Saturday' => 'Sábado'
-        ];
-        $diaActual = $dias[Carbon::now()->format('l')];
+        // Obtener la fecha actual
+        $fechaActual = Carbon::now()->format('Y-m-d');
         
-        // Clases programadas para hoy
+        // Clases programadas para hoy - usando la columna 'fecha'
         $clasesHoy = Horario::with(['instructor', 'grupo'])
-            ->where('dia', $diaActual)
+            ->whereDate('fecha', $fechaActual)
             ->orderBy('hora_inicio')
             ->get();
             

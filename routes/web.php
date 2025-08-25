@@ -10,13 +10,12 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\InstrucController;
 use App\Http\Controllers\AsistenciaController;
-use App\Http\Controllers\InstructorHorarioController;
-use App\Http\Controllers\InstructorReporteController;
 use App\Http\Controllers\PerfilAdminController;
 use App\Http\Controllers\PerfilColabController;
 use App\Http\Controllers\PerfilInstController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\Colaborador\PagoController;
+use App\Http\Controllers\ContactoController;
 
 
 Route::get('/', function () {
@@ -138,20 +137,15 @@ Route::prefix('admin')->group(function () {
 
 
 
-
 // ================= COLABORADOR =================
 Route::prefix('colab')->group(function () {
     Route::get('/principal', [ColaboradorController::class, 'principal'])->name('colab.principal');
     Route::get('/gestion', [ColaboradorController::class, 'gestion'])->name('colab.gestion_clases');
     Route::get('/inscripcion', [ColaboradorController::class, 'inscripcion'])->name('colab.inscripcion');
     Route::get('/reportes', [ColaboradorController::class, 'reportes'])->name('colab.reportes');
+    Route::get('/pagos', [ColaboradorController::class, 'pagos'])->name('colab.pagos');
+
 });
-
-// Ruta adicional para compatibilidad
-Route::get('/colaboradores/inicio', [ColaboradorController::class, 'principal'])->name('colaboradores.inicio');
-
-
-
 
 
 // ================= INSTRUCTOR =================
@@ -179,7 +173,8 @@ Route::put('/horarios/{horario}', [HorarioController::class, 'update'])->name('h
 Route::delete('/horarios/{horario}', [HorarioController::class, 'destroy'])->name('horarios.destroy');
 Route::get('/horarios/{id}/edit', [HorarioController::class, 'edit'])->name('horarios.edit');
 Route::put('/horarios/{id}', [HorarioController::class, 'update'])->name('horarios.update');
-
+Route::get('/horarios', [HorarioController::class, 'index'])->name('horarios.index');
+Route::post('/horarios', [HorarioController::class, 'store'])->name('horarios.store');
 
 
 
@@ -204,47 +199,59 @@ Route::delete('/inscripcion_estudiante/{estudiante:documento}', [EstudianteContr
 // ================= REPORTES =================
 Route::get('/reportes/inscripciones', [ReporteController::class, 'reporteInscripciones'])->name('reportes.inscripciones');
 
+// Reportes de Pagos (PDF y Excel)
+Route::get('/reportes/pagos/pdf', [ReporteController::class, 'pagosPDF'])
+    ->name('reportes.pagos');
+
+Route::get('/reportes/pagos/excel', [ReporteController::class, 'pagosExcel'])
+    ->name('reportes.pagos.excel');
 
 
 
 //rutas de instructores//----------------------------//
 
-// INICIO
-
-Route::prefix('inst')->group(function () {
-    Route::get('/principal', [InstrucController::class, 'principal'])->name('inst.principal');  //Ruta principal del instructor. Muestra la página de inicio o panel de control.
-
-    // HORARIOS
-
-    Route::get('/horario', [InstructorHorarioController::class, 'horario'])->name('inst.horarios'); //Muestra la tabla de horario del instructor.
-
-    Route::get('/horario/actividades', [InstructorHorarioController::class, 'obtenerActividades'])->name('inst.horarios.actividades'); // Obtiene las actividades del horario en formato JSON para visualizarlas.
-
-    Route::get('/horario/{instructorId?}', [InstructorHorarioController::class, 'horario'])->name('inst.horarios');
-
-    Route::post('/horario/guardar', [InstructorHorarioController::class, 'guardarActividad'])->name('inst.horarios.guardar'); //Guarda una nueva actividad asignada a una celda del horario.
-
-    Route::put('/horario/actualizar/{id}', [InstructorHorarioController::class, 'actualizarActividad'])->name('inst.horarios.actualizar'); //Actualiza una actividad existente, identificada por su ID.
-
-    Route::delete('/horario/eliminar/{id}', [InstructorHorarioController::class, 'eliminarActividad'])->name('inst.horarios.eliminar'); //Elimina una actividad del horario.
-
-    // ASISTENCIAS
-
-    Route::get('/asistencia', [AsistenciaController::class, 'seleccionarGrupo'])->name('inst.asistencia'); //Muestra la página para seleccionar un grupo.
-
-    Route::get('/asistencia/grupo/{nombre}', [AsistenciaController::class, 'tomarAsistenciaPorGrupo'])->name('asistencia.tomar.grupo'); //Permite tomar asistencia a un grupo específico por su nombre.
-
-    Route::get('/asistencia/{grupo_id}', [AsistenciaController::class, 'verSubgrupos'])->name('asistencia.subgrupos'); //Muestra los subgrupos de un grupo seleccionado.
-
-    Route::get('/asistencia/subgrupo/{id}', [AsistenciaController::class, 'tomarAsistenciaPorSubgrupo'])->name('asistencia.tomar.subgrupo'); //Permite tomar asistencia a un subgrupo en particular.
-
-    Route::post('/asistencia/guardar', [AsistenciaController::class, 'guardar'])->name('asistencia.guardar'); //Guarda los registros de asistencia enviados por el formulario.
-
-    // REPORTES
-
-    Route::get('/reporte/asistencias', [InstructorReporteController::class, 'mostrarReporte'])->name('inst.reporte.asistencias');
-
-    Route::post('/reporte/asistencias/pdf', [InstructorReporteController::class, 'generarAsistenciasPDF'])->name('inst.reporte.asistencias.pdf');
-    
-    Route::get('/subgrupos/{grupoId}', [InstructorReporteController::class, 'getSubgrupos'])->name('inst.get.subgrupos');
+Route::prefix('inst')->group(function() {
+    Route::get('/principal', [InstrucController::class, 'principal'])->name('inst.principal');
 });
+
+Route::prefix('inst')->group(function() {
+    Route::get('/horario', [InstrucController::class, 'horario'])->name('inst.horarios');
+});
+
+Route::prefix('inst')->group(function() {
+    Route::get('/asistencia', [AsistenciaController::class, 'seleccionarGrupo'])->name('inst.asistencia');
+    Route::get('/asistencia/grupo/{nombre}', [AsistenciaController::class, 'tomarAsistencia'])->name('asistencia.tomar');
+    Route::post('/asistencia/guardar', [AsistenciaController::class, 'guardar'])->name('asistencia.guardar');
+    
+});
+
+// ========== Pagos ==========
+
+Route::prefix('colaborador/pagos')->name('pagos.')->group(function () {
+    Route::get('/', [PagoController::class, 'index'])->name('index'); // pagos.principal
+
+    Route::get('/inscripciones', [PagoController::class, 'inscripciones'])->name('inscripciones.index'); // pagos.inscripciones.principal.index
+    Route::post('/inscripciones', [PagoController::class, 'storeInscripcion'])->name('inscripciones.store'); // pagos.inscripciones.store
+    
+
+    Route::get('/mensualidades', [PagoController::class, 'mensualidades'])->name('mensualidades');
+    Route::post('/mensualidades', [PagoController::class, 'storeMensualidad'])->name('mensualidades.store');
+
+    Route::get('/mensualidades/{id}/edit', [PagoController::class, 'edit'])->name('mensualidades.edit');
+
+     // Editar y eliminar
+
+    Route::get('{id}/editar', [PagoController::class, 'edit'])->name('edit');
+    Route::delete('{id}', [PagoController::class, 'destroy'])->name('destroy');
+
+
+    Route::resource('pagos', PagoController::class);
+
+}); 
+
+
+// ========== Contacto ==========
+
+    Route::post('/contacto', [ContactoController::class, 'store'])->name('contacto.store');
+
+

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Reporte de Inscripciones</title>
+    <title>Reporte de Pagos</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,58 +59,52 @@
             margin-top: 20px;
             font-weight: bold;
         }
-
-        .resumen {
-            margin-top: 20px;
-            font-weight: bold;
-            text-align: right;
-        }
     </style>
 </head>
 <body>
 
-    <header>
-        <img src="{{ public_path('assets/images/logo_escuela.png') }}" alt="Logo">
-        <h2>Escuela Safuka</h2>
-        <h2>Reporte de Inscripciones</h2>   
-     <p>
-        Desde: {{ \Carbon\Carbon::parse($fechaInicio)->format('d/m/Y') }} &nbsp;
-        Hasta: {{ \Carbon\Carbon::parse($fechaFin)->format('d/m/Y') }}
-    </p>
-    </header>
-
+<header>
+    <img src="{{ public_path('assets/images/logo_escuela.png') }}" alt="Logo Escuela">
+    <h2>Escuela Deportiva Safuka</h2>
+    <p><strong>Reporte de Pagos</strong></p>
+    <p>Desde {{ $inicio }} hasta {{ $fin }}</p>
+</header>
 
 <main>
     <table>
         <thead>
             <tr>
-                <th>Documento</th>
-                <th>Nombre</th>
-                <th>Teléfono</th>
-                <th>Fecha de Registro</th>
+                <th>ID</th>
+                <th>Estudiante</th>
+                <th>Tipo</th>
+                <th>Valor</th>
+                <th>Fecha de Pago</th>
+                <th>Estado</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($estudiantes as $estudiante)
-            <tr>
-                <td>{{ $estudiante->documento }}</td>
-                <td>{{ $estudiante->nombre_1 }} {{ $estudiante->apellido_1 }}</td>
-                <td>{{ $estudiante->telefono }}</td>
-                <td>{{ $estudiante->created_at->format('Y-m-d') }}</td>
-            </tr>
-            @empty
-        <tr>
-        <td colspan="4" style="text-align: center;">No hay estudiantes registrados en este rango de fechas.</td>
-        </tr>
-            @endforelse
+            @foreach($pagos as $pago)
+                <tr>
+                    <td>{{ $pago->id }}</td>
+                    <td>
+                        {{ $pago->estudiante->nombre_1 ?? '' }}
+                        {{ $pago->estudiante->apellido_1 ?? '' }}
+                    </td>
+                    <td>{{ ucfirst($pago->tipo) }}</td>
+                    <td>${{ number_format($pago->valor, 0, ',', '.') }}</td>
+                    <td>{{ $pago->fecha_pago }}</td>
+                    <td>{{ ucfirst($pago->estado) }}</td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
+
+    <p class="resumen">Total Pagos: {{ count($pagos) }}</p>
 </main>
+
 <footer>
     © {{ date('Y') }} Escuela Deportiva Safuka | Generado el {{ date('d/m/Y H:i') }}
 </footer>
 
 </body>
 </html>
-
-

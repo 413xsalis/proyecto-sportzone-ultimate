@@ -18,7 +18,6 @@ class ColaboradorController extends Controller
     public function index(){
     $instructores = Instructor::all();
     return view('colaborador.inicio_colab.principal', compact('instructores'));
-    
     }
 
     public function principal(){

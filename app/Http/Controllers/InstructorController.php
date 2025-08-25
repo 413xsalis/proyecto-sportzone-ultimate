@@ -24,16 +24,17 @@ class InstructorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255',
+            'nombres' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
             'documento' => 'required|unique:instructores,documento',
             'telefono' => 'nullable|string|max:20',
-            'especialidad' => 'nullable|string|max:255',
+            'email' => 'required|email|unique:instructores,email',
         ]);
 
         Instructor::create($request->all());
 
         return redirect()->route('colab.principal')
-            ->with('success', 'Usuario creado exitosamente.');
+            ->with('success', 'Instructor creado exitosamente.');
     }
 
     public function index()
@@ -52,9 +53,10 @@ class InstructorController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
             'documento' => 'required|string|max:25',
             'telefono' => 'nullable|string|max:20',
-            'especialidad' => 'nullable|string|max:255',
+            'email' => 'required|email|max:255',
         ]);
 
         $instructor = Instructor::findOrFail($id);
