@@ -18,6 +18,8 @@ use App\Http\Controllers\Colaborador\PagoController;
 use App\Http\Controllers\ContactoController;
 
 
+Route::resource('horarios', HorarioController::class);
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -169,6 +171,11 @@ Route::get('/horarios/{id}/edit', [HorarioController::class, 'edit'])->name('hor
 Route::put('/horarios/{id}', [HorarioController::class, 'update'])->name('horarios.update');
 Route::get('/horarios', [HorarioController::class, 'index'])->name('horarios.index');
 Route::post('/horarios', [HorarioController::class, 'store'])->name('horarios.store');
+Route::resource('horarios', HorarioController::class);
+// O si estás usando rutas personalizadas:
+Route::get('/gestion-clases', [ColaboradorController::class, 'gestion'])->name('gestion.clases');
+Route::post('/horarios', [HorarioController::class, 'store'])->name('horarios.store');
+Route::put('/horarios/{horario}', [HorarioController::class, 'update'])->name('horarios.update');
 
 
 

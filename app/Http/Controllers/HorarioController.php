@@ -2,86 +2,76 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Grupo;
 use App\Models\Horario;
+use App\Models\Grupo;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HorarioController extends Controller
 {
+    // Mostrar todos los horarios
     public function index()
     {
         $horarios = Horario::with(['instructor', 'grupo'])->get();
-        $instructores = User::all();
-        $grupos = Grupo::all();
-        $editar = false; // Indicador para saber que no se está editando
-
-        return view('colaborador.gestion_clases.principal', compact('horarios', 'instructores', 'grupos'));
+        return view('horarios.index', compact('horarios'));
     }
 
-    public function mostrarPrincipal()
-    {
-        $horarios = Horario::with(['instructor', 'grupo'])->get();
-        $instructores = User::all();
-        $grupos = Grupo::all();
-
-        return view('colaborador.gestion_clases.principal', compact('horarios', 'instructores', 'grupos'));
-    }
-
-    public function create()
-    {
-        $instructores = User::all();
-        $grupos = Grupo::all();
-        return view('colaborador.gestion_clases.crear', compact('instructores', 'grupos'));
-    }
-
+    // Formulario de creación
     public function store(Request $request)
     {
         $request->validate([
-            'fecha' => 'required',
+            'instructor_id' => 'required|exists:users,id',
+            'grupo_id' => 'required|exists:grupos,id',
+            'dia' => 'required|string',
+            'fecha' => 'required|date',
             'hora_inicio' => 'required',
             'hora_fin' => 'required',
-            'instructor_id' => 'required|exists:instructores,id',
-            'grupo_id' => 'required|exists:grupos,id',
         ]);
 
-        Horario::create($request->all());
-
-        return redirect()->route('gestion_clases.principal')->with('success', 'Horario registrado exitosamente.');
+        Horario::create([
+            'instructor_id' => $request->instructor_id,
+            'grupo_id' => $request->grupo_id,
+            'dia' => $request->dia,
+            'fecha' => $request->fecha,
+            'hora_inicio' => $request->hora_inicio,
+            'hora_fin' => $request->hora_fin,
+        ]);
+        return redirect()->route('horarios.index')->with('success', 'Horario creado correctamente');
     }
 
-    public function edit($id)
+    // Mostrar un horario específico
+    public function show(Horario $horario)
     {
-        $horario = Horario::findOrFail($id);
-        $horarios = Horario::with(['instructor', 'grupo'])->get();
-        $instructores = User::all();
-        $grupos = Grupo::all();
-        $editar = true; // Indicador para saber que se está editando
-
-    return view('colaborador.gestion_clases.principal', compact('horario', 'horarios', 'instructores', 'grupos', 'editar'));
+        return view('horarios.show', compact('horario'));
     }
 
-    public function update(Request $request, $id)
+    // Formulario de edición
+    public function edit(Horario $horario)
+    {
+        $instructores = User::role('instructor')->get();
+        $grupos = Grupo::all();
+        return view('horarios.edit', compact('horario', 'instructores', 'grupos'));
+    }
+
+    // Actualizar horario
+    public function update(Request $request, Horario $horario)
     {
         $request->validate([
-            'fecha' => 'required',
-            'hora_inicio' => 'required',
-            'hora_fin' => 'required',
-            'instructor_id' => 'required|exists:instructores,id',
+            'instructor_id' => 'required|exists:users,id',
             'grupo_id' => 'required|exists:grupos,id',
+            'fecha' => 'required|date',
+            'hora' => 'required',
         ]);
 
-        $horario = Horario::findOrFail($id);
         $horario->update($request->all());
 
-        return redirect()->route('gestion_clases.principal')->with('success', 'Horario actualizado correctamente.');
+        return redirect()->route('horarios.index')->with('success', 'Horario actualizado correctamente');
     }
 
-    public function destroy($id)
+    // Eliminar horario
+    public function destroy(Horario $horario)
     {
-        $horario = Horario::findOrFail($id);
         $horario->delete();
-
-        return redirect()->route('gestion_clases.principal')->with('success', 'Horario eliminado correctamente.');
+        return redirect()->route('horarios.index')->with('success', 'Horario eliminado correctamente');
     }
 }

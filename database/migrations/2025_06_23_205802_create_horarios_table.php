@@ -1,11 +1,9 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,6 +12,7 @@ return new class extends Migration
         Schema::create('horarios', function (Blueprint $table) {
             $table->id();
             $table->string('dia');
+            $table->date('fecha'); // 👈 aquí basta
             $table->time('hora_inicio');
             $table->time('hora_fin');
             $table->unsignedBigInteger('instructor_id');
@@ -21,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Relaciones foráneas
-            $table->foreign('instructor_id')->references('id')->on('instructores')->onDelete('cascade');
+            $table->foreign('instructor_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('grupo_id')->references('id')->on('grupos')->onDelete('cascade');
         });
     }
