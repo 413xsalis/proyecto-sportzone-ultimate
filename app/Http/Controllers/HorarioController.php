@@ -13,7 +13,16 @@ class HorarioController extends Controller
     public function index()
     {
         $horarios = Horario::with(['instructor', 'grupo'])->get();
-        return view('horarios.index', compact('horarios'));
+        return view('colaborador.gestion_clases.principal', compact('horarios'));
+    }
+
+
+    public function create()
+    {
+        $instructores = User::role('instructor')->get(); // Solo usuarios con rol instructor
+        $grupos = Grupo::all(); // Todos los grupos
+
+        return view('colaborador.gestion_clases.create', compact('instructores', 'grupos'));
     }
 
     // Formulario de creación

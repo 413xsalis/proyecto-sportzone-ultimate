@@ -53,17 +53,17 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // rutas del crud de gestion usuario--------------------------------------------------------//
-    Route::resource('usuario', UsuarioController::class);
+Route::resource('usuario', UsuarioController::class);
 
-    // Rutas extra para la papelera (SoftDeletes)
-    Route::get('usuario/trashed', [UsuarioController::class, 'trashed'])
-        ->name('usuario.trashed');
+// Rutas extra para la papelera (SoftDeletes)
+Route::get('usuario/trashed', [UsuarioController::class, 'trashed'])
+    ->name('usuario.trashed');
 
-    Route::post('usuario/{id}/restore', [UsuarioController::class, 'restore'])
-        ->name('usuario.restore');
+Route::post('usuario/{id}/restore', [UsuarioController::class, 'restore'])
+    ->name('usuario.restore');
 
-    Route::delete('usuario/{id}/forceDelete', [UsuarioController::class, 'forceDelete'])
-        ->name('usuario.forceDelete');
+Route::delete('usuario/{id}/forceDelete', [UsuarioController::class, 'forceDelete'])
+    ->name('usuario.forceDelete');
 
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -79,9 +79,9 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', function () {
         return view('administrador.admin.principal');
     })->name('admin.dashboard');
-    
+
     Route::get('/gestion/trashed', [UsuarioController::class, 'trashed'])->name('usuario.trashed');
-    
+
     // O si prefieres usar resource:
     Route::resource('dashboard', AdminController::class);
 });
@@ -106,7 +106,7 @@ Route::prefix('colaborador')->middleware(['auth', 'role:colaborador'])->group(fu
     Route::get('/dashboard', function () {
         return view('colaborador.inicio_colab.principal');
     })->name('colaborador.dashboard');
-    
+
     // O si prefieres usar resource:
     Route::resource('dashboard', ColaboradorController::class);
 });
@@ -116,7 +116,7 @@ Route::prefix('instructor')->middleware(['auth', 'role:instructor'])->group(func
     Route::get('/dashboard', function () {
         return view('instructor.inicio.principal');
     })->name('instructor.dashboard');
-    
+
     // O si prefieres usar resource:
     Route::resource('dashboard', InstrucController::class);
 });
@@ -151,32 +151,20 @@ Route::prefix('colab')->group(function () {
 
 
 // ================= INSTRUCTOR =================
-// Route::prefix('inst')->group(function () {
-//     Route::get('/principal', [InstructorController::class, 'principal'])->name('inst.principal');
-//     Route::get('/horario', [InstructorController::class, 'horario'])->name('inst.horarios');
-// });
-
-// Rutas para instructores
 
 Route::get('/instructores', [InstructorController::class, 'index'])->name('instructores.index');
 
 // ================= HORARIOS =================
-Route::get('/gestion_clases/principal', [HorarioController::class, 'mostrarPrincipal'])->name('gestion_clases.principal');
-Route::get('/colab/horarios/crear', [HorarioController::class, 'create'])->name('horarios.create');
-Route::post('/colab/horarios', [HorarioController::class, 'store'])->name('horarios.store');
-Route::get('/horarios/{horario}/edit', [HorarioController::class, 'edit'])->name('horarios.edit');
-Route::put('/horarios/{horario}', [HorarioController::class, 'update'])->name('horarios.update');
+
+
 Route::delete('/horarios/{horario}', [HorarioController::class, 'destroy'])->name('horarios.destroy');
 Route::get('/horarios/{id}/edit', [HorarioController::class, 'edit'])->name('horarios.edit');
 Route::put('/horarios/{id}', [HorarioController::class, 'update'])->name('horarios.update');
 Route::get('/horarios', [HorarioController::class, 'index'])->name('horarios.index');
 Route::post('/horarios', [HorarioController::class, 'store'])->name('horarios.store');
-Route::resource('horarios', HorarioController::class);
-// O si estás usando rutas personalizadas:
 Route::get('/gestion-clases', [ColaboradorController::class, 'gestion'])->name('gestion.clases');
-Route::post('/horarios', [HorarioController::class, 'store'])->name('horarios.store');
 Route::put('/horarios/{horario}', [HorarioController::class, 'update'])->name('horarios.update');
-
+Route::get('/horarios/create', [HorarioController::class, 'create'])->name('horarios.create');
 
 
 // ================= ESTUDIANTES =================

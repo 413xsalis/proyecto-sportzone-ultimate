@@ -13,17 +13,6 @@ class Estudiante extends Model
     public $timestamps = true;
 
 
-    //     public function grupoNivel()
-    // {
-    //     return $this->belongsTo(GrupoNivel::class, 'id_grupo_nivel', 'id_grupo_nivel');
-    // }
-
-    // // Relación con grupo (por campo documento)
-    // public function grupo()
-    // {
-    //     return $this->hasOne(Grupo::class, 'documento', 'documento');
-    // }
-
     protected $fillable = [
         'documento',
         'nombre_1',
@@ -34,6 +23,11 @@ class Estudiante extends Model
         'nombre_contacto',
         'telefono_contacto',
         'eps',
-        'id_grupo_nivel'
+        'grupo_id',
     ];
+
+    public function grupo()
+    {
+        return $this->belongsTo(Grupo::class, 'grupo_id');
+    }
 }

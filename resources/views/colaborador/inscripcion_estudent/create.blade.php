@@ -57,16 +57,15 @@
         <input type="text" class="form-control" name="eps" id="eps">
         </div>
 
-        <div class="col-md-6 mb-3">
-        <label for="id_grupo_nivel" class="form-label">Grupo o Nivel</label>
-        <select class="form-select" id="id_grupo_nivel" name="id_grupo_nivel">
-          <option value="">Seleccione un grupo</option>
-          {{-- Aquí puedes usar un foreach si tienes datos de grupos desde el controlador --}}
-          <option value="1">Nivel 1</option>
-          <option value="2">Nivel 2</option>
-          <option value="3">Nivel 3</option>
+      <div class="mb-3">
+        <label for="grupo_id" class="form-label">Grupo</label>
+        <select name="grupo_id" id="grupo_id" class="form-select" required>
+          <option value="" disabled selected>-- Selecciona un grupo --</option>
+          @foreach ($grupos as $grupo)
+            <option value="{{ $grupo->id }}">{{ $grupo->nombre }}</option>
+          @endforeach
         </select>
-        </div>
+      </div>
       </div>
 
       <button type="submit" class="btn btn-success">Registrar</button>
