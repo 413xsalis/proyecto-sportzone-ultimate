@@ -108,4 +108,23 @@ class AsistenciaController extends Controller
         
         return view('instructor.dashboard.notificaciones', compact('asistenciasHoy'));
     }
+
+
+
+    public function storeSubgrupo(Request $request)
+{
+    $request->validate([
+        'nombre' => 'required|string|max:100',
+        'grupo_id' => 'required|exists:grupos,id',
+    ]);
+
+    Subgrupo::create([
+        'nombre' => $request->nombre,
+        'grupo_id' => $request->grupo_id,
+    ]);
+
+    return redirect()->route('asistencia.subgrupos', ['grupo_id' => $request->grupo_id])
+                     ->with('success', 'Subgrupo creado correctamente.');
+}
+
 }

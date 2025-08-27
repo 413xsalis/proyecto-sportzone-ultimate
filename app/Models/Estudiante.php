@@ -28,7 +28,6 @@ class Estudiante extends Model
         'nombre_contacto',
         'telefono_contacto',
         'eps',
-        'id_grupo_nivel'
     ];
 
     public function getNombreCompletoAttribute(): string

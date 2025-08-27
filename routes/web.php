@@ -183,6 +183,9 @@ Route::prefix('inst')->group(function () {
 
     // ASISTENCIAS
 
+    Route::post('/subgrupos/store', [AsistenciaController::class, 'storeSubgrupo'])->name('subgrupos.store');
+
+
     Route::get('/asistencia', [AsistenciaController::class, 'seleccionarGrupo'])->name('inst.asistencia'); //Muestra la página para seleccionar un grupo.
 
     Route::get('/asistencia/grupo/{nombre}', [AsistenciaController::class, 'tomarAsistenciaPorGrupo'])->name('asistencia.tomar.grupo'); //Permite tomar asistencia a un grupo específico por su nombre.
